@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nortex Group · RFQ → Quote Copilot · powered by Prodigy</title>
+<meta name="description" content="From a customer request to a sourced, priced quotation in seconds — an agentic RFQ automation demo built on Ciklum's Prodigy Agentic Framework." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230020bb'/%3E%3Cstop offset='.6' stop-color='%236450ff'/%3E%3Cstop offset='1' stop-color='%237a6bff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='23' font-family='-apple-system,Segoe UI,Arial,sans-serif' font-size='20' font-weight='800' fill='white' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E" />
+
+<!-- =========================================================================
+     Nortex Group — RFQ → Quote Copilot (Proof of Concept)
+     Powered by the Prodigy Agentic Framework (Ciklum)
+
+     Single-file, zero-dependency, fully deterministic demo.
+     Works on GitHub Pages, opened locally (file://), or as a hosted preview.
+     Data lives in the CATALOG / SCENARIOS constants near the bottom.
+     ========================================================================= -->
+
+<style>
+  :root{
+    /* Prodigy brand palette (from the framework's canonical diagram legend) */
+    --ink:#001528;          /* near-black brand ink */
+    --blue:#0020bb;         /* Prodigy primary blue */
+    --violet:#6450ff;       /* decision / accent violet */
+    --mint:#00ffbe;         /* signal mint */
+    --mint-soft:#89ffe1;
+    --lilac:#ccc6fa;
+    --paper:#f0efec;
+    --danger:#ff4d6a;
+    --amber:#f5a524;
+    --ok:#12b981;
+
+    --bg:#f6f8fc;
+    --card:#ffffff;
+    --line:#e5e9f2;
+    --muted:#5b6b7f;
+    --muted2:#6d7c8f;
+    --text:#0d2033;
+
+    --radius:16px;
+    --radius-sm:10px;
+    --shadow:0 1px 2px rgba(3,20,40,.04), 0 12px 32px -14px rgba(3,20,40,.22);
+    --shadow-lg:0 24px 60px -22px rgba(3,20,40,.32);
+    --grad:linear-gradient(120deg,var(--blue) 0%, var(--violet) 60%, #7a6bff 100%);
+    --grad-mint:linear-gradient(120deg,var(--blue),#0a63d6 45%,var(--mint));
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--sans);color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;line-height:1.5;font-size:15px;
+  }
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  h1,h2,h3,h4{color:var(--ink);line-height:1.15;margin:0}
+  .mono{font-family:var(--mono)}
+  .muted{color:var(--muted)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+  /* ---------- Top bar ---------- */
+  header.top{
+    position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);
+    backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);
+  }
+  .top .row{display:flex;align-items:center;gap:16px;height:62px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .brand .logo{
+    width:30px;height:30px;border-radius:9px;background:var(--grad);
+    display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:0 6px 16px -6px rgba(100,80,255,.6)
+  }
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:11px;letter-spacing:.02em}
+  .top nav{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .top nav button{
+    background:none;border:0;color:var(--muted);font:inherit;font-weight:600;font-size:13.5px;
+    padding:8px 12px;border-radius:9px;cursor:pointer
+  }
+  .top nav button:hover{color:var(--ink);background:#eef1f8}
+  .top nav button.active{color:var(--blue);background:#eaeeff}
+  .pill{
+    font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--violet);background:#efeaff;border:1px solid #ded5ff;padding:3px 9px;border-radius:999px
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;overflow:hidden;background:var(--ink);color:#fff}
+  .hero::before{
+    content:"";position:absolute;inset:0;opacity:.9;
+    background:
+      radial-gradient(720px 320px at 12% -10%, rgba(100,80,255,.55), transparent 60%),
+      radial-gradient(680px 360px at 92% 8%, rgba(0,255,190,.20), transparent 55%),
+      radial-gradient(500px 400px at 60% 120%, rgba(0,32,187,.6), transparent 60%);
+  }
+  .hero .wrap{position:relative;padding:56px 22px 62px}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+    color:var(--mint-soft);background:rgba(0,255,190,.08);border:1px solid rgba(0,255,190,.25);
+    padding:6px 12px;border-radius:999px;letter-spacing:.02em}
+  .hero h1{color:#fff;font-size:41px;letter-spacing:-.02em;margin:18px 0 0;max-width:760px;font-weight:800}
+  .hero h1 .accent{background:linear-gradient(90deg,var(--mint),#7affd9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p.sub{color:#c7d2e0;font-size:17px;max-width:640px;margin:16px 0 0}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font:inherit;font-weight:650;font-size:14.5px;
+    padding:12px 20px;border-radius:12px;cursor:pointer;border:1px solid transparent;transition:.16s
+  }
+  .btn-primary{background:var(--mint);color:var(--ink);box-shadow:0 12px 26px -10px rgba(0,255,190,.5)}
+  .btn-primary:hover{transform:translateY(-1px);text-decoration:none}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22)}
+  .btn-ghost:hover{background:rgba(255,255,255,.13);text-decoration:none}
+  .hero .stats{display:flex;gap:34px;flex-wrap:wrap;margin-top:38px}
+  .hero .stats .s b{display:block;font-size:26px;color:#fff;font-weight:800;letter-spacing:-.01em}
+  .hero .stats .s span{font-size:12.5px;color:#9fb0c4}
+
+  /* ---------- Stepper ---------- */
+  .stepper{display:flex;gap:8px;margin:26px 0 22px;flex-wrap:wrap}
+  .step{
+    flex:1;min-width:180px;display:flex;gap:12px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 15px;position:relative
+  }
+  .step .n{
+    width:26px;height:26px;border-radius:50%;background:#eef1f8;color:var(--muted);
+    display:grid;place-items:center;font-weight:700;font-size:13px;flex:none;transition:.2s
+  }
+  .step .t b{font-size:13.5px;color:var(--ink)}
+  .step .t span{font-size:11.5px;color:var(--muted2);display:block}
+  .step.done .n{background:var(--ok);color:#fff}
+  .step.active{border-color:var(--violet);box-shadow:0 0 0 3px #efeaff}
+  .step.active .n{background:var(--violet);color:#fff}
+
+  /* ---------- Cards / layout ---------- */
+  main{padding-bottom:70px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .card .hd{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+  .card .hd h3{font-size:16px}
+  .card .hd .sub{font-size:12.5px;color:var(--muted)}
+  .card .bd{padding:20px}
+  .section-title{display:flex;align-items:center;gap:10px;margin:0 0 4px}
+  .section-title .k{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+  .grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+  .hidden{display:none!important}
+
+  /* ---------- Intake ---------- */
+  .tabs{display:flex;gap:6px;background:#eef1f8;padding:5px;border-radius:12px;width:max-content}
+  .tabs button{border:0;background:none;font:inherit;font-weight:650;font-size:13.5px;color:var(--muted);
+    padding:8px 16px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:8px}
+  .tabs button.active{background:#fff;color:var(--blue);box-shadow:var(--shadow)}
+  .scenario-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+  .scenario-chip{
+    border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 13px;cursor:pointer;
+    font-size:13px;color:var(--muted);min-width:150px;transition:.15s;text-align:left
+  }
+  .scenario-chip b{display:block;color:var(--ink);font-size:13.5px;margin-bottom:2px}
+  .scenario-chip:hover{border-color:var(--violet)}
+  .scenario-chip.active{border-color:var(--violet);background:#faf9ff;box-shadow:0 0 0 3px #efeaff}
+  .scenario-chip .tag{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+  .tag.clean{color:var(--ok)} .tag.guard{color:var(--amber)}
+  .mailhead{font-size:12.5px;color:var(--muted);border-bottom:1px dashed var(--line);padding-bottom:10px;margin-bottom:12px}
+  .mailhead b{color:var(--ink)}
+  textarea.rfq{
+    width:100%;min-height:230px;border:1px solid var(--line);border-radius:12px;padding:15px;
+    font-family:var(--mono);font-size:13px;line-height:1.6;color:#26384c;resize:vertical;background:#fbfcfe
+  }
+  textarea.rfq:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px #efeaff}
+  .voicebar{display:flex;align-items:center;gap:12px;background:#f4f2ff;border:1px solid #e4defc;border-radius:12px;padding:12px 14px;margin-bottom:12px}
+  .wave{display:flex;align-items:center;gap:2px;height:26px;flex:1}
+  .wave i{display:block;width:3px;background:var(--violet);border-radius:2px;opacity:.55;animation:wv 1.1s ease-in-out infinite}
+  @keyframes wv{0%,100%{height:5px}50%{height:22px}}
+  .side-facts{display:flex;flex-direction:column;gap:14px}
+  .fact{display:flex;gap:12px;align-items:flex-start}
+  .fact .ic{width:34px;height:34px;border-radius:10px;background:#eef1f8;display:grid;place-items:center;flex:none;font-size:16px}
+  .fact b{display:block;font-size:13.5px;color:var(--ink)} .fact span{font-size:12.5px;color:var(--muted)}
+
+  /* ---------- Reasoning / live trace ---------- */
+  .trace-shell{display:grid;grid-template-columns:1fr 300px;gap:20px}
+  @media(max-width:900px){.trace-shell{grid-template-columns:1fr}}
+  .trace{background:var(--ink);border-radius:14px;padding:6px 4px;min-height:340px;max-height:460px;overflow:auto;position:relative}
+  .trace .ev{display:flex;gap:11px;padding:9px 16px;align-items:flex-start;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .trace .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:none;background:var(--mint);box-shadow:0 0 0 4px rgba(0,255,190,.14)}
+  .trace .dot.plan{background:var(--lilac);box-shadow:0 0 0 4px rgba(204,198,250,.14)}
+  .trace .dot.match{background:var(--mint)}
+  .trace .dot.guard{background:var(--amber);box-shadow:0 0 0 4px rgba(245,165,36,.16)}
+  .trace .dot.done{background:#7affd9}
+  .trace .ev .body{font-size:13px;color:#dbe6f2}
+  .trace .ev .body .cap{font-family:var(--mono);font-size:10.5px;color:#8ea6c4;text-transform:uppercase;letter-spacing:.05em}
+  .trace .ev .body b{color:#fff}
+  .trace .ev .body .cite{font-family:var(--mono);font-size:11px;color:var(--mint-soft)}
+  .trace .ev.guard .body{color:#ffd9a0}
+  .conf{height:5px;background:rgba(255,255,255,.12);border-radius:4px;margin-top:6px;overflow:hidden;max-width:200px}
+  .conf i{display:block;height:100%;background:var(--mint)}
+  .trace .cursor{display:inline-block;width:8px;height:14px;background:var(--mint);animation:bl 1s steps(2) infinite;vertical-align:middle;margin-left:4px}
+  @keyframes bl{50%{opacity:0}}
+  .meter{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .meter h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
+  .meter .m{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .meter .m:last-child{border-bottom:0}
+  .meter .m span{font-size:12.5px;color:var(--muted)}
+  .meter .m b{font-family:var(--mono);font-size:15px;color:var(--ink)}
+  .caps{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .capchip{font-family:var(--mono);font-size:10.5px;background:#eef1f8;color:#41546a;border:1px solid var(--line);padding:3px 8px;border-radius:7px}
+  .capchip.on{background:#eaeeff;color:var(--blue);border-color:#cdd6ff}
+  @keyframes capflash{0%,100%{background:#eaeeff}50%{background:#ffe0a3;box-shadow:0 0 0 3px rgba(245,165,36,.3)}}
+  .capchip.flash{animation:capflash .6s ease 2}
+
+  /* ---------- Review / HITL ---------- */
+  .hitl-banner{display:flex;gap:12px;align-items:center;background:linear-gradient(90deg,#faf9ff,#fff);
+    border:1px solid #e4defc;border-left:4px solid var(--violet);border-radius:12px;padding:12px 16px;margin-bottom:16px}
+  .hitl-banner .ic{font-size:20px}
+  .hitl-banner b{color:var(--ink)} .hitl-banner span{font-size:12.5px;color:var(--muted)}
+  table.lines{width:100%;border-collapse:collapse;font-size:13px}
+  table.lines th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted2);
+    font-weight:700;padding:10px 10px;border-bottom:1px solid var(--line)}
+  table.lines td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.lines tr.flagged{background:#fff9ef}
+  table.lines tr.rejected{opacity:.5}
+  .req{color:var(--muted);font-size:12.5px;max-width:230px}
+  .matched b{color:var(--ink)}
+  .matched .sku{font-family:var(--mono);font-size:11.5px;color:var(--blue);background:#eef2ff;padding:1px 6px;border-radius:5px}
+  .suptag{font-size:10px;font-weight:700;letter-spacing:.04em;padding:1px 6px;border-radius:5px;text-transform:uppercase}
+  .suptag.moxa{background:#e8f0ff;color:#0c53c9}
+  .suptag.advantech{background:#ffeceb;color:#c0392b}
+  .certs{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+  .cert{font-size:9.5px;font-weight:700;color:#3a6b4f;background:#e6f7ef;border:1px solid #c9ecd9;padding:1px 5px;border-radius:5px}
+  .confpill{font-family:var(--mono);font-size:10px;font-weight:700;color:#0c8a4d;background:#e6f7ef;border:1px solid #c9ecd9;padding:1px 6px;border-radius:6px;white-space:nowrap}
+  .confpill.med{color:#b25a11;background:#fff3df;border-color:#f0d9a6}
+  .qty{width:54px;border:1px solid var(--line);border-radius:8px;padding:6px;font:inherit;text-align:center}
+  select.swap{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:12px;max-width:200px;background:#fff}
+  .rowbtns{display:flex;gap:5px}
+  .ib{border:1px solid var(--line);background:#fff;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;display:grid;place-items:center}
+  .ib:hover{border-color:var(--violet)}
+  .ib.on-ok{background:#e6f7ef;border-color:#8fd9b3;color:#0c8a4d}
+  .ib.on-no{background:#ffe9ec;border-color:#f3a9b5;color:#c02c43}
+  .flag-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .miniselect{border:1px solid #f0d9a6;background:#fffdf6;border-radius:8px;padding:6px 9px;font:inherit;font-size:12px}
+  .review-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:18px;flex-wrap:wrap}
+  .tots{font-size:13px;color:var(--muted)}
+  .tots b{color:var(--ink);font-size:18px;font-family:var(--mono)}
+  .gate-note{font-size:12px;color:var(--amber);display:flex;align-items:center;gap:6px}
+
+  /* ---------- Quote doc ---------- */
+  .quote-toolbar{display:flex;gap:10px;justify-content:flex-end;margin-bottom:14px;flex-wrap:wrap}
+  .quotedoc{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden}
+  .quotedoc .qhead{background:var(--ink);color:#fff;padding:26px 34px;display:flex;justify-content:space-between;align-items:flex-start;position:relative;overflow:hidden}
+  .quotedoc .qhead::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(100,80,255,.5),transparent 65%)}
+  .quotedoc .qhead .co{font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .quotedoc .qhead .co small{display:block;font-weight:500;color:#9fb0c4;font-size:12px;letter-spacing:.02em;margin-top:3px}
+  .quotedoc .qhead .qmeta{text-align:right;font-size:12.5px;color:#c7d2e0;position:relative;z-index:1}
+  .quotedoc .qhead .qmeta b{color:#fff}
+  .quotedoc .qbody{padding:28px 34px}
+  .qparties{display:flex;justify-content:space-between;gap:24px;margin-bottom:22px;flex-wrap:wrap}
+  .qparties .blk{font-size:13px}
+  .qparties .blk h5{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);margin-bottom:6px}
+  .qparties .blk b{color:var(--ink)}
+  table.qtable{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.qtable th{background:#f6f8fc;text-align:left;padding:10px;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--line)}
+  table.qtable th.r,table.qtable td.r{text-align:right}
+  table.qtable td{padding:11px 10px;border-bottom:1px solid var(--line)}
+  table.qtable .sku{font-family:var(--mono);font-size:11px;color:var(--blue)}
+  table.qtable tfoot td{padding:7px 10px;border:0;font-size:13px}
+  table.qtable tfoot tr.grand td{font-size:16px;font-weight:800;color:var(--ink);border-top:2px solid var(--ink);padding-top:12px}
+  .qterms{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:12px;color:var(--muted)}
+  @media(max-width:700px){.qterms{grid-template-columns:1fr}}
+  .qterms h5{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);margin-bottom:6px}
+  .qfoot{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--muted2);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .prodigy-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--violet);font-weight:600}
+  .prodigy-badge .d{width:16px;height:16px;border-radius:5px;background:var(--grad)}
+  .audit{margin-top:18px}
+  .audit summary{cursor:pointer;font-size:12.5px;color:var(--blue);font-weight:600}
+  .audit .trail{margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--muted);background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:12px 14px;max-height:220px;overflow:auto}
+  .audit .trail div{padding:3px 0}
+  .savings{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px}
+  .savings .s{flex:1;min-width:150px;background:linear-gradient(160deg,#f7f9ff,#fff);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .savings .s b{display:block;font-size:22px;color:var(--blue);font-weight:800;font-family:var(--mono)}
+  .savings .s span{font-size:11.5px;color:var(--muted)}
+
+  /* ---------- Architecture view ---------- */
+  .arch-diagram{width:100%;overflow-x:auto;background:var(--ink);border-radius:14px;padding:22px}
+  .maptable{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+  .maptable th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted2);padding:10px;border-bottom:1px solid var(--line)}
+  .maptable td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .maptable .cap{font-family:var(--mono);font-size:11.5px;color:var(--blue)}
+  .badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:6px}
+  .badge.integration{background:#e8f0ff;color:#0c53c9}
+  .badge.fleet{background:#efeaff;color:var(--violet)}
+  .badge.skill{background:#e6f7ef;color:#0c8a4d}
+  .badge.core{background:#fff1e6;color:#b25a11}
+  .badge.hitl{background:#fff9e6;color:#9a7b0a}
+  .altgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:8px}
+  .alt{border:1px solid var(--line);border-radius:12px;padding:15px;background:#fff}
+  .alt.win{border-color:var(--violet);box-shadow:0 0 0 3px #efeaff}
+  .alt h4{font-size:14px;display:flex;align-items:center;gap:8px}
+  .alt .when{font-size:12px;color:var(--muted);margin-top:6px}
+  .alt .eff{font-size:11px;color:var(--muted2);margin-top:8px;font-family:var(--mono)}
+
+  .callout{background:#f7f9ff;border:1px solid #dfe6ff;border-radius:12px;padding:14px 16px;font-size:13px;color:#33455c}
+  .callout b{color:var(--ink)}
+  footer.foot{border-top:1px solid var(--line);background:#fff;padding:26px 0;color:var(--muted);font-size:12.5px}
+  footer.foot .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-size:13.5px;box-shadow:var(--shadow-lg);
+    transition:.3s;z-index:100;pointer-events:none;display:flex;align-items:center;gap:10px}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  /* ---------- Compose-preview modal (simulated send) ---------- */
+  .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(3,20,40,.55);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;padding:22px}
+  .modal-overlay[hidden]{display:none}
+  .modal{background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);width:min(560px,100%);max-height:90vh;overflow:auto;animation:fade .25s ease}
+  .modal .mhead{background:var(--ink);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .modal .mhead b{font-size:14px} .modal .mhead small{display:block;color:#9fb0c4;font-size:11.5px;font-weight:500;margin-top:2px}
+  .modal .mclose{background:rgba(255,255,255,.1);border:0;color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px}
+  .modal .mbody{padding:18px 20px}
+  .modal .mrow{display:flex;gap:10px;font-size:13px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .modal .mrow .lab{color:var(--muted2);width:64px;flex:none;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+  .modal .mrow .val{color:var(--ink);font-weight:600}
+  .modal .mtext{white-space:pre-wrap;font-size:13px;color:#26384c;line-height:1.6;padding:14px 0 4px}
+  .modal .mfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 20px 18px;flex-wrap:wrap}
+  .modal .mnote{font-size:11.5px;color:var(--muted2)}
+
+  @media(max-width:640px){
+    .top .row{height:auto;flex-wrap:wrap;padding:8px 0;gap:8px}
+    .brand small{display:none}
+    .top nav{margin-left:0;flex-wrap:wrap}
+    .hero h1{font-size:32px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+
+  @media print{
+    header.top,.hero,.stepper,.quote-toolbar,.top nav,footer.foot,#view-architecture,#stage-intake,#stage-reasoning,#stage-review,.savings,.audit,.modal-overlay,.toast{display:none!important}
+    body{background:#fff}
+    .quotedoc{box-shadow:none;border:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wrap{max-width:none;padding:0}
+  }
+</style>
+
+<header class="top">
+  <div class="wrap row">
+    <div class="brand">
+      <div class="logo">P</div>
+      <div>Prodigy <small>Agentic Framework · Ciklum</small></div>
+    </div>
+    <span class="pill" title="Proof of concept">POC · Nortex Group</span>
+    <nav>
+      <button data-view="demo" class="active">Demo</button>
+      <button data-view="architecture">Architecture</button>
+      <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onclick="restartDemo()">↻ Restart</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================== DEMO VIEW ============================== -->
+<div id="view-demo">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">● &nbsp;RFQ → Quote automation &nbsp;·&nbsp; live agent demo</span>
+      <h1>From a customer request to a <span class="accent">sourced, priced quotation</span> — in seconds, not 45 minutes.</h1>
+      <p class="sub">An agentic copilot that reads an incoming request across email, chat or a phone call, searches your suppliers' catalogs, and drafts the quote — with a human approving every line. Built on Ciklum's Prodigy Agentic Framework.</p>
+      <div class="cta">
+        <button class="btn btn-primary" onclick="scrollToStage('stage-intake')">▶ Run the demo</button>
+        <button class="btn btn-ghost" onclick="showView('architecture')">How it works</button>
+      </div>
+      <div class="stats">
+        <div class="s"><b id="hero-time">~45 min → 90 s</b><span>per quotation, today vs. with the agent</span></div>
+        <div class="s"><b>2 suppliers</b><span>Advantech + Moxa catalogs indexed</span></div>
+        <div class="s"><b>Human-in-the-loop</b><span>every price approved before it ships</span></div>
+        <div class="s"><b>Fully sourced</b><span>each line cites the supplier page</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="stepper" id="stepper">
+      <div class="step active" data-step="1"><div class="n">1</div><div class="t"><b>Intake</b><span>Email · Chat · Voice</span></div></div>
+      <div class="step" data-step="2"><div class="n">2</div><div class="t"><b>Agent search</b><span>plan · retrieve · match</span></div></div>
+      <div class="step" data-step="3"><div class="n">3</div><div class="t"><b>Human review</b><span>approval gate</span></div></div>
+      <div class="step" data-step="4"><div class="n">4</div><div class="t"><b>Quotation</b><span>priced · sourced · sent</span></div></div>
+    </div>
+
+    <!-- STAGE 1 — INTAKE -->
+    <section id="stage-intake" class="card">
+      <div class="hd">
+        <div style="flex:1">
+          <div class="section-title"><span class="k">Step 1</span></div>
+          <h3>Incoming customer request</h3>
+        </div>
+        <div class="sub">Pick a channel &amp; scenario to preview the request</div>
+      </div>
+      <div class="bd">
+        <div class="grid2">
+          <div>
+            <div class="tabs" id="channel-tabs">
+              <button data-ch="email" class="active">✉️ Email</button>
+              <button data-ch="chat">💬 Chat</button>
+              <button data-ch="voice">📞 Voice call</button>
+            </div>
+            <div class="scenario-row" id="scenario-row"></div>
+            <div id="voicebar-slot"></div>
+            <div id="mailhead-slot"></div>
+            <textarea class="rfq" id="rfq-text" spellcheck="false" readonly aria-label="Incoming customer request (read-only preview)"></textarea>
+            <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <button class="btn btn-primary" id="process-btn" onclick="processRequest()">🤖 Hand to the agent →</button>
+              <span class="muted" style="font-size:12.5px">The agent will parse this into line items and search the catalogs.</span>
+            </div>
+          </div>
+          <div>
+            <div class="callout" style="margin-bottom:16px">
+              <b>The problem today.</b> A sales rep receives a request like this, then opens each supplier's website and hunts — model by model — for matching parts, specs and prices. Around <b>30–45 minutes</b> per quotation, and it doesn't scale.
+            </div>
+            <div class="side-facts">
+              <div class="fact"><div class="ic">🔎</div><div><b>Reads any channel</b><span>Email body, live chat, or a transcribed phone call — same pipeline.</span></div></div>
+              <div class="fact"><div class="ic">🧭</div><div><b>Searches your suppliers</b><span>Advantech &amp; Moxa catalogs are crawled and indexed as the agent's knowledge base.</span></div></div>
+              <div class="fact"><div class="ic">🛡️</div><div><b>Never invents a part</b><span>If it isn't in a supplier catalog, the agent flags it — it won't fabricate a SKU or a price.</span></div></div>
+              <div class="fact"><div class="ic">🧑‍💼</div><div><b>You stay in control</b><span>A human approves, edits or rejects every line before the quote is generated.</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 2 — REASONING -->
+    <section id="stage-reasoning" class="card hidden" style="margin-top:22px">
+      <div class="hd">
+        <div style="flex:1">
+          <div class="section-title"><span class="k">Step 2</span></div>
+          <h3>Agent at work — live reasoning</h3>
+        </div>
+        <div class="sub" id="reasoning-sub">Prodigy Brain orchestrating the RFQ pipeline…</div>
+      </div>
+      <div class="bd">
+        <div class="trace-shell">
+          <div class="trace" id="trace" role="log" aria-live="polite" aria-label="Agent live reasoning trace"></div>
+          <div>
+            <div class="meter">
+              <h4>Run telemetry</h4>
+              <div class="m"><span>Elapsed</span><b id="mt-time">0.0s</b></div>
+              <div class="m"><span>Line items</span><b id="mt-lines">0</b></div>
+              <div class="m"><span>Catalog pages indexed</span><b id="mt-pages">0</b></div>
+              <div class="m"><span>Matches found</span><b id="mt-match">0</b></div>
+              <div class="m"><span>Guardrail flags</span><b id="mt-guard">0</b></div>
+              <div class="m"><span>Tokens</span><b id="mt-tokens">0</b></div>
+              <div class="m"><span>Est. LLM cost</span><b id="mt-cost">$0.00</b></div>
+              <div class="caps" id="caps"></div>
+            </div>
+            <div class="callout" style="margin-top:14px;font-size:12px">
+              This mirrors Prodigy's real <b>live-trace</b> stream: the Brain plans, routes to capabilities, retrieves from the knowledge base with citations, and enforces guardrails — all observable, with token cost attributed per capability.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 3 — REVIEW / HITL -->
+    <section id="stage-review" class="card hidden" style="margin-top:22px">
+      <div class="hd">
+        <div style="flex:1">
+          <div class="section-title"><span class="k">Step 3 · Human-in-the-loop</span></div>
+          <h3>Review &amp; approve the draft</h3>
+        </div>
+        <div class="sub">Edit quantities, swap products, approve or reject each line</div>
+      </div>
+      <div class="bd">
+        <div class="hitl-banner">
+          <div class="ic">🧑‍💼</div>
+          <div style="flex:1">
+            <b>Approval gate.</b> <span id="hitl-msg">The agent has drafted the quote. Nothing is sent until you approve — resolve any flagged item to unlock quote generation.</span>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="lines" id="lines-table">
+            <thead>
+              <tr>
+                <th style="width:22%">Requested</th>
+                <th>Agent match</th>
+                <th class="r">Unit</th>
+                <th style="width:70px">Qty</th>
+                <th class="r">Line total</th>
+                <th style="width:90px">Decision</th>
+              </tr>
+            </thead>
+            <tbody id="lines-body"></tbody>
+          </table>
+        </div>
+        <div class="review-foot">
+          <div>
+            <div class="tots">Approved subtotal &nbsp; <b id="review-subtotal">€0</b></div>
+            <div class="gate-note" id="gate-note"></div>
+          </div>
+          <button class="btn btn-primary" id="gen-quote-btn" onclick="generateQuote()">✓ Approve &amp; generate quotation →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 4 — QUOTE -->
+    <section id="stage-quote" class="card hidden" style="margin-top:22px;background:transparent;border:0;box-shadow:none">
+      <div class="quote-toolbar">
+        <button class="btn btn-ghost" style="background:#eef1f8;color:var(--ink);border-color:var(--line)" onclick="toggleMargin()">📊 Margin view</button>
+        <button class="btn btn-ghost" style="background:#eef1f8;color:var(--ink);border-color:var(--line)" onclick="printQuote()">🖨️ Print / PDF</button>
+        <button class="btn btn-primary" onclick="sendQuote()">📤 Send to customer</button>
+      </div>
+      <div class="quotedoc" id="quotedoc"></div>
+      <div class="savings" id="savings"></div>
+      <details class="audit" id="audit-block">
+        <summary>🔎 Audit trail — every price is traceable (click to expand)</summary>
+        <div class="trail" id="audit-trail"></div>
+      </details>
+    </section>
+  </main>
+</div>
+
+<!-- ========================== ARCHITECTURE VIEW ========================== -->
+<div id="view-architecture" class="hidden">
+  <section class="hero" style="background:var(--ink)">
+    <div class="wrap">
+      <span class="eyebrow">● &nbsp;Solution architecture</span>
+      <h1>How it's built on <span class="accent">Prodigy</span></h1>
+      <p class="sub">Every step of the demo maps to a real, shipping component of the Prodigy Agentic Framework — no bespoke chassis required. Here's the pipeline, the mapping, and the honest alternatives.</p>
+    </div>
+  </section>
+  <main class="wrap" style="padding-top:26px">
+    <div class="card"><div class="bd">
+      <div class="section-title"><span class="k">Pipeline</span></div>
+      <h3 style="margin-bottom:16px">The RFQ → Quote flow</h3>
+      <div class="arch-diagram" id="arch-diagram"></div>
+    </div></div>
+
+    <div class="card" style="margin-top:20px"><div class="bd">
+      <div class="section-title"><span class="k">Mapping</span></div>
+      <h3 style="margin-bottom:8px">Each step → a Prodigy capability</h3>
+      <p class="muted" style="font-size:13px;margin-bottom:8px">These are existing framework primitives; the only net-new asset is one fleet agent that sequences them.</p>
+      <div style="overflow-x:auto">
+        <table class="maptable" id="map-table">
+          <thead><tr><th style="width:20%">Pipeline step</th><th style="width:16%">Prodigy component</th><th style="width:12%">Type</th><th>What it does</th></tr></thead>
+          <tbody id="map-body"></tbody>
+        </table>
+      </div>
+    </div></div>
+
+    <div class="card" style="margin-top:20px"><div class="bd">
+      <div class="section-title"><span class="k">Options</span></div>
+      <h3 style="margin-bottom:6px">Prodigy vs. the alternatives — honest view</h3>
+      <p class="muted" style="font-size:13px;margin-bottom:6px">All of these can build this. The differentiator is <b>ownership</b>: self-hosted, no per-execution tax, no lock-in to one LLM vendor.</p>
+      <div class="altgrid" id="alt-grid"></div>
+    </div></div>
+
+    <div class="card" style="margin-top:20px"><div class="bd">
+      <div class="section-title"><span class="k">For the conversation</span></div>
+      <h3 style="margin-bottom:12px">Talking points</h3>
+      <div id="talking-points" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div></div>
+  </main>
+</div>
+
+<footer class="foot">
+  <div class="wrap row">
+    <div>© <span id="yr"></span> · Prepared for Nortex Group · <b>Confidential proof of concept</b></div>
+    <div class="prodigy-badge"><span class="d"></span> Powered by the Prodigy Agentic Framework — Ciklum</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- Compose-preview modal — the emotional close: the customer receives their answer -->
+<div class="modal-overlay" id="compose-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Send quotation to customer">
+    <div class="mhead">
+      <div><b>📧 New message</b><small>Reply to the customer's request</small></div>
+      <button class="mclose" onclick="closeCompose()" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="mrow"><span class="lab">To</span><span class="val" id="compose-to"></span></div>
+      <div class="mrow"><span class="lab">Subject</span><span class="val" id="compose-subject"></span></div>
+      <div class="mtext" id="compose-body"></div>
+    </div>
+    <div class="mfoot">
+      <span class="mnote">📎 quotation attached (PDF) · nothing actually leaves the demo</span>
+      <button class="btn btn-primary" onclick="confirmSend()">📤 Send (simulated)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* AUTO-GENERATED from research/research.json — do not hand-edit; regenerate via research/generate_data.py */
+/* Catalog: real Advantech + Moxa SKUs (web-researched + verified). Prices are representative distributor EUR. */
+
+const CATALOG = [{"sku": "ARK-1123H","supplier": "Advantech","name": "ARK-1123H Ultra-Slim Fanless Embedded Box PC","category": "Embedded Box PC","subcategory": "Ultra-slim fanless embedded computer","short_spec": "Fanless box PC, Intel Celeron J1900 quad-core, 2x GbE, 2x COM, HDMI+DP, DIN-rail mount, -20 to 60C","key_specs": ["Intel Celeron Quad-Core J1900 SoC","Up to 8GB DDR3L","2x GbE LAN","2x RS-232/422/485 COM","HDMI + DisplayPort dual display","mSATA + 2.5\" SATA storage","12V DC input, wide operating temp -20 to 60C","DIN-rail / wall mount, ultra-slim chassis"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Compact machine control, IoT edge data collection and factory-floor gateway where cabinet space is limited","sector": "factory automation","unit_price_eur": 620,"lead_time_days": 21,"product_url": "https://www.advantech.com/en-eu/products/1-2jkbyz/ark-1123h/mod_590fcfdc-278c-41b1-a8c7-d29152cd96d7","confidence": "real"},{"sku": "ARK-1123C","supplier": "Advantech","name": "ARK-1123C Fanless Embedded Box PC","category": "Embedded Box PC","subcategory": "Ultra-slim fanless embedded computer","short_spec": "Fanless box PC, Intel Atom x6413E / Celeron J6412, 2x GbE, 2x COM, HDMI+DP, DIO, palm-size","key_specs": ["Intel Atom x6413E / Celeron J6412 Elkhart Lake SoC","Up to 16GB DDR4","2x GbE LAN","2x RS-232/422/485","HDMI + DisplayPort","8-bit DIO","mSATA + 2.5\" SATA","9-36V DC wide-range input, -20 to 60C"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Edge computing, industrial IoT gateway, machine data acquisition in compact enclosures","sector": "factory automation","unit_price_eur": 720,"lead_time_days": 28,"product_url": "https://www.advantech.com/en-eu/products/1-2jkbyz/ark-1123c/mod_0b91165c-aa8c-485d-8d25-fde6f88f4873","confidence": "real"},{"sku": "ARK-2250L","supplier": "Advantech","name": "ARK-2250L Modular Fanless Embedded Box PC","category": "Embedded Box PC","subcategory": "Modular fanless embedded computer with expansion","short_spec": "Fanless box PC, Intel 6th Gen Core U i3/i5/i7, iDoor expansion, rich I/O, -20 to 60C","key_specs": ["Intel 6th Gen Core U-series i3/i5/i7","Up to 32GB DDR4","iDoor modular expansion","Multiple GbE + USB 3.0","Configurable COM ports","2.5\" SATA + mSATA storage","9-36V DC input","Wide operating temperature -20 to 60C"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Flexible I/O machine control, industrial automation and vision applications requiring field-bus expansion","sector": "factory automation","unit_price_eur": 1150,"lead_time_days": 30,"product_url": "https://www.advantech.com/en-eu/products/1-flnuyz/ark-2250l/mod_2f0c0f0e-ark2250l","confidence": "representative"},{"sku": "ARK-3534B","supplier": "Advantech","name": "ARK-3534B High-Performance Fanless Embedded Box PC","category": "Embedded Box PC","subcategory": "High-performance fanless embedded computer with PCIe expansion","short_spec": "Fanless box PC, Intel 12/13/14th Gen Core i3/i5/i7/i9, PCIe/PCI expansion, multi-display, -20 to 60C","key_specs": ["Intel 12th/13th/14th Gen Core i3/i5/i7/i9 (LGA1700)","Up to 64GB DDR5","PCIe + PCI expansion slots","Multiple GbE (incl. 2.5GbE)","Triple independent display","Multiple USB 3.2 + COM","NVMe + 2.5\" SATA storage","9-36V DC input, -20 to 60C"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "High-end machine vision, edge AI inference and industrial control needing add-in cards","sector": "factory automation","unit_price_eur": 1850,"lead_time_days": 35,"product_url": "https://www.advantech.com/en-eu/products/1-flnuyz/ark-3534b/mod_ark-3534b","confidence": "real"},{"sku": "UNO-2484G-V2","supplier": "Advantech","name": "UNO-2484G V2 Modular Edge Computer","category": "Fanless Edge Computer","subcategory": "Modular DIN-rail edge computing platform","short_spec": "Fanless edge PC, Intel 11th Gen Core i, 4x GbE, iDoor modular I/O, Ignition Edge ready, DIN-rail","key_specs": ["Intel 11th Gen Core i3/i5/i7 CPU","Up to 64GB DDR4","4x GbE LAN","iDoor modular expansion (Fieldbus/wireless/IO)","Multiple USB 3.2 + COM","M.2 + 2.5\" SATA storage","9-36V DC input","AWS IoT Greengrass / Ignition Edge ready"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Industrial IoT edge gateway, SCADA data concentrator and protocol conversion on the plant floor","sector": "smart city","unit_price_eur": 1450,"lead_time_days": 30,"product_url": "https://www.advantech.com/en-eu/products/1-2mlj9a/uno-2484g-v2/mod_9764124e-aff0-4e44-80d5-6fd87eec5982","confidence": "real"},{"sku": "UNO-238","supplier": "Advantech","name": "UNO-238 Compact IoT Edge Computer","category": "Fanless Edge Computer","subcategory": "Compact high-performance edge computer","short_spec": "Fanless edge PC, Intel 8th Gen Core i, 2x GbE, 4x USB 3.2, 2x COM, 8x GPIO, HDMI+DP","key_specs": ["Intel 8th Gen Core i CPU","Up to 32GB DDR4","2x GbE LAN","4x USB 3.2","2x RS-232/422/485","8x GPIO","HDMI + DisplayPort","16% smaller than UNO-2484G, ~50% more compute"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Compact edge analytics, machine connectivity and IoT gateway in space-constrained cabinets","sector": "factory automation","unit_price_eur": 1250,"lead_time_days": 28,"product_url": "https://www.advantech.com/en-eu/products/9a0cc561-8fc2-4e22-969c-9df90a3952b5/uno-238/mod_5c5fbaee-9569-407b-9606-dd8082e6ebcc","confidence": "real"},{"sku": "UNO-137-V2","supplier": "Advantech","name": "UNO-137 V2 Rugged DIN-Rail Edge Computer","category": "Fanless Edge Computer","subcategory": "Rugged modular DIN-rail edge computer","short_spec": "Fanless edge PC, Intel Atom x6000E, rugged modular, iDoor 2nd-stack expansion, DIN-rail","key_specs": ["Intel Atom x6000E (Elkhart Lake) processor","Up to 16GB DDR4","Dual GbE LAN","USB 3.2 + isolated COM","Optional 2nd-stack iDoor extension for Fieldbus/wireless/IO","M.2 storage","9-36V DC input, wide operating temp","AWS IoT Greengrass qualified"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Rugged plant-floor IoT gateway and edge controller needing expandable industrial I/O","sector": "factory automation","unit_price_eur": 950,"lead_time_days": 30,"product_url": "https://www.advantech.com/en-eu/products/1-2mlj9a/uno-137-v2/mod_uno-137-v2","confidence": "representative"},{"sku": "MIC-770-V3","supplier": "Advantech","name": "MIC-770 V3 Compact Fanless Edge AI System","category": "Embedded Box PC","subcategory": "Compact modular fanless edge AI inference system","short_spec": "Fanless AI box PC, Intel 12/13/14th Gen Core i (LGA1700), MI/O + iDoor expansion, GPU-ready","key_specs": ["Intel 12th/13th/14th Gen Core i CPU socket (LGA1700)","Up to 64GB DDR5","Modular MI/O + iDoor expansion","Optional MIC-75 GPU/PCIe expansion module","Multiple GbE + USB 3.2","NVMe + SATA storage","Triple display output","9-36V DC input"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Edge AI inference, machine vision and AIoT workloads with optional GPU acceleration","sector": "factory automation","unit_price_eur": 1650,"lead_time_days": 35,"product_url": "https://www.advantech.com/en-eu/products/6c53bcc8-1490-4e1e-a8d2-a56dc9a7f254/mic-770-v3/mod_2801e5b6-eec6-43a0-81f7-73efef338b54","confidence": "real"},{"sku": "MIC-710AI","supplier": "Advantech","name": "MIC-710AI Rugged Edge AI Inference System (Jetson Nano)","category": "Fanless Edge Computer","subcategory": "ARM-based rugged AI inference system","short_spec": "Fanless AI edge box, NVIDIA Jetson Nano, IP67 waterproof, 512 GFLOPS FP16, HDMI","key_specs": ["NVIDIA Jetson Nano module","Quad-core ARM Cortex-A57 up to 1.43GHz","128-CUDA-core Maxwell GPU, up to 512 GFLOPS (FP16)","GbE LAN + USB","HDMI output","IP67-rated waterproof fanless chassis","Wide DC input, ruggedized for harsh environments"],"certifications": ["CE","FCC","RoHS"],"typical_use": "Outdoor/harsh-environment AI vision, traffic and surveillance inference at the edge","sector": "ITS","unit_price_eur": 1400,"lead_time_days": 40,"product_url": "https://www.advantech.com/en-eu/products/965e4edb-fb98-429e-89ed-9a0a8435a7be/mic-710ai/mod_784f6f0f-8402-450c-981f-3122b85cd489","confidence": "real"},{"sku": "IPC-610-L","supplier": "Advantech","name": "IPC-610-L 4U 15-Slot Rackmount Industrial Chassis","category": "Rackmount Industrial PC","subcategory": "4U 19-inch rackmount chassis","short_spec": "4U 19\" rackmount chassis, 15-slot backplane, front-accessible fan, ATX PSU-ready, filtered cooling","key_specs": ["4U 19-inch rackmount form factor","Supports up to 15-slot backplane / ATX motherboard","Front-accessible cooling fan with washable filter","Multiple 5.25\"/3.5\" drive bays","Accommodates ATX / high-wattage power supply","Steel chassis with anti-vibration HDD mounting","Lockable front door for physical security"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Rackmount industrial server / control PC for control rooms, SCADA and machine vision hosts","sector": "power","unit_price_eur": 780,"lead_time_days": 25,"product_url": "https://www.advantech.com/en-eu/products/1-2jkd4b/ipc-610-l/mod_f4efadf3-2fcb-4a2e-bd71-35e5fabb5849","confidence": "real"},{"sku": "IPC-610-P","supplier": "Advantech","name": "IPC-610-P 4U High-Power AI Rackmount Industrial PC","category": "Rackmount Industrial PC","subcategory": "4U 19-inch high-power GPU rackmount chassis","short_spec": "4U 19\" rackmount, 800W/1200W ATX 3.1 PSU, supports NVIDIA RTX 6000 Ada GPU, machine-vision ready","key_specs": ["4U 19-inch rackmount form factor","Supports 800W and 1200W ATX 3.1 power supplies","Compatible with NVIDIA RTX 6000 Ada Generation GPU","Multi-slot backplane for add-in cards","Front-accessible cooling with filter","Anti-vibration drive bays","Industrial-grade steel chassis"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "High-power GPU compute for image processing, machine vision and autonomous-vehicle test benches","sector": "factory automation","unit_price_eur": 1350,"lead_time_days": 35,"product_url": "https://www.advantech.com/en-eu/products/1-2jkd4b/ipc-610-p/mod_4791e24c-6f5c-48e6-ba13-b54741432f67","confidence": "real"},{"sku": "IPC-510","supplier": "Advantech","name": "IPC-510 Economical 4U Rackmount Industrial Chassis","category": "Rackmount Industrial PC","subcategory": "4U 19-inch economical rackmount chassis","short_spec": "4U 19\" rackmount chassis, front-accessible USB + PS/2, ATX backplane support, cost-optimized","key_specs": ["4U 19-inch rackmount form factor","Front-accessible USB and PS/2 interfaces","Supports ATX motherboard / backplane","Multiple drive bays","Front-accessible cooling fan with filter","Steel chassis with lockable front door","Economical entry-level industrial platform"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Cost-sensitive rackmount industrial PC deployments for control and monitoring","sector": "factory automation","unit_price_eur": 550,"lead_time_days": 21,"product_url": "https://www.advantech.com/en-eu/products/1-2jkd4b/ipc-510/mod_b4343967-474e-47b6-8089-f05cc40ad802","confidence": "real"},{"sku": "TPC-1251T","supplier": "Advantech","name": "TPC-1251T 12.1\" Fanless Touch Panel Computer","category": "Touch Panel PC / HMI","subcategory": "Fanless multi-touch panel computer","short_spec": "12.1\" XGA PCAP multi-touch HMI, Intel Atom E3845, fanless, GbE + COM + USB, panel mount","key_specs": ["12.1\" XGA (1024x768) LED LCD","5-wire analog resistive touchscreen","Intel Atom E3845 quad-core SoC","Up to 8GB DDR3L","GbE LAN + USB + RS-232/422/485","mSATA storage","IP66 front panel","24V DC input, fanless design"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Machine-side HMI and process visualization for factory automation and MES terminals","sector": "factory automation","unit_price_eur": 980,"lead_time_days": 28,"product_url": "https://www.advantech.com/en-eu/products/2f7a6598-a2be-40d6-b615-adb84b164442/tpc-1251t/mod_tpc-1251t","confidence": "real"},{"sku": "TPC-1551WP","supplier": "Advantech","name": "TPC-1551WP 15.6\" Widescreen Touch Panel Computer","category": "Touch Panel PC / HMI","subcategory": "Widescreen multi-touch panel computer","short_spec": "15.6\" WXGA PCAP multi-touch HMI, Intel Core-class CPU, fanless, GbE + USB + COM, IP66 front","key_specs": ["15.6\" WXGA (1366x768) TFT LED LCD","Projected-capacitive multi-touch, edge-to-edge glass","Intel Core-class / Atom processor","Up to 8GB DDR3L/DDR4","2x GbE LAN + USB + isolated COM","mSATA + 2.5\" SATA storage","IP66-rated flat front panel","Wide-range DC input, fanless"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Widescreen operator HMI for line control, SCADA visualization and machine interfaces","sector": "factory automation","unit_price_eur": 1550,"lead_time_days": 30,"product_url": "https://buy.advantech.com/Panel-PCs/All-in-one-Touch-Computers-Factory-Automation-Panel-TPC/TPC-1551WP-3S51/system-21439.htm","confidence": "real"},{"sku": "PPC-3120S","supplier": "Advantech","name": "PPC-3120S 12.1\" Fanless All-in-One Panel PC","category": "Panel PC","subcategory": "Fanless industrial all-in-one panel PC","short_spec": "12.1\" resistive-touch panel PC, Intel Atom E3940, ultra-slim fanless, GbE + USB + COM, IP66 front","key_specs": ["12.1\" XGA (1024x768) LED LCD","Resistive touchscreen","Intel Atom E3940 quad-core processor","Up to 8GB DDR3L","GbE LAN + USB + RS-232/422/485","mSATA storage","Ultra-slim fanless metal enclosure","IP66 front bezel, 12-24V DC input"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "General-purpose industrial HMI and operator terminal for machinery and automation lines","sector": "factory automation","unit_price_eur": 890,"lead_time_days": 28,"product_url": "https://www.advantech.com/en-eu/products/b4b1d255-3d7c-4edb-ae84-5f9f2ab56107/ppc-3120s/mod_6cfdf085-5c54-450c-85b1-bc48d92555c7","confidence": "real"},{"sku": "ITA-5231G","supplier": "Advantech","name": "ITA-5231G EN 50155 Fanless Railway Computer","category": "Rackmount Industrial PC","subcategory": "EN 50155 rolling-stock fanless computer","short_spec": "EN 50155 railway box PC, Intel 6th Gen Core i, fanless, M12 connectors, isolated I/O, -40 to 70C","key_specs": ["Intel 6th Gen Core i3/i5/i7 processor","EN 50155 / EN 50121 rolling-stock compliant","Fanless rugged design","M12 circular locking connectors","Isolated LAN + serial + DIO","Wide operating temperature -40 to 70C","Wide-range isolated DC power input (24/48/110V)","Shock and vibration rated for onboard use"],"certifications": ["EN 50155","EN 50121-3-2","CE","FCC","RoHS"],"typical_use": "Onboard train computing, passenger information systems and rolling-stock control","sector": "rail","unit_price_eur": 2450,"lead_time_days": 45,"product_url": "https://www.advantech.com/en-eu/products/5130beef-2b81-41f7-a89b-2c43c1f2b6e9/ita-5231g/mod_fbf5309d-2f61-4e33-b03e-8b42e9545489","confidence": "real"},{"sku": "FPM-7211W","supplier": "Advantech","name": "FPM-7211W 21.5\" Industrial Widescreen Monitor","category": "Industrial Display","subcategory": "Industrial flat panel monitor (PCAP touch)","short_spec": "21.5\" Full HD industrial monitor, PCAP touch, VGA + DVI inputs, IP66 front, die-cast chassis","key_specs": ["21.5\" Full HD (1920x1080) LED LCD","Projected-capacitive touch control","Direct VGA + DVI video inputs","IP66-rated aluminum front bezel","Die-cast aluminum chassis","Panel / VESA / desktop mount options","Wide-range DC / AC power (with adapter)","Lockable I/O connectors"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Industrial-grade operator display for control rooms, machinery and process visualization","sector": "factory automation","unit_price_eur": 1150,"lead_time_days": 25,"product_url": "https://www.advantech.com/en-eu/products/1-2mlc1h/fpm-7211w/mod_51968101-9e7c-4d35-8f05-e80312b4ff2d","confidence": "real"},{"sku": "FPM-215","supplier": "Advantech","name": "FPM-215 19\" Industrial Monitor with Resistive Touch","category": "Industrial Display","subcategory": "Industrial flat panel monitor (resistive touch)","short_spec": "19\" SXGA industrial monitor, resistive touch, HDMI + DP + VGA, IP66 front, tempered anti-glare glass","key_specs": ["19\" SXGA (1280x1024) LED LCD","Resistive touch control","Direct HDMI + DisplayPort + VGA inputs","70,000-hour backlight lifetime","Anti-glare tempered glass, IP66 aluminum-alloy front bezel","Die-casting aluminum chassis","Panel / desktop / VESA arm mount","Lockable I/O connectors"],"certifications": ["CE","FCC","UL","RoHS"],"typical_use": "Rugged 19-inch operator display for IIoT and Industry 4.0 process management","sector": "factory automation","unit_price_eur": 780,"lead_time_days": 25,"product_url": "https://www.advantech.com/en-eu/products/1-2mlc1h/fpm-215/mod_cfcb0778-6695-4440-ba9d-8cf92e39ebef","confidence": "real"},{"sku": "ECU-1051","supplier": "Advantech","name": "ECU-1051 Intelligent IoT Communication Gateway","category": "IoT Gateways","subcategory": "Edge / Protocol Gateway","short_spec": "Compact edge IoT gateway, TI Cortex-A8, 2x LAN + 2x RS-232/485 COM, EdgeLink, -40~70C","key_specs": ["TI Cortex-A8 processor, Linux OS","2 x 10/100 Ethernet, 2 x RS-232/485","1 x Mini-PCIe (Wi-Fi/4G) + SD slot","EdgeLink software, OPC UA / MQTT / Modbus / IEC 60870","OTA firmware update, -40~70C operating temp"],"certifications": ["CE","FCC","UL 60950-1","EN 50121-4"],"typical_use": "Protocol conversion and data concentration at substations, pumping stations and remote assets feeding SCADA/cloud","sector": "power / smart city / oil-gas","unit_price_eur": 520,"lead_time_days": 28,"product_url": "https://www.advantech.com/en-eu/products/7332cf9e-bf70-4a79-b0b6-fd8a2182cd72/ecu-1051/mod_0ea5f440-e270-436f-afa3-077df3acce5d","confidence": "real"},{"sku": "ECU-1152","supplier": "Advantech","name": "ECU-1152 Intelligent IoT Communication Gateway","category": "IoT Gateways","subcategory": "Edge / Protocol Gateway","short_spec": "Multi-serial edge IoT gateway, TI Cortex-A8, 2x LAN + 6x RS-232/485 COM, EdgeLink","key_specs": ["TI Cortex-A8 processor, Linux OS, EdgeLink","2 x 10/100 Ethernet, 6 x RS-232/485 serial","1 x Mini-PCIe for Wi-Fi/Cellular/4G","OPC UA, MQTT, Modbus RTU/TCP protocol conversion","SD card logging, OTA update, wide-temp -40~70C"],"certifications": ["CE","FCC","UL 60950-1"],"typical_use": "High serial-density protocol gateway aggregating many meters/PLCs/RTUs onto Ethernet and cloud","sector": "power / factory automation / smart city","unit_price_eur": 690,"lead_time_days": 35,"product_url": "https://www.advantech.com/en-eu/products/7332cf9e-bf70-4a79-b0b6-fd8a2182cd72/ecu-1152/mod_652de13b-1531-4e56-ab28-fd53d7383977","confidence": "real"},{"sku": "WISE-4610-NA","supplier": "Advantech","name": "WISE-4610 Outdoor LoRa/LoRaWAN Wireless I/O Module","category": "Wireless I/O","subcategory": "LPWAN LoRaWAN Sensor Node","short_spec": "Outdoor LoRaWAN wireless I/O node, up to 5 km range, M12 IP65 I/O, 10-50 VDC, DIN-rail","key_specs": ["LoRaWAN long-range wireless, coverage up to 5 km","Application-ready I/O with optional M12 IP65 connectors","Wide power input 10~50 VDC, low power consumption","Modbus/RTU RS-485 host interface","82 x 122 x 49 mm, DIN-35 rail, 0~60C, rechargeable battery option"],"certifications": ["CE","FCC","RED","IP65 (M12 variant)"],"typical_use": "Remote outdoor sensing (tanks, environmental, utilities) over LoRaWAN where cabling is impractical","sector": "smart city / oil-gas / utilities","unit_price_eur": 340,"lead_time_days": 30,"product_url": "https://buy.advantech.eu/I-O-Devices-Communication/Remote-I-O-Modules-IoT-Wireless-I-O/model-WISE-4610-NA.htm","confidence": "real"},{"sku": "WISE-4471-AE","supplier": "Advantech","name": "WISE-4471 NB-IoT / LTE-M Wireless I/O Module","category": "Wireless I/O","subcategory": "Cellular LPWAN I/O Module","short_spec": "Cat.NB1/Cat.M1 cellular wireless I/O with data logger and direct cloud (MQTT/CoAP/LwM2M)","key_specs": ["NB-IoT (Cat. NB1) / LTE-M (Cat. M1) cellular","Universal analog/digital I/O with pre-scaling and logic","Data logger with time stamp, direct cloud publishing","MQTT, CoAP, LwM2M with secure socket (TLS)","Low-power design for battery/remote operation"],"certifications": ["CE","RED","PTCRB","GCF"],"typical_use": "Cellular-connected remote monitoring points reporting directly to cloud without a local gateway","sector": "smart city / utilities / oil-gas","unit_price_eur": 290,"lead_time_days": 35,"product_url": "https://www.advantech.com/en-eu/products/ebb24b63-309d-406a-907c-bceac724a807/wise-4471/mod_35ea822a-3c39-465c-aa6f-334b727804f8","confidence": "real"},{"sku": "WISE-4051-B","supplier": "Advantech","name": "WISE-4051 8-ch Digital Input IoT Wireless I/O Module","category": "Wireless I/O","subcategory": "Wi-Fi I/O Module","short_spec": "8-ch DI Wi-Fi IoT I/O with RS-485, Modbus/TCP, MQTT, on-board data logger","key_specs": ["8-channel digital input, RS-485 (Modbus/RTU) port","IEEE 802.11 b/g/n 2.4 GHz Wi-Fi with AP mode","Modbus/TCP, RESTful, MQTT, HTTPS publishing","Data logger up to 10,000 samples with time stamp","Data pre-scaling, logic and logger functions"],"certifications": ["CE","FCC","RED"],"typical_use": "Wireless status monitoring of contacts/meters where running Ethernet cable is costly","sector": "factory automation / smart city","unit_price_eur": 210,"lead_time_days": 21,"product_url": "https://buy.advantech.eu/I-O-Devices-Communication/Remote-I-O-Modules-IoT-Wireless-I-O/model-WISE-4051-B.htm","confidence": "real"},{"sku": "WISE-4012E","supplier": "Advantech","name": "WISE-4012E 6-ch Input/Output IoT Wireless I/O Module","category": "Wireless I/O","subcategory": "Wi-Fi I/O Developer Module","short_spec": "4-ch universal input + 2-ch digital output Wi-Fi IoT module, Modbus/TCP + MQTT","key_specs": ["4-ch universal input + 2-ch digital output","IEEE 802.11 a/b/g/n 2.4 GHz Wi-Fi","Modbus/TCP, TCP/IP, UDP, DHCP, HTTPS, MQTT","Data pre-scaling, data logic, data logger","Compact developer-oriented form factor"],"certifications": ["CE","FCC","RED"],"typical_use": "Prototyping and light-industrial wireless sensing/actuation to cloud dashboards","sector": "factory automation / smart city","unit_price_eur": 130,"lead_time_days": 21,"product_url": "https://www.advantech.com/en-eu/products/229f9f5b-d073-4cc2-ac54-d90147e04c12/wise-4012e/mod_4e936d58-a559-4c1a-9022-e96698c2930b","confidence": "real"},{"sku": "ADAM-6017-D","supplier": "Advantech","name": "ADAM-6017 8-ch Analog Input / 2-ch Digital Output Ethernet I/O Module","category": "Remote Data-Acquisition Modules (ADAM)","subcategory": "Ethernet Analog I/O","short_spec": "8AI + 2DO Ethernet remote I/O, Modbus/TCP, SNMP, MQTT, P2P/GCL logic","key_specs": ["8 differential analog input channels, 16-bit","2 digital output channels","Modbus/TCP, SNMP, RESTful, MQTT (TLS)","Peer-to-Peer (P2P) and Graphic Condition Logic (GCL)","10~30 VDC power, DIN-rail, wide operating temp"],"certifications": ["CE","FCC","UL"],"typical_use": "Networked analog measurement (4-20 mA / voltage sensors) reporting to SCADA or cloud","sector": "factory automation / power / oil-gas","unit_price_eur": 320,"lead_time_days": 21,"product_url": "https://www.advantech.com/en-eu/products/a67f7853-013a-4b50-9b20-01798c56b090/adam-6017/mod_426ac8aa-4c77-4e4e-aed7-b41b9b387cf9","confidence": "real"},{"sku": "ADAM-6050-D","supplier": "Advantech","name": "ADAM-6050 12-ch DI / 6-ch DO Ethernet I/O Module","category": "Remote Data-Acquisition Modules (ADAM)","subcategory": "Ethernet Digital I/O","short_spec": "12DI + 6DO Ethernet remote I/O, Modbus/TCP, SNMP, MQTT, P2P/GCL","key_specs": ["12 digital input + 6 digital output channels","Modbus/TCP, SNMP, RESTful, MQTT (TLS)","Peer-to-Peer and Graphic Condition Logic (GCL)","Built-in web page configuration","10~30 VDC, DIN-rail mount"],"certifications": ["CE","FCC","UL"],"typical_use": "Networked digital status and control (contacts, valves, indicators) for remote monitoring","sector": "factory automation / smart city / power","unit_price_eur": 240,"lead_time_days": 21,"product_url": "https://www.advantech.com/en-eu/products/a67f7853-013a-4b50-9b20-01798c56b090/adam-6050/mod_b009c4b4-4b7c-4736-b16f-241978245e6a","confidence": "real"},{"sku": "ADAM-6060-D","supplier": "Advantech","name": "ADAM-6060 6-ch Relay Output / 6-ch DI Ethernet I/O Module","category": "Remote Data-Acquisition Modules (ADAM)","subcategory": "Ethernet Relay I/O","short_spec": "6 Form-A relay + 6DI Ethernet remote I/O, Modbus/TCP, SNMP, MQTT, web page","key_specs": ["6 relay (Form A) outputs + 6 digital inputs","Modbus/TCP, SNMP, RESTful, MQTT (TLS)","Peer-to-Peer and Graphic Condition Logic","On-board web page for monitoring/control","10~30 VDC, DIN-rail"],"certifications": ["CE","FCC","UL"],"typical_use": "Remote switching of loads/alarms with local digital feedback over Ethernet","sector": "factory automation / smart city","unit_price_eur": 250,"lead_time_days": 21,"product_url": "https://www.advantech.com/en-eu/products/a67f7853-013a-4b50-9b20-01798c56b090/adam-6060/mod_c3b0fabb-dce7-4a64-bcb7-7e0cbfda0364","confidence": "real"},{"sku": "ADAM-4117-C","supplier": "Advantech","name": "ADAM-4117 8-ch Analog Input RS-485 Remote I/O Module","category": "Remote Data-Acquisition Modules (ADAM)","subcategory": "RS-485 Analog I/O","short_spec": "8-ch AI robust Modbus RS-485 module, 16-bit, 3000 VDC isolation, wide temp","key_specs": ["8-ch analog input, 16-bit resolution","Ranges +/-150 mV to +/-10 V, 0/4~20 mA","3000 VDC isolation, watchdog timer","Modbus RTU/ASCII over RS-485","10~48 VDC power, DIN-rail, wide operating temp"],"certifications": ["CE","FCC","UL"],"typical_use": "Cost-effective daisy-chained analog acquisition on RS-485 Modbus trunks","sector": "factory automation / oil-gas / power","unit_price_eur": 230,"lead_time_days": 18,"product_url": "https://www.advantech.com/en-eu/products/gf-5vtd/adam-4117/mod_9161079d-563c-428c-8df4-aa29fffa995d","confidence": "real"},{"sku": "ADAM-4051-C","supplier": "Advantech","name": "ADAM-4051 16-ch Digital Input RS-485 Remote I/O Module","category": "Remote Data-Acquisition Modules (ADAM)","subcategory": "RS-485 Digital I/O","short_spec": "16-ch DI Modbus RS-485 module, 2500 VDC isolation, 10~50 V inputs, watchdog","key_specs": ["16 digital input channels","Accepts 10~50 V inputs (12/24/48 VDC signals)","2500 VDC optical isolation","Modbus RTU/ASCII over RS-485, watchdog timer","DIN-rail mount, wide-temp operation"],"certifications": ["CE","FCC","UL"],"typical_use": "High-density digital status collection on RS-485 Modbus networks","sector": "factory automation / power","unit_price_eur": 150,"lead_time_days": 18,"product_url": "https://www.advantech.com/en-eu/products/gf-5vwk/adam-4051/mod_c4ffe91c-9422-4da7-87f7-3abd007d0463","confidence": "real"},{"sku": "EKI-2528-BE","supplier": "Advantech","name": "EKI-2528 8-port 10/100 Mbps Unmanaged Ethernet Switch","category": "Industrial Ethernet Switches (EKI)","subcategory": "Unmanaged Switch","short_spec": "8-port 10/100 unmanaged industrial switch, 12~48 VDC redundant input, IP30, DIN-rail","key_specs": ["8 x 10/100Base-TX ports","12~48 VDC redundant power input, reverse-polarity protect","Relay output for event alarm","Per-port LEDs for link/speed/collision","IP30 metal housing, DIN-rail, resettable overload fuse"],"certifications": ["CE","FCC","UL","EN 61000-6-2/6-4"],"typical_use": "Basic robust cabinet networking for PLCs, cameras and I/O in machines and panels","sector": "factory automation / ITS / smart city","unit_price_eur": 180,"lead_time_days": 14,"product_url": "https://buy.advantech.eu/I-O-Devices-Communication/Industrial-Communication-Ethernet-Switches-Unmanaged-Switches/model-EKI-2528-BE.htm","confidence": "real"},{"sku": "EKI-7708E-2SI","supplier": "Advantech","name": "EKI-7708E-2SI 8+2G Managed Industrial Ethernet Switch","category": "Industrial Ethernet Switches (EKI)","subcategory": "Managed L2 Switch","short_spec": "L2 managed switch, 8FE + 2G combo, X-Ring Pro <20 ms recovery, IEC 62443-4-2, -40~75C","key_specs": ["8 Fast Ethernet + 2 Gigabit combo ports","X-Ring Pro ring redundancy, recovery < 20 ms","RSTP/STP, VLAN, IGMP, QoS, SNMP management","IEC 62443-4-2 device-level cybersecurity","Redundant 12~48 VDC input, -40~75C, DIN-rail"],"certifications": ["IEC 62443-4-2","CE","FCC","UL","EN 61000-6-2/6-4"],"typical_use": "Managed ring backbone for resilient plant and infrastructure networks","sector": "power / factory automation / smart city","unit_price_eur": 720,"lead_time_days": 28,"product_url": "https://www.advantech.com/en-eu/products/1-2mljzp/eki-7708e-2si/mod_18a5be25-97ec-4c5d-8eb0-f11fa518652c","confidence": "real"},{"sku": "EKI-2541M","supplier": "Advantech","name": "EKI-2541M Ethernet-to-Multimode-Fiber Media Converter","category": "Industrial Ethernet Switches (EKI)","subcategory": "Media Converter","short_spec": "10/100 Ethernet to 100 Mbps multimode SC fiber converter, 2 km, 12~48 VDC, hardened","key_specs": ["1 x 10/100 RJ45 + 1 x 100 Mbps multimode SC fiber","1310 nm, up to 2 km range","Link Fault Pass-through (LFP) jumper","12~48 VDC input, 3000 VDC surge (EFT) protection","-10~60C, DIN-rail hardened housing"],"certifications": ["CE","FCC","UL"],"typical_use": "Extending Ethernet over fiber for noise immunity and long runs between cabinets/buildings","sector": "factory automation / ITS / power","unit_price_eur": 170,"lead_time_days": 18,"product_url": "https://www.advantech.com/en-eu/products/20b1b5bf-24a1-4279-a28f-4ce3ecc49168/eki-2541m/mod_65a8b589-68fe-498d-8417-50ce1446e75e","confidence": "real"},{"sku": "EKI-1521-CE","supplier": "Advantech","name": "EKI-1521 1-port RS-232/422/485 Serial Device Server","category": "Serial Device Servers","subcategory": "Serial-to-Ethernet Server","short_spec": "1-port RS-232/422/485 device server, dual redundant 10/100 LAN, Virtual COM, 15 kV ESD","key_specs": ["1 x RS-232/422/485 serial port, up to 921.6 kbps","2 x 10/100 Ethernet ports for LAN redundancy","Virtual COM, TCP Server/Client, UDP modes","15 kV ESD on serial, 2 kV/4 kV surge protection","Web/Telnet/utility config, -10~60C"],"certifications": ["CE","FCC","UL"],"typical_use": "Networking a single PLC/meter/barcode reader onto Ethernet with redundant uplinks","sector": "factory automation / power / marine","unit_price_eur": 160,"lead_time_days": 14,"product_url": "https://buy.advantech.eu/I-O-Devices-Communication/Industrial-Communication-Serial-Device-Servers/model-EKI-1521-CE.htm","confidence": "real"},{"sku": "ICR-2431","supplier": "Advantech","name": "ICR-2431 Entry-Level LTE Cat.4 Industrial Cellular Router","category": "Cellular Routers","subcategory": "LTE Cat.4 Router","short_spec": "Entry LTE Cat.4 router (150/50 Mbps), 2x ETH, RS232 + RS485, DI/DO, VPN, optional Wi-Fi/GNSS","key_specs": ["LTE Cat.4, 150 Mbps DL / 50 Mbps UL","2 x configurable Ethernet (LAN/WAN)","1 x RS-232, 1 x RS-485, 1 DI + 1 DO","VPN tunnels, hardware watchdog, auto-reconnect","Optional Wi-Fi 802.11ac and GNSS"],"certifications": ["CE","RED","PTCRB","GCF"],"typical_use": "Cellular WAN access and remote SCADA/M2M connectivity for distributed sites and vehicles","sector": "smart city / ITS / utilities","unit_price_eur": 380,"lead_time_days": 28,"product_url": "https://buy.advantech.eu/I-O-Devices-Communication/Cellular-Routers-Applications/model-ICR-2431.htm","confidence": "real"},{"sku": "ICR-3231","supplier": "Advantech","name": "ICR-3231 LTE Cat.4 Industrial Cellular Router/Gateway","category": "Cellular Routers","subcategory": "LTE Cat.4 Router/Gateway","short_spec": "LTE Cat.4 M2M/IoT gateway (150/50 Mbps), 2x ETH, RS232 + RS485, DI/DO, RTC, optional Wi-Fi/BT/GNSS","key_specs": ["LTE Cat.4, 150 Mbps DL / 50 Mbps UL","2 x independent Ethernet, RS-232 + RS-485","Built-in digital I/O, backup RTC, sleep mode","Optional Wi-Fi 802.11ac MIMO + Bluetooth 5.1","Optional GNSS; VPN and router app ecosystem"],"certifications": ["CE","RED","PTCRB","GCF"],"typical_use": "Connecting IP/serial devices (SCADA, HMI, CCTV, meters, traffic controllers) over cellular","sector": "ITS / smart city / utilities","unit_price_eur": 460,"lead_time_days": 28,"product_url": "https://icr.advantech.com/support/router-models/detail/icr-3231","confidence": "real"},{"sku": "EDS-2008-EL","supplier": "Moxa","name": "EDS-2008-EL 8-Port Entry-Level Unmanaged Switch","category": "Industrial Ethernet Switch","subcategory": "Unmanaged (DIN-rail)","short_spec": "8x 10/100BaseT(X) unmanaged DIN-rail switch, 12/24/48 VDC, -10 to 60C","key_specs": ["8x 10/100BaseT(X) copper ports","Single 12/24/48 VDC input (9.6-60 VDC)","QoS and broadcast storm protection via DIP switch","IP40 metal housing","-10 to 60C (wide-temp -40 to 75C variant)"],"certifications": ["CE","UL","FCC","IEC 62368-1"],"typical_use": "Simple entry-level Ethernet connectivity for machine cabinets and factory-floor device aggregation","sector": "factory automation","unit_price_eur": 165,"lead_time_days": 14,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/unmanaged-switches/eds-2008-el-series/eds-2008-el","confidence": "real"},{"sku": "EDS-2016-ML","supplier": "Moxa","name": "EDS-2016-ML 16-Port Unmanaged Switch","category": "Industrial Ethernet Switch","subcategory": "Unmanaged (DIN-rail)","short_spec": "16x 10/100BaseT(X) unmanaged DIN-rail switch, dual 12/24/48 VDC, -10 to 60C","key_specs": ["16x 10/100BaseT(X) copper ports (fiber SC/ST combo variants)","Dual 12/24/48 VDC redundant input","IP30 rugged metal housing","-10 to 60C (wide-temp -40 to 75C variant)","DIN-rail / wall mount"],"certifications": ["CE","UL","FCC","IEC 62368-1"],"typical_use": "Mid-density unmanaged aggregation for factory automation and building networks","sector": "factory automation","unit_price_eur": 310,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/unmanaged-switches/eds-2016-ml-series/eds-2016-ml","confidence": "real"},{"sku": "EDS-205A","supplier": "Moxa","name": "EDS-205A 5-Port Unmanaged Switch (DNV Marine)","category": "Industrial Ethernet Switch","subcategory": "Unmanaged (DIN-rail, marine-certified)","short_spec": "5x 10/100BaseT(X) unmanaged, redundant 9.6-60 VDC, DNV maritime certified","key_specs": ["5x 10/100BaseT(X) ports","12/24/48 VDC redundant power inputs (9.6-60 VDC)","MDI/MDI-X auto-sensing","IP30 metal housing","-10 to 60C (wide-temp variant available)"],"certifications": ["DNV","LR","ABS","NK","CE","UL"],"typical_use": "Unmanaged shipboard and offshore Ethernet connectivity requiring classification-society approval","sector": "marine","unit_price_eur": 195,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/unmanaged-switches/eds-205a-series","confidence": "real"},{"sku": "EDS-405A","supplier": "Moxa","name": "EDS-405A 5-Port Entry-Level Managed Switch (Multi-Cert)","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (DIN-rail, sector-hardened)","short_spec": "5x 10/100BaseT(X) managed, Turbo Ring <20ms, ATEX + Railway + NEMA TS2 + DNV certified","key_specs": ["5x 10/100BaseT(X) ports (fiber SC/ST variants: 3 RJ45 + 2 optical)","Turbo Ring / Turbo Chain redundancy <20 ms","IEEE 802.1Q VLAN, IGMP snooping, QoS, RMON, port mirroring","IP30 metal housing","-10 to 60C (wide-temp -40 to 75C variant)"],"certifications": ["ATEX","Class I Division 2","EN 50121-4","NEMA TS2","DNV","LR","CE","UL"],"typical_use": "Sector-hardened managed aggregation for rail wayside, ITS/traffic cabinets, hazardous areas, and marine","sector": "rail / marine / ITS","unit_price_eur": 460,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/eds-405a-series","confidence": "real"},{"sku": "EDS-508A","supplier": "Moxa","name": "EDS-508A 8-Port Managed Switch","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (DIN-rail)","short_spec": "8x 10/100BaseT(X) managed, Turbo Ring/Chain <20ms, wide-temp -40 to 75C option","key_specs": ["8x 10/100BaseT(X) ports (fiber combo variants)","Turbo Ring, Turbo Chain, RSTP/STP, MSTP <20 ms recovery","Dual redundant DC power inputs","IP30 metal housing","0 to 60C (wide-temp -40 to 75C models)"],"certifications": ["EN 50121-4","NEMA TS2","DNV","ATEX","Class I Division 2","CE","UL"],"typical_use": "Managed backbone/ring aggregation for factory, power, and transportation networks","sector": "factory automation / power / rail","unit_price_eur": 690,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/eds-508a-series","confidence": "real"},{"sku": "EDS-518A","supplier": "Moxa","name": "EDS-518A 16+2G-Port Gigabit Managed Switch","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (DIN-rail)","short_spec": "16x 10/100 + 2 Gigabit combo/SFP managed switch, Turbo Ring, 0 to 60C","key_specs": ["16x 10/100BaseT(X) + 2 combo 10/100/1000BaseT(X) or 1000BaseSFP","Turbo Ring / Turbo Chain / RSTP / MSTP redundancy","IEEE 802.1Q VLAN, IGMP snooping, QoS, RMON","IP30 metal housing","0 to 60C (wide-temp -40 to 75C variant)"],"certifications": ["EN 50121-4","NEMA TS2","DNV","ATEX","CE","UL"],"typical_use": "Higher-density managed DIN-rail backbone with Gigabit uplinks for plant and infrastructure rings","sector": "factory automation / power","unit_price_eur": 1450,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/eds-518a-series","confidence": "real"},{"sku": "EDS-G508E","supplier": "Moxa","name": "EDS-G508E 8-Port Full Gigabit Managed Switch","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (DIN-rail, full Gigabit)","short_spec": "8x 10/100/1000BaseT(X) full Gigabit managed, Turbo Ring <50ms, -40 to 75C","key_specs": ["8x 10/100/1000BaseT(X) full Gigabit ports","Turbo Ring / Turbo Chain (<50 ms @ 250 switches), RSTP/STP, MSTP","IEEE 802.1Q VLAN, IGMP snooping, QoS, port mirroring","IP30 metal housing","-10 to 60C (wide-temp -40 to 75C variant)"],"certifications": ["EN 50121-4","NEMA TS2","DNV","ATEX","CE","UL"],"typical_use": "Full-Gigabit managed ring/backbone for high-bandwidth machine vision and SCADA aggregation","sector": "factory automation / power","unit_price_eur": 980,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/eds-g508e-series","confidence": "real"},{"sku": "EDS-G512E-4GSFP","supplier": "Moxa","name": "EDS-G512E 12-Port Full Gigabit Managed Switch (4 SFP)","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (DIN-rail, full Gigabit)","short_spec": "8x GbE copper + 4 Gigabit SFP managed switch, Turbo Ring, -40 to 75C","key_specs": ["8x 10/100/1000BaseT(X) + 4 Gigabit SFP slots (PoE/PoE+ variant available)","Turbo Ring, Turbo Chain, RSTP/STP, MSTP","IEEE 802.1Q VLAN, IGMP snooping, QoS","IP30, 79.2 x 135 x 137 mm","-40 to 75C"],"certifications": ["EN 50121-4","NEMA TS2","DNV","CE","UL"],"typical_use": "Gigabit fiber-uplink backbone for distributed plant and utility networks","sector": "factory automation / power","unit_price_eur": 1650,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/eds-g512e-series/eds-g512e-4gsfp-t","confidence": "real"},{"sku": "EDS-G516E-4GSFP","supplier": "Moxa","name": "EDS-G516E 16-Port Full Gigabit Managed Switch (4 SFP)","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (DIN-rail, full Gigabit)","short_spec": "12x GbE copper + 4 Gigabit SFP managed switch, Turbo Ring, -40 to 75C","key_specs": ["12x 10/100/1000BaseT(X) + 4 Gigabit SFP slots","Turbo Ring, Turbo Chain, RSTP/STP, MSTP redundancy","IEEE 802.1Q VLAN, IGMP snooping, QoS, RMON","IP30 metal housing","-40 to 75C"],"certifications": ["EN 50121-4","NEMA TS2","DNV","CE","UL"],"typical_use": "High-density Gigabit managed backbone for large plant and infrastructure rings","sector": "factory automation / power","unit_price_eur": 2150,"lead_time_days": 35,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/eds-g516e-series/eds-g516e-4gsfp-t","confidence": "real"},{"sku": "TN-5308","supplier": "Moxa","name": "TN-5308 ToughNet M12 8-Port Unmanaged Rail Switch","category": "Industrial Ethernet Switch","subcategory": "Unmanaged (EN 50155 rail, M12)","short_spec": "8x Fast Ethernet M12 unmanaged, EN 50155 rolling-stock certified, wide-temp","key_specs": ["8x 10/100BaseT(X) M12 D-coded ports","M12 connectors for vibration/shock resistance","Wide DC input range for rolling stock","IP-rated rugged housing","Wide operating-temperature range"],"certifications": ["EN 50155","EN 50121-3-2","EN 61373","CE","UL"],"typical_use": "Onboard rolling-stock unmanaged Ethernet with rugged M12 connectivity (EOL, replaced by TN-5300A)","sector": "rail","unit_price_eur": 850,"lead_time_days": 35,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/en-50155-switches/tn-5308-series","confidence": "real"},{"sku": "TN-5516A-WV-T","supplier": "Moxa","name": "TN-5516A ToughNet 16-Port Managed Rail Switch","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (EN 50155 rail, M12)","short_spec": "16x 10/100 M12 managed, EN 50155 rolling-stock, conformal coating, -40 to 75C","key_specs": ["16x 10/100BaseT(X) M12 D-coded ports","Dual 24-110 VDC power input","Conformal coating and power insulation","Turbo Ring / Turbo Chain redundancy","-40 to 75C wide temperature"],"certifications": ["EN 50155","EN 50121-3-2","EN 50121-4","EN 61373","CE","UL"],"typical_use": "Onboard rolling-stock managed backbone requiring EN 50155 compliance and M12 ruggedization","sector": "rail","unit_price_eur": 2400,"lead_time_days": 42,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/en-50155-switches/tn-5500a-series","confidence": "real"},{"sku": "PT-508-SS-SC-48","supplier": "Moxa","name": "PT-508 PowerTrans IEC 61850-3 Managed Switch","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (IEC 61850-3 substation, DIN-rail)","short_spec": "6x 10/100 + 2x 100BaseFX SM managed, IEC 61850-3 / IEEE 1613, 48 VDC, -40 to 85C","key_specs": ["6x 10/100BaseT(X) + 2x 100BaseFX single-mode SC ports","48 VDC power input","Turbo Ring / Turbo Chain redundancy","EMC immunity per IEEE 1613 / IEC 61850-3","-40 to 85C operating temperature"],"certifications": ["IEC 61850-3","IEEE 1613","EN 50121-4","CE","UL"],"typical_use": "Substation-automation LAN in HV/MV switchgear rooms with strong EMI immunity","sector": "power","unit_price_eur": 1550,"lead_time_days": 35,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/pt-508-series","confidence": "real"},{"sku": "PT-510","supplier": "Moxa","name": "PT-510 PowerTrans IEC 61850-3 10-Port Managed Switch","category": "Industrial Ethernet Switch","subcategory": "Layer 2 Managed (IEC 61850-3 substation, DIN-rail)","short_spec": "10-port managed DIN-rail switch, IEC 61850-3 / IEEE 1613 substation-hardened","key_specs": ["Up to 10 ports (copper + 100BaseFX fiber combinations)","Turbo Ring / Turbo Chain redundancy","IEC 61850-3 & IEEE 1613 EMC immunity","24/48 VDC or HV power inputs","Wide operating-temperature range"],"certifications": ["IEC 61850-3","IEEE 1613","EN 50121-4","CE","UL"],"typical_use": "Higher-port-count substation bay/station-bus Ethernet for IEC 61850 automation","sector": "power","unit_price_eur": 1850,"lead_time_days": 35,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/layer-2-managed-switches/pt-510-series","confidence": "real"},{"sku": "PT-7728","supplier": "Moxa","name": "PT-7728 PowerTrans IEC 61850-3 Modular Rackmount Switch","category": "Industrial Ethernet Switch","subcategory": "Rackmount Managed (IEC 61850-3 substation)","short_spec": "24+4G modular rackmount, IEC 61850-3 / IEEE 1613, GOOSE/SMV priority + MMS server","key_specs": ["24 + 4 Gigabit modular port configuration (Layer 2)","GOOSE and SMV critical-packet prioritization","Built-in MMS server for IEC 61850","Turbo Ring / Turbo Chain redundancy","Isolated redundant power supply"],"certifications": ["IEC 61850-3","IEEE 1613","EN 50121-4","CE","UL"],"typical_use": "Station-bus backbone rackmount switch for substation automation (EOL, replaced by RKS-G4000)","sector": "power","unit_price_eur": 2450,"lead_time_days": 42,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/rackmount-switches/pt-7728-series","confidence": "real"},{"sku": "ICS-G7526A-2XG-HV-HV-T","supplier": "Moxa","name": "ICS-G7526A Full Gigabit Rackmount Managed Switch","category": "Industrial Ethernet Switch","subcategory": "Rackmount Managed (Layer 2, Gigabit + 10G)","short_spec": "24 GbE + 2x 10GbE SFP+ rackmount backbone, dual 85-264 VAC, -40 to 75C","key_specs": ["20x 10/100/1000BaseT(X) + 4 combo GbE/SFP + 2x 10GbE SFP+ slots","Fanless design, Turbo Ring / Turbo Chain / RSTP","Dual isolated redundant power (85-264 VAC)","19-inch rackmount form factor","-40 to 75C operating temperature"],"certifications": ["EN 50121-4","NEMA TS2","DNV","CE","UL"],"typical_use": "Large-scale industrial network backbone with 10G uplinks for plant, utility, and ITS cores","sector": "factory automation / power / ITS","unit_price_eur": 2500,"lead_time_days": 42,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-switches/rackmount-switches/ics-g7526a-series","confidence": "real"},{"sku": "NPort 5110","supplier": "Moxa","name": "NPort 5110 1-Port Serial Device Server","category": "Serial Connectivity","subcategory": "Serial Device Server (General)","short_spec": "1-port RS-232/422/485 to 1x 10/100M Ethernet device server, 0 to 55C","key_specs": ["1 serial port RS-232/422/485","1x 10/100BaseT(X) RJ45","Baud rate up to 921.6 kbps","TCP Server/Client, UDP, Real COM, RFC2217 modes","15 kV ESD serial protection","0 to 55C operating temp"],"certifications": ["CE","FCC","UL 60950-1"],"typical_use": "Networking legacy RS-232/485 devices such as card readers, PLCs, and payment terminals onto an Ethernet LAN","sector": "factory automation","unit_price_eur": 115,"lead_time_days": 14,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/serial-device-servers/general-device-servers/nport-5100-series/nport-5110","confidence": "real"},{"sku": "NPort 5230","supplier": "Moxa","name": "NPort 5230 2-Port Serial Device Server","category": "Serial Connectivity","subcategory": "Serial Device Server (General)","short_spec": "2-port device server (1x RS-232 + 1x RS-422/485) to 10/100M Ethernet, 0 to 55C","key_specs": ["2 serial ports (1x RS-232, 1x RS-422/485)","1x 10/100BaseT(X) RJ45","Baud rate up to 921.6 kbps","Real COM/TCP/UDP operation modes","15 kV ESD protection","0 to 55C operating temp"],"certifications": ["CE","FCC","UL 60950-1"],"typical_use": "Connecting mixed RS-232 and RS-485 field devices to Ethernet in control cabinets","sector": "factory automation","unit_price_eur": 175,"lead_time_days": 14,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/serial-device-servers/general-device-servers/nport-5200-series/nport-5230","confidence": "real"},{"sku": "NPort IA-5150","supplier": "Moxa","name": "NPort IA-5150 1-Port Industrial Device Server","category": "Serial Connectivity","subcategory": "Serial Device Server (Industrial)","short_spec": "1-port RS-232/422/485 industrial device server, dual RJ45 single-IP, 0 to 60C","key_specs": ["1 serial port RS-232/422/485","2x 10/100BaseT(X) RJ45 (single IP daisy-chain)","Baud rate up to 921.6 kbps","2 kV isolation option","Compact DIN-rail metal housing","0 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Industrial-grade serial-to-Ethernet gateway for automation devices in harsh factory environments","sector": "factory automation","unit_price_eur": 260,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/serial-device-servers/industrial-device-servers/nport-ia5000-series/nport-ia-5150","confidence": "real"},{"sku": "NPort IA5150-G2","supplier": "Moxa","name": "NPort IA5150-G2 1-Port Industrial Device Server (Gen 2)","category": "Serial Connectivity","subcategory": "Serial Device Server (Industrial)","short_spec": "Gen-2 1-port RS-232/422/485 industrial device server, dual RJ45 single-IP, wide-temp option","key_specs": ["1 serial port RS-232/422/485","2x 10/100BaseT(X) RJ45 (single IP)","Baud rate up to 921.6 kbps","2 kV serial isolation","Enhanced cybersecurity (IEC 62443-4-2)","-40 to 75C (T model)"],"certifications": ["CE","FCC","UL 508","IEC 62443-4-2","Class 1 Division 2"],"typical_use": "Next-gen industrial serial gateway with hardened security for automation and utility networks","sector": "power","unit_price_eur": 320,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/serial-device-servers/industrial-device-servers/nport-ia5000-g2-series/nport-ia5150-g2","confidence": "real"},{"sku": "MGate MB3170","supplier": "Moxa","name": "MGate MB3170 1-Port Advanced Modbus Gateway","category": "Protocol Gateways","subcategory": "Modbus TCP Gateway","short_spec": "1-port Modbus RTU/ASCII-to-Modbus TCP gateway, 16 masters / 31 slaves, 0 to 60C","key_specs": ["1 serial port RS-232/422/485","1x 10/100M Ethernet","Modbus RTU/ASCII to Modbus TCP conversion","Up to 16 TCP masters / 31 serial slaves","Dual power inputs","0 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Bridging Modbus serial devices to Modbus TCP SCADA/PLC networks","sector": "power","unit_price_eur": 420,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/protocol-gateways/modbus-tcp-gateways/mgate-mb3170-mb3270-series","confidence": "real"},{"sku": "MGate 5105-MB-EIP","supplier": "Moxa","name": "MGate 5105-MB-EIP Modbus-to-EtherNet/IP Gateway","category": "Protocol Gateways","subcategory": "EtherNet/IP Gateway","short_spec": "1-port Modbus RTU/ASCII/TCP to EtherNet/IP gateway with MQTT, dual power, 0 to 60C","key_specs": ["1 serial port RS-232/422/485 (DB9)","2x 10/100M Ethernet","Modbus RTU/ASCII/TCP <-> EtherNet/IP conversion","MQTT / Azure / cloud support","Dual redundant DC inputs","0 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Integrating Modbus field devices into Rockwell/Allen-Bradley EtherNet/IP control systems","sector": "factory automation","unit_price_eur": 560,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/protocol-gateways/ethernet-ip-gateways/mgate-5105-mb-eip-series/mgate-5105-mb-eip","confidence": "real"},{"sku": "MGate 5103","supplier": "Moxa","name": "MGate 5103 Modbus/EtherNet-IP-to-PROFINET Gateway","category": "Protocol Gateways","subcategory": "PROFINET Gateway","short_spec": "1-port Modbus RTU/ASCII/TCP or EtherNet/IP to PROFINET gateway, dual power, 0 to 60C","key_specs": ["1 serial port RS-232/422/485","2x 10/100M Ethernet","Modbus / EtherNet/IP to PROFINET IO conversion","MQTT and RESTful support","Dual redundant DC inputs","0 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Connecting Modbus or EtherNet/IP devices to a Siemens PROFINET PLC network","sector": "factory automation","unit_price_eur": 640,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/protocol-gateways/profinet-gateways/mgate-5103-series/mgate-5103","confidence": "real"},{"sku": "MGate 5102-PBM-PN","supplier": "Moxa","name": "MGate 5102-PBM-PN PROFIBUS-to-PROFINET Gateway","category": "Protocol Gateways","subcategory": "PROFINET Gateway","short_spec": "PROFIBUS DP master/slave to PROFINET gateway, DIN-rail metal housing, optional isolation","key_specs": ["1x PROFIBUS DP (DB9)","2x 10/100M PROFINET Ethernet","PROFIBUS <-> PROFINET conversion","Optional built-in optical isolation","Rugged DIN-rail metal casing","0 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","PI (PROFIBUS/PROFINET) certified"],"typical_use": "Migrating legacy PROFIBUS DP drives/PLCs onto a modern PROFINET backbone","sector": "factory automation","unit_price_eur": 780,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/protocol-gateways/profinet-gateways/mgate-5102-pbm-pn-series","confidence": "real"},{"sku": "ioLogik E1210","supplier": "Moxa","name": "ioLogik E1210 Remote Ethernet I/O (16 DI)","category": "Remote I/O","subcategory": "Universal Ethernet Remote I/O","short_spec": "16-channel digital-input remote Ethernet I/O, Modbus TCP/SNMP/RESTful, -10 to 60C","key_specs": ["16 digital inputs","2x 10/100M Ethernet (daisy-chain)","Modbus TCP, EtherNet/IP, SNMP, RESTful API","Active messaging (Click&Go)","MODBUS/TCP peer-to-peer","-10 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Remote digital status monitoring over Ethernet in distributed automation and utility sites","sector": "smart city","unit_price_eur": 240,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/controllers-and-ios/universal-controllers-and-i-os/iologik-e1200-series/iologik-e1210","confidence": "real"},{"sku": "ioLogik E1214","supplier": "Moxa","name": "ioLogik E1214 Remote Ethernet I/O (6 DI / 6 Relay)","category": "Remote I/O","subcategory": "Universal Ethernet Remote I/O","short_spec": "6 DI + 6 relay-output remote Ethernet I/O, Modbus TCP/EtherNet-IP, -10 to 60C","key_specs": ["6 digital inputs","6 relay outputs (Form A)","2x 10/100M Ethernet (daisy-chain)","Modbus TCP, EtherNet/IP, SNMP, RESTful API","Click&Go logic","-10 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Remote relay control and digital monitoring for pumping stations and equipment interlocks","sector": "power","unit_price_eur": 300,"lead_time_days": 21,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/controllers-and-ios/universal-controllers-and-i-os/iologik-e1200-series/iologik-e1214","confidence": "real"},{"sku": "ioLogik 2542","supplier": "Moxa","name": "ioLogik 2542 Smart Remote I/O Controller","category": "Remote I/O","subcategory": "Smart Ethernet Remote I/O Controller","short_spec": "4 AI + 12 DIO smart controller with Click&Go Plus logic and data logging, -10 to 60C","key_specs": ["4 analog inputs","12 configurable digital I/O","2x 10/100M Ethernet + serial expansion","Click&Go Plus edge logic","microSD data logging","-10 to 60C operating temp"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Standalone smart remote I/O with edge logic and data logging for remote/unmanned sites","sector": "oil-gas","unit_price_eur": 690,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/controllers-and-ios/universal-controllers-and-i-os/iologik-2500-series/iologik-2542","confidence": "real"},{"sku": "AWK-3131A-EU","supplier": "Moxa","name": "AWK-3131A 802.11n Industrial Wireless AP/Bridge/Client","category": "Industrial Wireless","subcategory": "WLAN AP/Bridge/Client","short_spec": "802.11n dual-band industrial AP/bridge/client up to 300 Mbps, redundant DC/PoE, -25 to 60C","key_specs": ["IEEE 802.11a/b/g/n, up to 300 Mbps","2.4 / 5 GHz with DFS","AP / Bridge / Client / Master-Slave modes","AeroLink Protection (<300 ms recovery)","Dual redundant DC inputs + PoE","-25 to 60C (-40 to 75C T model)"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2","EN 50155"],"typical_use": "Robust industrial Wi-Fi for AGVs, factories, warehouses, and complex RF environments","sector": "factory automation","unit_price_eur": 780,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/wireless-ap-bridge-client/wlan-ap-bridge-client/awk-3131a-series/awk-3131a-eu","confidence": "real"},{"sku": "AWK-1131A-EU","supplier": "Moxa","name": "AWK-1131A Entry-Level 802.11n Wireless AP/Client","category": "Industrial Wireless","subcategory": "WLAN AP/Client","short_spec": "Entry-level 802.11n industrial AP/client up to 300 Mbps, 1x GbE, -40 to 75C option","key_specs": ["IEEE 802.11a/b/g/n, up to 300 Mbps","2.4 / 5 GHz dual band","AP / Client modes","1x Gigabit Ethernet RJ45","IP30 DIN-rail metal housing","-40 to 75C (T model)"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2"],"typical_use": "Cost-effective wireless client/AP for machine connectivity and remote monitoring","sector": "factory automation","unit_price_eur": 470,"lead_time_days": 28,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/wireless-ap-bridge-client/wlan-ap-bridge-client/awk-1131a-series/awk-1131a-eu","confidence": "real"},{"sku": "UPort 1150","supplier": "Moxa","name": "UPort 1150 1-Port USB-to-Serial Converter","category": "USB-Serial","subcategory": "USB-to-Serial Converter","short_spec": "1-port USB to RS-232/422/485 converter, bus-powered, up to 921.6 kbps","key_specs": ["1 serial port RS-232/422/485 (DB9)","USB 2.0 bus-powered","Baud rate up to 921.6 kbps","15 kV ESD protection","Windows/Linux driver support","Compact adapter form factor"],"certifications": ["CE","FCC","UL 60950-1"],"typical_use": "Adding a serial COM port to laptops/PCs for field service and PLC programming","sector": "factory automation","unit_price_eur": 95,"lead_time_days": 10,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/usb-to-serial-converters-usb-hubs/usb-to-serial-converters/uport-1100-series/uport-1150","confidence": "real"},{"sku": "UPort 1250I-G2","supplier": "Moxa","name": "UPort 1250I-G2 2-Port Isolated USB-to-Serial Converter","category": "USB-Serial","subcategory": "USB-to-Serial Converter","short_spec": "2-port USB to RS-232/422/485 converter with 2 kV isolation, 0 to 60C (T to 75C)","key_specs": ["2 serial ports RS-232/422/485","USB 2.0 (Gen 2 chipset)","2 kV galvanic isolation","Baud rate up to 921.6 kbps","Surge and ESD protection","0 to 60C (-40 to 75C T model)"],"certifications": ["CE","FCC","UL 62368-1"],"typical_use": "Isolated multi-port serial expansion for industrial PCs in noisy electrical environments","sector": "factory automation","unit_price_eur": 180,"lead_time_days": 14,"product_url": "https://www.moxa.com/en/products/industrial-edge-connectivity/usb-to-serial-converters-usb-hubs/usb-to-serial-converters/uport-1200-g2-series/uport-1250i-g2","confidence": "real"},{"sku": "IMC-101-M-SC","supplier": "Moxa","name": "IMC-101 Industrial Ethernet-to-Fiber Media Converter","category": "Media Converters","subcategory": "Ethernet-to-Fiber Media Converter","short_spec": "10/100BaseT(X) to 100BaseFX multi-mode SC media converter, DIN-rail, -40 to 75C option","key_specs": ["1x 10/100BaseT(X) RJ45","1x 100BaseFX multi-mode SC (up to 5 km)","Store-and-forward switching","Redundant dual DC power inputs","DIN-rail IP30 metal housing","0 to 60C (-40 to 75C T model)"],"certifications": ["CE","FCC","UL 508","Class 1 Division 2","DNV","GL"],"typical_use": "Extending Ethernet over fiber for EMI immunity and long distances in industrial plants","sector": "marine","unit_price_eur": 210,"lead_time_days": 14,"product_url": "https://www.moxa.com/en/products/industrial-network-infrastructure/ethernet-media-converters/ethernet-to-fiber-media-converters/imc-101-series/imc-101-m-sc","confidence": "real"}];
+
+const SCENARIOS = [
+ {
+  "id": "rail",
+  "channel": "email",
+  "tag": "clean",
+  "label": "Rail depot upgrade",
+  "customer": {
+   "company": "Metrovia Systems Integration",
+   "contact": "Laura Freixas",
+   "email": "l.freixas@metrovia-si.example",
+   "project": "Depot network & HMI refresh — Line 4"
+  },
+  "subject": "RFQ — network + HMI hardware for depot refresh (Line 4)",
+  "targetDays": 28,
+  "raw": "Hi Nortex team,\n\nWe're refreshing the depot network and HMIs for Metro Line 4 and need a quotation for the\nfollowing. Rolling-stock / wayside rated where relevant (EN 50155 preferred).\n\n- 6x rugged 8-port Ethernet switch, M12 connectors, EN 50155 rail-certified (rolling stock)\n- 4x serial device server, 2 ports (RS-232 + RS-422/485), for legacy signalling equipment\n- 1x Modbus to EtherNet/IP protocol gateway\n- 2x 15\" fanless widescreen touch panel PC for the depot control HMI\n\nPlease include unit prices, lead times and relevant certifications. Target delivery 4 weeks.\n\nThanks,\nLaura Freixas — Metrovia SI",
+  "lines": [
+   {
+    "query": "rugged 8-port M12 Ethernet switch, EN 50155 rail-certified",
+    "qty": 6,
+    "matchSku": "TN-5308"
+   },
+   {
+    "query": "serial device server, 2 ports (RS-232 + RS-422/485), legacy signalling",
+    "qty": 4,
+    "matchSku": "NPort 5230"
+   },
+   {
+    "query": "Modbus to EtherNet/IP protocol gateway",
+    "qty": 1,
+    "matchSku": "MGate 5105-MB-EIP"
+   },
+   {
+    "query": "15\" fanless widescreen touch panel PC, depot control HMI",
+    "qty": 2,
+    "matchSku": "TPC-1551WP"
+   }
+  ]
+ },
+ {
+  "id": "water",
+  "channel": "chat",
+  "tag": "guard",
+  "label": "Water / SCADA telemetry",
+  "customer": {
+   "company": "Aigües del Segre",
+   "contact": "Marc Oliveras",
+   "email": "moliveras@aiguesdelsegre.example",
+   "project": "Pump-station telemetry rollout"
+  },
+  "subject": "Live chat — pump station telemetry parts",
+  "raw": "[10:02] Marc (Aigües del Segre): Hi — need to price up telemetry hardware for 4 pump stations.\n[10:02] Marc: roughly this per-station bundle, across the whole rollout:\n[10:03] Marc:  - 10x remote Ethernet I/O, 16 digital inputs, Modbus TCP\n[10:03] Marc:  - 5x 8-channel analog input module, RS-485 (4-20 mA sensors)\n[10:04] Marc:  - 3x DIN-rail edge computer, 4x LAN, for the SCADA gateway\n[10:04] Marc:  - 2x industrial 4G/LTE router, dual SIM, VPN\n[10:05] Marc:  - 1x Siemens SIMATIC S7-1500 PLC (CPU 1515-2 PN) — can you supply this too?\n[10:05] Marc: need prices + lead times today if possible, thanks!",
+  "lines": [
+   {
+    "query": "remote Ethernet I/O, 16 digital inputs, Modbus TCP",
+    "qty": 10,
+    "matchSku": "ioLogik E1210"
+   },
+   {
+    "query": "8-channel analog input module, RS-485, 4-20 mA",
+    "qty": 5,
+    "matchSku": "ADAM-4117-C"
+   },
+   {
+    "query": "DIN-rail edge computer, 4x LAN, SCADA gateway",
+    "qty": 3,
+    "matchSku": "UNO-2484G-V2"
+   },
+   {
+    "query": "industrial 4G/LTE router, dual SIM, VPN",
+    "qty": 2,
+    "matchSku": "ICR-3231"
+   },
+   {
+    "query": "Siemens SIMATIC S7-1500 PLC (CPU 1515-2 PN)",
+    "qty": 1,
+    "matchSku": null,
+    "note": "Siemens is not one of the indexed suppliers (Advantech / Moxa) — outside catalog scope."
+   }
+  ]
+ },
+ {
+  "id": "power",
+  "channel": "voice",
+  "tag": "guard",
+  "label": "Substation comms",
+  "customer": {
+   "company": "Enerlink Contractors",
+   "contact": "Diego Serrano",
+   "email": "dserrano@enerlink.example",
+   "project": "66 kV substation automation retrofit"
+  },
+  "subject": "Transcribed voicemail — substation comms hardware",
+  "raw": "[ Voicemail transcribed by the agent · 00:48 ]\n\n\"Hi, this is Diego from Enerlink. We're retrofitting the comms on a 66 kV substation and I\nneed a quote. We need four IEC 61850-3 / IEEE 1613 rackmount managed switches for the\nsubstation LAN, and six compact substation-rated managed switches for the bay level. Oh —\nand one fibre-optic revenue power meter, class 0.2S, if you carry that. Certifications\nmatter here, it has to be substation-rated. Send prices and lead times when you can, thanks.\" ",
+  "lines": [
+   {
+    "query": "IEC 61850-3 / IEEE 1613 rackmount managed switch, substation LAN",
+    "qty": 4,
+    "matchSku": "PT-7728"
+   },
+   {
+    "query": "compact substation-rated managed switch, bay level",
+    "qty": 6,
+    "matchSku": "PT-508-SS-SC-48",
+    "confPin": 0.86,
+    "altText": "PT-510 · 82% (10-port variant)"
+   },
+   {
+    "query": "fibre-optic revenue power meter, class 0.2S",
+    "qty": 1,
+    "matchSku": null,
+    "note": "Revenue metering instruments are outside the Advantech / Moxa catalogs indexed for this agent."
+   }
+  ]
+ }
+];
+
+const PRODIGY_MAP = [
+ {
+  "step": "Multi-channel intake",
+  "comp": "/chat · Slack · Teams · WhatsApp",
+  "type": "core",
+  "desc": "Email (IMAP→/chat), live chat and speech-to-text voice all enter through the same Brain — one pipeline, many front doors, behind JWT/OIDC/SAML auth and per-tenant realms."
+ },
+ {
+  "step": "Parse RFQ → line items",
+  "comp": "rfq_parser skill",
+  "type": "skill",
+  "desc": "A single-LLM cognitive skill (fork of the shipped structured-extraction skill) turns messy prose into validated {description, qty, hint} line items — behind the guarded gateway like every LLM call."
+ },
+ {
+  "step": "Index supplier catalogs",
+  "comp": "web_crawler + crawl engine",
+  "type": "integration",
+  "desc": "Robots-aware, same-site BFS crawl of advantech.com & moxa.com, rate-limited and depth-bounded, chunked into the shared knowledge pool. Adding a supplier = adding a seed URL."
+ },
+ {
+  "step": "Retrieval store",
+  "comp": "Postgres FTS + Qdrant vectors",
+  "type": "integration",
+  "desc": "Part numbers hit the full-text index; fuzzy descriptions hit vectors; Reciprocal-Rank-Fusion merges both — exactly what SKU matching needs."
+ },
+ {
+  "step": "Search & match, with citations",
+  "comp": "crawl_recall + Knowledge RAG",
+  "type": "integration",
+  "desc": "Per line item, realm/ACL-scoped retrieval returns candidate SKUs, each carrying the source vendor URL so the reviewer can click straight through to the exact Advantech/Moxa page."
+ },
+ {
+  "step": "'Part not found' guardrail",
+  "comp": "Guardrails decorator + confidence gate",
+  "type": "core",
+  "desc": "Every gateway runs check_input/check_output; a domain rule flags any low-confidence or un-cited line as PART_NOT_FOUND and routes it to a human — it never fabricates a SKU or price."
+ },
+ {
+  "step": "Human approval gate",
+  "comp": "live_trace approval (HITL)",
+  "type": "hitl",
+  "desc": "The run emits an APPROVAL_STEP over the live-trace SSE stream and parks on queue-and-wait until a human edits / approves / rejects each line. First-class, already used by other fleet agents."
+ },
+ {
+  "step": "Assemble & render quote",
+  "comp": "rfq_quote_orchestrator fleet",
+  "type": "fleet",
+  "desc": "One net-new fleet agent (fork of sales_consultant) drives parse→retrieve→match→guardrail→HITL→render. Pricing/margins are deterministic Python — auditable, never LLM-computed."
+ },
+ {
+  "step": "Cost & audit",
+  "comp": "token accounting + audit log",
+  "type": "core",
+  "desc": "Per-capability token + USD attribution and an immutable audit row per run — every quote has a traceable, costed lineage."
+ }
+];
+
+const ALTERNATIVES = [
+ {
+  "name": "Prodigy (Ciklum) — self-hosted",
+  "win": true,
+  "when": "When the distributor wants to OWN the stack: self-hosted, their data never leaves their boundary, no per-execution tax, model-agnostic, multi-tenant from day one.",
+  "tradeoffs": "They operate the infra (Postgres/Qdrant/service). ~90% is already-shipped components — you assemble + add 2 thin capabilities, not build a platform.",
+  "eff": "~2–4 weeks"
+ },
+ {
+  "name": "AWS Bedrock Agents",
+  "win": false,
+  "when": "Already all-in on AWS and want a fully managed runtime.",
+  "tradeoffs": "Per-invocation billing; crawler NOT included; HITL is DIY (Step Functions); orchestration lock-in; data + workflow live in AWS.",
+  "eff": "~3–5 weeks"
+ },
+ {
+  "name": "Google Vertex / Gemini",
+  "win": false,
+  "when": "GCP-native shop wanting Google-grade grounding via Vertex AI Search.",
+  "tradeoffs": "Same managed posture: consumption billing, workflow lock-in, crawler-not-included, custom HITL, deterministic pricing still bolted on.",
+  "eff": "~3–5 weeks"
+ },
+ {
+  "name": "Raw LLM + scripting / n8n",
+  "win": false,
+  "when": "A quick single-tenant prototype, low volume, mostly a clean SKU table.",
+  "tradeoffs": "You rebuild crawler, FTS+vector fusion, citations, guardrails, SSE HITL, auth, cost accounting — months of undifferentiated plumbing you then own forever.",
+  "eff": "1–2 wks naive → 8–12+ wks to harden"
+ }
+];
+
+const TALKING_POINTS = [
+ "Your team stops copy-pasting from Advantech and Moxa websites into quote templates. The system reads the RFQ - whether it arrives by email, chat, or a voice note - and drafts the matched quote in seconds.",
+ "Every matched part comes with a clickable link back to the exact vendor page it came from. Your engineer verifies at a glance instead of re-searching from scratch.",
+ "If the system is not confident it found the right part, it says so and stops - it flags 'part not found' rather than inventing a part number. That guardrail is the difference between a tool you can trust on a customer-facing quote and one you cannot.",
+ "A human always approves before a quote goes out. The AI does the 45 minutes of grunt work; your expert spends 5 minutes reviewing the exceptions and clicks approve.",
+ "You own it. It runs on your own servers, your catalog data never leaves your walls, and there is no per-transaction toll on top - unlike the big cloud AI agents that meter every run.",
+ "It is not locked to one AI vendor. If a cheaper or better model comes out, you switch the engine underneath without rebuilding the workflow.",
+ "Roughly 80% of the drafting time on a typical multi-line RFQ disappears - that is real technical-sales capacity handed back to quoting more deals, not chasing PDFs."
+];
+
+const TIME_SAVINGS = {
+ "manualMin": 45,
+ "cycleMin": 8,
+ "draftSec": 90,
+ "pct": 82,
+ "annual": "~617 h per rep / year",
+ "basis": "Manual baseline: a technical inside-sales / applications engineer reading an RFQ, opening Advantech and Moxa sites, searching part numbers, confirming specs and cross-refs, keying line items into a quote template, and adding pricing/markup typically runs 30-60 min for a multi-line RFQ (we use a conservative 45 min midpoint for ~5-10 line items). Automated path: the crawl KB is pre-built, so per-quote the machine spends seconds on parse + retrieval + draft; the residual ~8 min is human-in-the-loop review of the flagged/low-confidence lines and one approval click, which is deliberately kept (it is the trust control, not overhead to remove). Net ~37 min saved per quote, ~82%. Savings are a function of RFQ complexity and how many lines trip the not-found guardrail; simple RFQs approach fully-automated, and the reviewer only touches exceptions."
+};
+
+const NORTEX = {
+ "company": "Nortex Group",
+ "founded": 1981,
+ "hq": "Barcelona, Spain",
+ "summary": "A Barcelona-founded (1981) technology distributor & integrator — 40+ years, 20+ countries. Premium Partner of Advantech (20+ yrs) and Moxa (18+ yrs). Its engineers spec-match multi-brand industrial hardware into customer systems; each quotation today means ~30–45 min of manual catalog browsing.",
+ "partners": [
+  "Advantech (20+ yr Premium Partner)",
+  "Moxa (18+ yr Premium Partner)",
+  "Getac",
+  "AAEON",
+  "iEi",
+  "Winmate",
+  "Transcend",
+  "Panasonic",
+  "Teltonika"
+ ],
+ "sectors": [
+  "Industrial automation and factory/manufacturing production",
+  "Mining and natural resources",
+  "Oil & gas / utilities and energy",
+  "Transportation and mobility (rugged vehicle/in-vehicle computing)",
+  "Telecommunications",
+  "Military, defense, law enforcement, public safety and emergency services",
+  "Renewable energy and energy storage (BESS/UPS/SAIS)",
+  "Healthcare (portable batteries for hospitals, clinics and diagnostic centers)"
+ ]
+};
+
+</script>
+<script>
+/* =========================================================================
+   Nortex Group · RFQ → Quote Copilot — demo engine
+   Deterministic, dependency-free. Drives the 4-step pipeline + architecture view.
+   Data comes from assets/data.js (CATALOG, SCENARIOS, PRODIGY_MAP, ...).
+   ========================================================================= */
+'use strict';
+
+/* ---------- tiny helpers ---------- */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const eur = n => '€' + new Intl.NumberFormat('es-ES', { useGrouping: 'always' }).format(Math.round(n));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const hostOf = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
+const hash = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+const bySku = sku => CATALOG.find(c => c.sku === sku);
+const IVA = 0.21;                    // Spanish VAT
+const ADV_PAGES = 1284, MOXA_PAGES = 973;
+
+/* ---------- state ---------- */
+const S = { channel: 'email', scenario: null, matched: [], runToken: 0, marginView: false, quote: null, telemetry: null };
+
+/* ============================ INIT ============================ */
+document.addEventListener('DOMContentLoaded', () => {
+  $('#yr').textContent = new Date().getFullYear();
+
+  // nav view switch
+  $$('.top nav button[data-view]').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
+  // channel tabs
+  $$('#channel-tabs button').forEach(b => b.addEventListener('click', () => selectChannel(b.dataset.ch)));
+
+  renderScenarioChips();
+  selectScenario(SCENARIOS[0].id);
+  renderArchitecture();
+});
+
+/* ============================ VIEW ROUTER ============================ */
+function showView(v) {
+  $('#view-demo').classList.toggle('hidden', v !== 'demo');
+  $('#view-architecture').classList.toggle('hidden', v !== 'architecture');
+  $$('.top nav button[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function restartDemo() {
+  showView('demo');
+  selectScenario(S.scenario.id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function scrollToStage(id) { $('#' + id).scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+/* ============================ STEP 1 — INTAKE ============================ */
+function renderScenarioChips() {
+  $('#scenario-row').innerHTML = SCENARIOS.map(s => `
+    <button class="scenario-chip" data-id="${s.id}" onclick="selectScenario('${s.id}')">
+      <b>${esc(s.label)}</b>
+      <span class="tag ${s.tag}">${s.tag === 'guard' ? '⚠ includes not-found case' : '✓ all in catalog'}</span>
+      <div style="margin-top:4px">${channelIcon(s.channel)} ${esc(s.customer.company)}</div>
+    </button>`).join('');
+}
+function channelIcon(ch) { return ch === 'email' ? '✉️' : ch === 'chat' ? '💬' : '📞'; }
+
+function selectChannel(ch) {
+  const sc = SCENARIOS.find(s => s.channel === ch);
+  if (sc) selectScenario(sc.id);
+}
+
+function selectScenario(id) {
+  const sc = SCENARIOS.find(s => s.id === id);
+  S.scenario = sc; S.channel = sc.channel;
+  S.runToken++;              // cancel any in-flight reasoning run (restart / scenario switch)
+  S.marginView = false;      // internal margin view is opt-in per quote, never sticky
+  S.quote = null;
+  $('#trace').innerHTML = ''; // drop any stale trace if the user scrolls back
+
+  $$('#channel-tabs button').forEach(b => b.classList.toggle('active', b.dataset.ch === sc.channel));
+  $$('#scenario-row .scenario-chip').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+
+  // intake meta (mail header / voice bar)
+  const c = sc.customer;
+  $('#mailhead-slot').innerHTML =
+    sc.channel === 'chat'
+      ? `<div class="mailhead">💬 <b>Live chat</b> · ${esc(c.company)} · <b>${esc(c.contact)}</b> · re: ${esc(c.project)}</div>`
+      : `<div class="mailhead">${channelIcon(sc.channel)} <b>From:</b> ${esc(c.contact)} &lt;${esc(c.email)}&gt; &nbsp;·&nbsp; <b>${esc(c.company)}</b><br><b>Subject:</b> ${esc(sc.subject)}</div>`;
+  $('#voicebar-slot').innerHTML = sc.channel === 'voice'
+    ? `<div class="voicebar"><span>📞</span><div class="wave">${Array.from({length:34},(_,i)=>`<i style="animation-delay:${(i%10)*0.09}s"></i>`).join('')}</div><span class="mono" style="font-size:12px;color:var(--violet)">voicemail · 00:48 · transcribed</span></div>`
+    : '';
+  $('#rfq-text').value = sc.raw;
+
+  // reset downstream
+  ['stage-reasoning', 'stage-review', 'stage-quote'].forEach(s => $('#' + s).classList.add('hidden'));
+  setStep(1);
+  $('#process-btn').disabled = false;
+}
+
+/* ============================ STEP 2 — REASONING ============================ */
+function processRequest() {
+  $('#process-btn').disabled = true;
+  $('#stage-reasoning').classList.remove('hidden');
+  setStep(2);
+  scrollToStage('stage-reasoning');
+  runReasoning();
+}
+
+function lineConfidence(line) {
+  if (!line.matchSku) return 0;
+  if (typeof line.confPin === 'number') return line.confPin;                 // scenario-pinned (e.g. a deliberately ambiguous match)
+  return 0.87 + (hash(line.matchSku + '|' + line.query) % 110) / 1000;       // 0.870–0.979, de-correlated, deterministic
+}
+
+async function runReasoning() {
+  const token = ++S.runToken;
+  const sc = S.scenario;
+  const trace = $('#trace'); trace.innerHTML = '';
+  const caps = $('#caps'); caps.innerHTML = '';
+  const t = { time: 0, lines: 0, pages: 0, match: 0, guard: 0, tokens: 0, cost: 0 };
+  S.telemetry = t;
+  const setM = () => {
+    $('#mt-time').textContent = t.time.toFixed(1) + 's';
+    $('#mt-lines').textContent = t.lines;
+    $('#mt-pages').textContent = t.pages.toLocaleString('es-ES');
+    $('#mt-match').textContent = t.match;
+    $('#mt-guard').textContent = t.guard;
+    $('#mt-tokens').textContent = t.tokens.toLocaleString('es-ES');
+    $('#mt-cost').textContent = '$' + t.cost.toFixed(3);
+  };
+  setM();
+
+  // live timer
+  const t0 = performance.now();
+  const timer = setInterval(() => { if (S.runToken !== token) return clearInterval(timer); t.time = (performance.now() - t0) / 1000; $('#mt-time').textContent = t.time.toFixed(1) + 's'; }, 90);
+
+  const capSet = ['orchestrator', 'rfq_parser', 'web_crawler', 'crawl_recall', 'knowledge_rag', 'guardrails', 'live_trace', 'rfq_quote_orchestrator'];
+  caps.innerHTML = capSet.map(c => `<span class="capchip" data-cap="${c}">${c}</span>`).join('');
+  const lightCap = c => { const el = caps.querySelector(`[data-cap="${c}"]`); if (el) el.classList.add('on'); };
+
+  const add = (html, cls = '', dot = 'match') => {
+    if (S.runToken !== token) return;
+    const div = document.createElement('div');
+    div.className = 'ev ' + cls;
+    div.innerHTML = `<div class="dot ${dot}"></div><div class="body">${html}</div>`;
+    trace.appendChild(div); trace.scrollTop = trace.scrollHeight;
+  };
+  const bump = (tok) => { t.tokens += tok; t.cost = t.tokens / 1e6 * 0.60; setM(); };
+
+  // 1 — plan
+  $('#reasoning-sub').textContent = 'Prodigy Brain · orchestrating the RFQ pipeline';
+  add(`<span class="cap">Brain · orchestrator</span> Building ranked execution plan for an <b>RFQ → Quote</b> request…`, '', 'plan');
+  lightCap('orchestrator'); bump(320);
+  await sleep(650); if (S.runToken !== token) return;
+
+  // 2 — parse
+  const n = sc.lines.length;
+  add(`<span class="cap">skill · rfq_parser</span> Parsed <b>${n} line items</b> from the ${sc.channel === 'voice' ? 'transcribed call' : sc.channel} — {description, qty, hint}.`, '', 'plan');
+  lightCap('rfq_parser'); t.lines = n; bump(280 + n * 40); setM();
+  await sleep(700); if (S.runToken !== token) return;
+
+  // 3 — knowledge base ready
+  add(`<span class="cap">integration · web_crawler</span> Knowledge base ready — <b>${CATALOG.length} SKUs</b> across <b>${ADV_PAGES.toLocaleString('es-ES')}</b> Advantech + <b>${MOXA_PAGES.toLocaleString('es-ES')}</b> Moxa pages (robots-aware, same-site).`);
+  lightCap('web_crawler');
+  // animate pages counter
+  const totalPages = ADV_PAGES + MOXA_PAGES;
+  for (let i = 1; i <= 12; i++) { if (S.runToken !== token) return; t.pages = Math.round(totalPages * i / 12); setM(); await sleep(28); }
+  lightCap('crawl_recall'); lightCap('knowledge_rag'); bump(240);
+  await sleep(450); if (S.runToken !== token) return;
+
+  // 4 — per line matching
+  for (const line of sc.lines) {
+    if (S.runToken !== token) return;
+    const q = line.query.length > 58 ? line.query.slice(0, 56) + '…' : line.query;
+    if (line.matchSku) {
+      const p = bySku(line.matchSku);
+      const conf = lineConfidence(line);
+      const pct = Math.round(conf * 100);
+      const low = conf < 0.90;
+      add(
+        `<span class="cap">crawl_recall · knowledge-rag</span> Matched “${esc(q)}” →
+         <b>${esc(p.sku)}</b> · ${esc(p.name)}
+         <div class="conf"><i style="width:${pct}%${low ? ';background:var(--amber)' : ''}"></i></div>
+         <span class="cite">${pct}%${low ? ' · review recommended' : ''} · cite: ${esc(hostOf(p.product_url))}${line.altText ? ' · 2nd candidate: ' + esc(line.altText) : ''}</span>`,
+        '', 'match');
+      t.match++; bump(360 + (hash(p.sku) % 120)); setM();
+      await sleep(560); if (S.runToken !== token) return;
+    } else {
+      add(
+        `<span class="cap">guardrails · check_output</span> ⚠ No catalog match for “${esc(q)}”.
+         <b>PART_NOT_FOUND</b> — flagged for human review, <b>not</b> fabricating a SKU or price.`,
+        'guard', 'guard');
+      lightCap('guardrails'); t.guard++; bump(180); setM();
+      const gchip = caps.querySelector('[data-cap="guardrails"]');
+      if (gchip) gchip.classList.add('flash');
+      await sleep(1200); if (S.runToken !== token) return;   // trust beat — give the presenter room to talk over it
+    }
+  }
+
+  // 5 — approval gate
+  add(`<span class="cap">live_trace · APPROVAL_STEP</span> Draft assembled — emitting <b>human-in-the-loop</b> approval gate. Run parks until a person approves.`, '', 'done');
+  lightCap('live_trace'); lightCap('rfq_quote_orchestrator'); bump(300); setM();
+  await sleep(700); if (S.runToken !== token) return;
+
+  clearInterval(timer);
+  add(`<span class="cap">rfq_quote_orchestrator</span> ✓ Ready for review · <b>${t.match} matched</b>, <b>${t.guard} flagged</b> · ${t.tokens.toLocaleString('es-ES')} tokens · $${t.cost.toFixed(3)} · ${t.time.toFixed(1)}s`, '', 'done');
+  $('#reasoning-sub').textContent = '✓ Draft ready — parked at the human approval gate';
+  await sleep(500); if (S.runToken !== token) return;
+  revealReview();
+}
+
+/* ============================ STEP 3 — HITL REVIEW ============================ */
+function revealReview() {
+  const sc = S.scenario;
+  S.matched = sc.lines.map(line => {
+    if (line.matchSku) {
+      const p = bySku(line.matchSku);
+      return { query: line.query, product: p, qty: line.qty, decision: 'approved', flagged: false, resolution: null, conf: lineConfidence(line), alt: line.altText || '' };
+    }
+    return { query: line.query, note: line.note || '', product: null, qty: line.qty, decision: 'pending', flagged: true, resolution: '' };
+  });
+  $('#stage-review').classList.remove('hidden');
+  setStep(3);
+  renderReviewTable();
+  scrollToStage('stage-review');
+}
+
+const optLabel = c => `${c.sku} — ${c.name.length > 34 ? c.name.slice(0, 33) + '…' : c.name} · ${eur(c.unit_price_eur)}`;
+
+function altOptions(product) {
+  // same-category alternatives, else same supplier — labelled with the product name, not just a SKU
+  const same = CATALOG.filter(c => c.category === product.category);
+  const list = same.length > 1 ? same : CATALOG.filter(c => c.supplier === product.supplier);
+  return list.map(c => `<option value="${esc(c.sku)}" ${c.sku === product.sku ? 'selected' : ''}>${esc(optLabel(c))}</option>`).join('');
+}
+
+function catalogOptgroups() {
+  // whole catalog, grouped by category so the presenter can find a part instead of scrolling 66 flat SKUs
+  const cats = {};
+  CATALOG.forEach(c => { (cats[c.category] = cats[c.category] || []).push(c); });
+  return Object.keys(cats).sort().map(cat =>
+    `<optgroup label="${esc(cat)}">${cats[cat].map(c => `<option value="${esc(c.sku)}">${esc(optLabel(c))}</option>`).join('')}</optgroup>`
+  ).join('');
+}
+
+function renderReviewTable() {
+  const body = $('#lines-body');
+  body.innerHTML = S.matched.map((m, i) => {
+    if (m.flagged && !m.product) {
+      // unresolved / needs decision
+      return `<tr class="flagged" data-i="${i}">
+        <td class="req"><b>${esc(m.query)}</b><div style="margin-top:4px;color:var(--amber);font-size:11.5px">⚠ ${esc(m.note || 'Not found in indexed catalogs')}</div></td>
+        <td colspan="3">
+          <b style="color:var(--amber)">Prodigy guardrail · PART_NOT_FOUND</b>
+          <div class="flag-actions">
+            <select class="miniselect" onchange="resolveFlag(${i}, this.value)">
+              <option value="" ${m.resolution===''?'selected':''}>— choose an action —</option>
+              <option value="manual" ${m.resolution==='manual'?'selected':''}>Request manual sourcing</option>
+              <option value="nobid" ${m.resolution==='nobid'?'selected':''}>Mark as no-bid (exclude)</option>
+              <option value="substitute" ${m.resolution==='substitute'?'selected':''}>Substitute a catalog part…</option>
+            </select>
+            ${m.resolution==='substitute' ? `<select class="miniselect" onchange="substitute(${i}, this.value)">
+                <option value="">pick a catalog part…</option>
+                ${catalogOptgroups()}
+              </select>` : ''}
+          </div>
+        </td>
+        <td class="r">—</td>
+        <td>—</td>
+      </tr>`;
+    }
+    const p = m.product;
+    const supCls = p.supplier.toLowerCase();
+    const certs = (p.certifications || []).slice(0, 3).map(c => `<span class="cert">${esc(c)}</span>`).join('');
+    const rejected = m.decision === 'rejected';
+    const conf = typeof m.conf === 'number' && m.conf > 0 ? m.conf : lineConfidence({ matchSku: p.sku, query: m.query });
+    const low = conf < 0.90;
+    const confPill = `<span class="confpill${low ? ' med' : ''}" title="Retrieval confidence">${Math.round(conf * 100)}%${low ? ' · review' : ''}</span>`;
+    return `<tr class="${rejected ? 'rejected' : ''}" data-i="${i}">
+      <td class="req">${esc(m.query)}${m.wasFlagged ? '<div style="color:var(--ok);font-size:11px;margin-top:3px">↳ substituted by reviewer · <a href="#" onclick="undoSubstitute(' + i + ');return false" style="color:var(--blue)">↩ undo</a></div>' : ''}</td>
+      <td class="matched">
+        <b>${esc(p.name)}</b>
+        <div style="margin:4px 0"><span class="sku">${esc(p.sku)}</span> <span class="suptag ${supCls}">${esc(p.supplier)}</span> ${confPill}
+          <a href="${esc(p.product_url)}" target="_blank" rel="noopener" title="Source page" style="font-size:11px">↗ source</a></div>
+        ${m.alt ? `<div style="font-size:11px;color:var(--muted);margin:2px 0 4px">Agent's 2nd candidate: ${esc(m.alt)}</div>` : ''}
+        <div class="certs">${certs}</div>
+        <select class="swap" onchange="swap(${i}, this.value)" title="Swap product">${altOptions(p)}</select>
+      </td>
+      <td class="r mono">${eur(p.unit_price_eur)}</td>
+      <td><input class="qty" type="number" min="0" value="${m.qty}" onchange="setQty(${i}, this.value)"></td>
+      <td class="r mono"><b>${eur(p.unit_price_eur * m.qty)}</b></td>
+      <td><div class="rowbtns">
+        <button class="ib ${m.decision==='approved'?'on-ok':''}" onclick="decide(${i},'approved')" title="Approve">✓</button>
+        <button class="ib ${rejected?'on-no':''}" onclick="decide(${i},'rejected')" title="Reject">✗</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  updateGate();
+}
+
+function resolveFlag(i, val) { S.matched[i].resolution = val; if (val !== 'substitute') S.matched[i].product = null; renderReviewTable(); }
+function substitute(i, sku) {
+  if (!sku) return;
+  const m = S.matched[i];
+  m.product = bySku(sku); m.flagged = false; m.wasFlagged = true; m.decision = 'approved'; m.conf = 1; m.alt = '';
+  renderReviewTable();
+}
+function undoSubstitute(i) {
+  const m = S.matched[i];
+  m.product = null; m.flagged = true; m.wasFlagged = false; m.resolution = ''; m.decision = 'pending'; m.conf = 0; m.alt = '';
+  renderReviewTable();
+}
+function swap(i, sku) { const m = S.matched[i]; m.product = bySku(sku); m.conf = 1; m.alt = ''; renderReviewTable(); }
+function setQty(i, v) { S.matched[i].qty = Math.max(0, parseInt(v, 10) || 0); renderReviewTable(); }
+function decide(i, d) { S.matched[i].decision = d; renderReviewTable(); }
+
+function approvedLines() {
+  return S.matched.filter(m => m.product && m.decision === 'approved' && m.qty > 0);
+}
+function subtotal() { return approvedLines().reduce((s, m) => s + m.product.unit_price_eur * m.qty, 0); }
+
+function updateGate() {
+  $('#review-subtotal').textContent = eur(subtotal());
+  const unresolved = S.matched.filter(m => m.flagged && !m.product && (m.resolution === '' || m.resolution === undefined));
+  const substNoPick = S.matched.filter(m => m.resolution === 'substitute' && !m.product);
+  const blocked = unresolved.length + substNoPick.length;
+  const btn = $('#gen-quote-btn');
+  btn.disabled = blocked > 0 || approvedLines().length === 0;
+  $('#gate-note').innerHTML = blocked > 0
+    ? `⚠ ${blocked} flagged item${blocked > 1 ? 's' : ''} need${blocked > 1 ? '' : 's'} a decision before the quote can be generated.`
+    : (approvedLines().length === 0
+        ? '⚠ Approve at least one line to generate a quote.'
+        : '<span style="color:var(--ok)">✓ All flagged items resolved — ready to generate the quotation.</span>');
+
+  // keep an already-issued quote consistent with live edits (never show two contradictory totals)
+  const quoteStage = $('#stage-quote');
+  if (!quoteStage.classList.contains('hidden')) {
+    if (btn.disabled) { quoteStage.classList.add('hidden'); S.quote = null; setStep(3); }
+    else if (S.quote) { buildQuote(); }
+  }
+}
+
+/* ============================ STEP 4 — QUOTE ============================ */
+function pad(n, w) { return String(n).padStart(w, '0'); }
+
+function buildQuote() {
+  const sc = S.scenario, c = sc.customer;
+  const now = new Date();
+  const valid = new Date(now.getTime() + 30 * 864e5);
+  const lines = approvedLines().map(m => ({
+    sku: m.product.sku, name: m.product.name, supplier: m.product.supplier,
+    certs: m.product.certifications || [], url: m.product.product_url,
+    qty: m.qty, unit: m.product.unit_price_eur, total: m.product.unit_price_eur * m.qty,
+    lead: m.product.lead_time_days
+  }));
+  const sub = lines.reduce((s, l) => s + l.total, 0);
+  const excluded = S.matched.filter(m => (m.flagged && !m.product) || m.decision === 'rejected').map(m => {
+    // internal reason (audit trail) vs. customer-appropriate wording (printed quotation)
+    const internal = m.product ? 'rejected by reviewer'
+      : m.resolution === 'nobid' ? 'no-bid — outside supplier catalogs'
+      : m.resolution === 'manual' ? 'flagged for manual sourcing'
+      : 'not found in indexed catalogs';
+    const customer = m.product ? 'not included in this quotation'
+      : m.resolution === 'nobid' ? 'outside our current supplier programme — not quoted'
+      : m.resolution === 'manual' ? 'being sourced manually — will follow in a separate quotation'
+      : 'not available from our catalog suppliers';
+    return { query: m.query, reason: internal, custReason: customer };
+  });
+  const maxLine = lines.length ? lines.reduce((a, b) => (b.lead > a.lead ? b : a)) : null;
+  S.quote = {
+    number: 'TG-Q-' + now.getFullYear() + '-' + pad(hash(sc.id + now.toDateString()) % 9000 + 1000, 4),
+    date: now, valid, customer: c, subject: sc.subject, project: c.project,
+    lines, sub, iva: sub * IVA, total: sub * (1 + IVA), excluded,
+    maxLead: maxLine ? maxLine.lead : 0, maxLeadSku: maxLine ? maxLine.sku : '', targetDays: sc.targetDays || 0
+  };
+  renderQuoteDoc(); renderSavings(); renderAudit();
+}
+
+function generateQuote() {
+  buildQuote();
+  $('#stage-quote').classList.remove('hidden');
+  setStep(4, true);
+  scrollToStage('stage-quote');
+}
+
+function renderQuoteDoc() {
+  const q = S.quote, c = q.customer;
+  const d = dt => dt.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+  const marginCols = S.marginView;
+
+  const rows = q.lines.map(l => {
+    const cost = l.unit / 1.20;          // illustrative distributor unit cost (20% margin baked in)
+    const lineCost = cost * l.qty;        // per-line, so Est. cost + Margin = Line total (all columns on one basis)
+    return `<tr>
+      <td><span class="sku">${esc(l.sku)}</span></td>
+      <td>${esc(l.name)}<br><span class="muted" style="font-size:11px">${esc(l.supplier)} · ${(l.certs||[]).slice(0,3).join(' · ')}</span></td>
+      <td class="r">${l.qty}</td>
+      <td class="r">${eur(l.unit)}</td>
+      ${marginCols ? `<td class="r muted">${eur(lineCost)}</td><td class="r" style="color:var(--ok)">${eur(l.total - lineCost)}</td>` : ''}
+      <td class="r"><b>${eur(l.total)}</b></td>
+    </tr>`;
+  }).join('');
+
+  const excl = q.excluded.length ? `
+    <div class="callout" style="margin-top:18px;border-color:#f0d9a6;background:#fffdf6">
+      <b>⚠ Items requiring manual follow-up (not included in the total):</b>
+      <ul style="margin:8px 0 0;padding-left:18px">
+        ${q.excluded.map(e => `<li style="margin:3px 0">${esc(e.query)} — <span class="muted">${esc(e.custReason)}</span></li>`).join('')}
+      </ul>
+    </div>` : '';
+
+  const totalMargin = q.lines.reduce((s,l)=> s + (l.unit - l.unit/1.20)*l.qty, 0);
+
+  $('#quotedoc').innerHTML = `
+    <div class="qhead">
+      <div class="co">NORTEX GROUP<small>Engineering · Industrial Computing &amp; Communications · Barcelona</small></div>
+      <div class="qmeta">
+        <div style="font-size:15px;color:#fff;font-weight:700;margin-bottom:6px">QUOTATION / OFERTA</div>
+        <div>Ref: <b>${esc(q.number)}</b></div>
+        <div>Date: <b>${d(q.date)}</b></div>
+        <div>Valid until: <b>${d(q.valid)}</b></div>
+      </div>
+    </div>
+    <div class="qbody">
+      <div class="qparties">
+        <div class="blk"><h5>Supplier</h5><b>Nortex Group (Nortex, S.L.)</b><br>Engineering Division<br>Barcelona, Spain<br><span class="muted">Premium Partner · Advantech &amp; Moxa</span></div>
+        <div class="blk" style="text-align:right"><h5>Prepared for</h5><b>${esc(c.company)}</b><br>${esc(c.contact)}<br>${esc(c.email)}<br><span class="muted">Project: ${esc(q.project)}</span></div>
+      </div>
+      <table class="qtable">
+        <thead><tr>
+          <th>SKU</th><th>Description</th><th class="r">Qty</th><th class="r">Unit</th>
+          ${marginCols ? '<th class="r">Est. cost</th><th class="r">Margin</th>' : ''}
+          <th class="r">Line total</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr><td colspan="${marginCols?6:4}" class="r">Subtotal (excl. VAT)</td><td class="r">${eur(q.sub)}</td></tr>
+          <tr><td colspan="${marginCols?6:4}" class="r">VAT (IVA 21%)</td><td class="r">${eur(q.iva)}</td></tr>
+          <tr class="grand"><td colspan="${marginCols?6:4}" class="r">TOTAL</td><td class="r">${eur(q.total)}</td></tr>
+          ${marginCols ? `<tr><td colspan="6" class="r" style="color:var(--ok)">Estimated gross margin</td><td class="r" style="color:var(--ok)"><b>${eur(totalMargin)}</b></td></tr>` : ''}
+        </tfoot>
+      </table>
+      ${excl}
+      <div class="qterms">
+        <div><h5>Terms</h5>Prices in EUR, ex-works, excluding VAT unless stated. Offer valid 30 days. Subject to stock availability at order confirmation.</div>
+        <div><h5>Delivery</h5>Estimated lead time up to <b>${q.maxLead} days</b> from order (longest line). Certifications as per manufacturer datasheets.${
+          q.targetDays && q.maxLead > q.targetDays
+            ? `<div style="margin-top:6px;color:#b25a11">Note: the longest lead (${esc(q.maxLeadSku)}, ${q.maxLead} days) exceeds the requested ${Math.round(q.targetDays / 7)} weeks — flagged for the account manager.</div>`
+            : ''}</div>
+      </div>
+      <div class="qfoot">
+        <span class="prodigy-badge"><span class="d"></span> Drafted by the Prodigy RFQ Copilot · ${q.lines.length} sourced line${q.lines.length!==1?'s':''}, each cited to the supplier catalog</span>
+        <span>Reviewed &amp; approved by a Nortex engineer before issue</span>
+      </div>
+    </div>`;
+}
+
+function renderSavings() {
+  const q = S.quote;
+  $('#savings').innerHTML = `
+    <div class="s"><b>~45 min → ~90 s</b><span>Agent drafting time vs. manual browsing of supplier sites</span></div>
+    <div class="s"><b>${TIME_SAVINGS.pct}% less</b><span>Full cycle incl. human approval: ~8 min vs ~45 min</span></div>
+    <div class="s"><b>$${S.telemetry ? S.telemetry.cost.toFixed(3) : '0.005'}</b><span>LLM cost for this quote — fractions of a cent</span></div>
+    <div class="s"><b>${TIME_SAVINGS.annual}</b><span>Technical-sales capacity returned (order-of-magnitude)</span></div>`;
+}
+
+function renderAudit() {
+  const q = S.quote, t = S.telemetry || { tokens: 0, cost: 0, time: 0, pages: 0 };
+  const lines = q.lines.map(l => `<div>✓ <b>${esc(l.sku)}</b> ×${l.qty} @ ${eur(l.unit)} &nbsp;←&nbsp; source: ${esc(l.url)}</div>`).join('');
+  const excl = q.excluded.map(e => `<div>⚠ ${esc(e.query)} — ${esc(e.reason)}</div>`).join('');
+  $('#audit-trail').innerHTML = `
+    <div style="color:var(--ink);margin-bottom:6px"><b>Run ${esc(q.number)}</b> · ${q.date.toLocaleString('es-ES')}</div>
+    ${lines}${excl}
+    <div style="margin-top:8px;border-top:1px dashed var(--line);padding-top:6px">
+      pipeline: rfq_parser → web_crawler/crawl_recall → knowledge-rag → guardrails → live_trace(HITL) → rfq_quote_orchestrator<br>
+      tokens: ${t.tokens.toLocaleString('es-ES')} · est. LLM cost: $${(t.cost||0).toFixed(3)} · catalog pages indexed: ${(ADV_PAGES+MOXA_PAGES).toLocaleString('es-ES')} · every price traceable to a supplier URL
+    </div>`;
+}
+
+function toggleMargin() { S.marginView = !S.marginView; if (S.quote) renderQuoteDoc(); toast(S.marginView ? 'Margin view on (illustrative cost/margin)' : 'Margin view off'); }
+
+function printQuote() {
+  if (S.marginView) toggleMargin();   // never print the internal cost/margin columns on the customer document
+  window.print();
+}
+
+function sendQuote() {
+  const q = S.quote; if (!q) return;
+  const c = q.customer;
+  const subject = `Quotation ${q.number} — ${q.project || q.subject}`;
+  const body =
+`Dear ${c.contact},
+
+Thank you for your enquiry. Please find attached our quotation ${q.number}:
+ · ${q.lines.length} line item${q.lines.length !== 1 ? 's' : ''}, sourced and cited to the manufacturer catalogs
+ · Total ${eur(q.total)} incl. VAT (IVA 21%)
+ · Valid 30 days${q.excluded.length ? `\n · ${q.excluded.length} item${q.excluded.length !== 1 ? 's' : ''} to follow separately (see quotation)` : ''}
+
+Kind regards,
+Nortex Group — Engineering Division`;
+  $('#compose-to').textContent = c.email;
+  $('#compose-subject').textContent = subject;
+  $('#compose-body').textContent = body;
+  $('#compose-modal').hidden = false;
+}
+function closeCompose() { $('#compose-modal').hidden = true; }
+function confirmSend() { closeCompose(); toast('📤 Quotation ' + (S.quote ? S.quote.number : '') + ' sent to ' + (S.scenario ? S.scenario.customer.email : '') + ' (simulated)'); }
+
+/* ============================ STEPPER ============================ */
+function setStep(n, allDone) {
+  $$('#stepper .step').forEach(st => {
+    const k = +st.dataset.step;
+    st.classList.toggle('active', k === n && !allDone);
+    st.classList.toggle('done', allDone ? k <= n : k < n);
+  });
+}
+
+/* ============================ ARCHITECTURE VIEW ============================ */
+function renderArchitecture() {
+  $('#arch-diagram').innerHTML = archSVG();
+  $('#map-body').innerHTML = PRODIGY_MAP.map(m => `
+    <tr>
+      <td><b>${esc(m.step)}</b></td>
+      <td class="cap">${esc(m.comp)}</td>
+      <td><span class="badge ${m.type.replace(/\s+/g,'')}">${esc(m.type)}</span></td>
+      <td>${esc(m.desc)}</td>
+    </tr>`).join('');
+  $('#alt-grid').innerHTML = ALTERNATIVES.map(a => `
+    <div class="alt ${a.win ? 'win' : ''}">
+      <h4>${a.win ? '★ ' : ''}${esc(a.name)}</h4>
+      <div class="when"><b>Wins when:</b> ${esc(a.when)}</div>
+      <div class="when" style="margin-top:6px"><b>Trade-offs:</b> ${esc(a.tradeoffs)}</div>
+      <div class="eff">effort: ${esc(a.eff)}</div>
+    </div>`).join('');
+  $('#talking-points').innerHTML = TALKING_POINTS.map((t, i) => `
+    <div class="callout">💬 ${esc(t)}</div>`).join('');
+}
+
+function archSVG() {
+  /* ---- palette ---- */
+  const ink = '#001528', mintF = '#3dffcf', ctrl = '#8aa6c6';
+  const hexA = (h, a) => { h = h.replace('#',''); return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${a})`; };
+
+  /* ---- 24×24 line-icon library ---- */
+  const I = {
+    mail:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6l9 6 9-6"/></g>`,
+    chat:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><path d="M3 5.5h18v11H8l-4 3.4V16.5H3z"/><path d="M7 9.5h10M7 12.5h6" stroke-linecap="round"/></g>`,
+    phone:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><path d="M5 3.5h3.5l1.6 4.3-2 1.4a11 11 0 005 5l1.4-2 4.3 1.6V21a1.4 1.4 0 01-1.6 1.4A16 16 0 013.6 5.1 1.4 1.4 0 015 3.5z"/></g>`,
+    cpu:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9.5 3v3M14.5 3v3M9.5 18v3M14.5 18v3M3 9.5h3M3 14.5h3M18 9.5h3M18 14.5h3" stroke-linecap="round"/></g>`,
+    parse:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h2M16 4h2a2 2 0 012 2v12a2 2 0 01-2 2h-2"/><path d="M9 9h6M9 12h6M9 15h4"/></g>`,
+    db:c=>`<g fill="none" stroke="${c}" stroke-width="1.7"><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V6"/><path d="M5 12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6"/></g>`,
+    globe:c=>`<g fill="none" stroke="${c}" stroke-width="1.6"><circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8M12 3.6c2.5 2.4 2.5 14.4 0 16.8M12 3.6c-2.5 2.4-2.5 14.4 0 16.8"/></g>`,
+    search:c=>`<g fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/></g>`,
+    shield:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l7 2.4v6c0 4.5-3 7.8-7 9.6-4-1.8-7-5.1-7-9.6v-6z"/><path d="M8.8 11.6l2.2 2.2 4.2-4.2" stroke-linecap="round"/></g>`,
+    person:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5.2 20c0-3.6 3-6 6.8-6s6.8 2.4 6.8 6"/></g>`,
+    gears:c=>`<g fill="none" stroke="${c}" stroke-width="1.5"><circle cx="9.5" cy="9.5" r="3"/><path d="M9.5 3.2v2.1M9.5 13.7v2.1M3.2 9.5h2.1M13.7 9.5h2.1M5.1 5.1l1.5 1.5M12.4 12.4l1.5 1.5M13.9 5.1l-1.5 1.5M6.6 12.4l-1.5 1.5" stroke-linecap="round"/><circle cx="16.5" cy="16.5" r="2.3"/><path d="M16.5 12.6v1.3M16.5 19.1v1.3M12.6 16.5h1.3M19.1 16.5h1.3" stroke-linecap="round"/></g>`,
+    doc:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><path d="M6.5 3h6.5l4.5 4.5V21h-11z"/><path d="M13 3v5h5" /><path d="M9 12.5h6M9 15.5h6M9 18h4" stroke-linecap="round"/></g>`,
+    cloud:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"><path d="M7 18.5h10a4.2 4.2 0 00.3-8.4A6 6 0 006 8.9 3.8 3.8 0 007 18.5z"/></g>`,
+    lock:c=>`<g fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/></g>`,
+    layers:c=>`<g fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l8.5 4.5-8.5 4.5-8.5-4.5z"/><path d="M3.5 12.5l8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5" opacity=".7"/></g>`,
+    audit:c=>`<g fill="none" stroke="${c}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></g>`,
+    chart:c=>`<g fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><path d="M7 15.5l3-4 3 2 4-6"/></g>`,
+    coin:c=>`<g fill="none" stroke="${c}" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 7.2v9.6M9.6 9.6h3.1a1.7 1.7 0 010 3.4H9.9M9.6 13h3.4" stroke-linecap="round"/></g>`
+  };
+
+  /* ---- node ---- */
+  function node(o) {
+    const { x, y, w, h, ic, title, sub, fill, stroke, tcol, icc, step, mono } = o;
+    const cs = h < 70 ? 30 : 34, cy = y + (h - cs) / 2, tx = x + 13 + cs + 11;
+    const ff = mono ? 'ui-monospace, SFMono-Regular, Menlo, monospace' : '-apple-system, "Segoe UI", Roboto, sans-serif';
+    const tsize = mono ? (String(title).length > 17 ? 12 : 13) : 14;
+    const p = [];
+    p.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="13" fill="${fill}" stroke="${stroke}" stroke-width="1.6" filter="url(#nsh)"/>`);
+    p.push(`<rect x="${x+13}" y="${cy}" width="${cs}" height="${cs}" rx="9" fill="${hexA(icc,0.16)}"/>`);
+    p.push(`<g transform="translate(${x+13+(cs-24)/2},${cy+(cs-24)/2})">${I[ic](icc)}</g>`);
+    p.push(`<text x="${tx}" y="${sub ? y+h/2-3 : y+h/2+5}" fill="${tcol}" font-size="${tsize}" font-weight="700" font-family="${ff}">${title}</text>`);
+    if (sub) p.push(`<text x="${tx}" y="${y+h/2+14}" fill="${tcol}" opacity=".72" font-size="10.5" font-family="-apple-system, Segoe UI, sans-serif">${sub}</text>`);
+    if (step) p.push(`<circle cx="${x+w-17}" cy="${y+17}" r="10.5" fill="#00ffbe" stroke="#001528" stroke-width="1.2"/><text x="${x+w-17}" y="${y+20.7}" text-anchor="middle" fill="#001528" font-size="11" font-weight="800" font-family="sans-serif">${step}</text>`);
+    return p.join('');
+  }
+  const zone = (x, y, w, h, label, c) =>
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="${hexA(c,0.05)}" stroke="${hexA(c,0.4)}" stroke-width="1.2"/>` +
+    `<text x="${x+16}" y="${y+22}" fill="${hexA(c,0.95)}" font-size="11" font-weight="800" letter-spacing="1.4" font-family="-apple-system, Segoe UI, sans-serif">${label}</text>`;
+  const A = (d, c, dash) => `<path d="${d}" fill="none" stroke="${c}" stroke-width="2" ${dash ? 'stroke-dasharray="5 4"' : ''} marker-end="url(#arw)" opacity="${dash ? 0.55 : 0.95}"/>`;
+  const lbl = (x, y, t, c) => `<rect x="${x-5}" y="${y-11}" width="${t.length*5.9+10}" height="16" rx="4" fill="#071a2b" opacity=".9"/><text x="${x}" y="${y+0.5}" fill="${c||'#9fb3c9'}" font-size="10.5" font-family="ui-monospace, monospace">${t}</text>`;
+
+  const P = [];
+  P.push(`<svg viewBox="0 0 1280 912" width="100%" style="display:block;width:100%;height:auto" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">`);
+  P.push(`<defs>
+    <marker id="arw" markerWidth="11" markerHeight="11" refX="8" refY="4.2" orient="auto"><path d="M0 0L8.5 4.2L0 8.4z" fill="context-stroke"/></marker>
+    <filter id="nsh" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/></filter>
+    <radialGradient id="g1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6450ff" stop-opacity="0.35"/><stop offset="100%" stop-color="#6450ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00ffbe" stop-opacity="0.16"/><stop offset="100%" stop-color="#00ffbe" stop-opacity="0"/></radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="1.4" cy="1.4" r="1.1" fill="#ffffff" opacity="0.045"/></pattern>
+  </defs>`);
+  P.push(`<rect width="1280" height="912" fill="#001528"/><rect width="1280" height="912" fill="url(#dots)"/>`);
+  P.push(`<ellipse cx="250" cy="120" rx="420" ry="240" fill="url(#g1)"/><ellipse cx="1080" cy="640" rx="440" ry="260" fill="url(#g2)"/>`);
+
+  /* ---- zones ---- */
+  P.push(zone(40, 104, 210, 276, '① INGRESS · MULTI-CHANNEL', '#8aa6c6'));
+  P.push(zone(690, 104, 300, 300, '④ KNOWLEDGE BASE · service/knowledge', '#5b8bff'));
+
+  /* ---- forward arrows (draw before nodes so nodes sit on top of joins) ---- */
+  P.push(A('M250 242 H281 V198 H292', mintF));
+  P.push(A('M470 198 H490', mintF));
+  P.push(A('M668 198 H680 V254 H690', mintF));
+  P.push(A('M990 220 H1010 V200 H1030', mintF));
+  P.push(A('M1135 250 V286', mintF));
+  P.push(A('M1135 386 V712 H862 V668', '#b3a6ff'));
+  P.push(A('M735 612 H682', mintF));
+  /* dashed context arrows — stop at the knowledge-zone border, not deep inside behind other nodes */
+  P.push(A('M770 436 V408', ctrl, true));
+  P.push(A('M912 436 V408', ctrl, true));
+  P.push(A('M1135 150 V104', ctrl, true));
+  P.push(A('M762 560 V406', '#6450ff', true));
+
+  /* ---- edge labels ---- */
+  P.push(lbl(1146, 274, 'flag → human', '#ffcf7a'));
+  P.push(lbl(902, 704, 'approved lines', '#c9bcff'));
+  P.push(lbl(690, 600, 'render'));
+  P.push(lbl(792, 520, 'drives retrieval', '#c9bcff'));
+  P.push(lbl(1148, 132, 'every LLM call', '#9fb3c9'));
+  P.push(lbl(720, 420, 'crawl + index', '#9fb3c9'));
+
+  /* ---- channel nodes ---- */
+  P.push(node({ x:56, y:150, w:178, h:58, ic:'mail',  title:'Email',      sub:'IMAP → /chat',     fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
+  P.push(node({ x:56, y:214, w:178, h:58, ic:'chat',  title:'Live chat',  sub:'WhatsApp · Teams', fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
+  P.push(node({ x:56, y:278, w:178, h:58, ic:'phone', title:'Voice call', sub:'speech-to-text',   fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
+
+  /* ---- core pipeline ---- */
+  P.push(node({ x:292, y:150, w:178, h:96, ic:'cpu',   title:'Prodigy Brain', sub:'orchestrator · plan · route', fill:'#0e1f8a', stroke:'#3350ff', tcol:'#ffffff', icc:'#9fb2ff', step:2 }));
+  P.push(node({ x:490, y:150, w:178, h:96, ic:'parse', title:'rfq_parser',    sub:'skill · line items',          fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', step:3, mono:true }));
+
+  /* ---- knowledge inner ---- */
+  P.push(node({ x:706, y:150, w:268, h:64, ic:'globe',  title:'web_crawler',           sub:'robots-aware · same-site BFS', fill:'#0b2338', stroke:'#2f6bd6', tcol:'#dbe8fb', icc:'#6ea0ff', mono:true }));
+  P.push(node({ x:706, y:222, w:268, h:64, ic:'db',     title:'Postgres FTS + Qdrant', sub:'lexical + vector · RRF fusion', fill:'#0b2338', stroke:'#2f6bd6', tcol:'#dbe8fb', icc:'#6ea0ff', mono:true }));
+  P.push(node({ x:706, y:294, w:268, h:64, ic:'search', title:'crawl_recall · RAG',    sub:'returns SKUs + citations',      fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', mono:true }));
+
+  /* ---- suppliers ---- */
+  P.push(node({ x:706, y:436, w:132, h:48, ic:'globe', title:'Advantech', sub:'catalog', fill:'#14273c', stroke:'#c0392b', tcol:'#f0b8b2', icc:'#ff7a6b' }));
+  P.push(node({ x:850, y:436, w:124, h:48, ic:'globe', title:'Moxa',      sub:'catalog', fill:'#14273c', stroke:'#2f6bd6', tcol:'#bcd4f2', icc:'#6ea0ff' }));
+
+  /* ---- guardrails / HITL / LLM ---- */
+  P.push(node({ x:1030, y:150, w:210, h:100, ic:'shield', title:'Guardrails',        sub:'check_in/out · PART_NOT_FOUND', fill:'#2a1e06', stroke:'#f5a524', tcol:'#ffe6bd', icc:'#ffcf7a', step:5 }));
+  P.push(node({ x:1030, y:286, w:210, h:100, ic:'person', title:'Human-in-the-loop', sub:'live_trace approval gate',      fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', step:6 }));
+  P.push(node({ x:1030, y:46,  w:210, h:56,  ic:'cloud',  title:'LLM layer',         sub:'OpenAI · Anthropic · Gemini · local', fill:'#12202e', stroke:'#3a4a63', tcol:'#cdd9e6', icc:'#9fb3c9' }));
+
+  /* ---- orchestrator (net-new star) + quote output ---- */
+  P.push(node({ x:735, y:560, w:258, h:104, ic:'gears', title:'rfq_quote_orchestrator', sub:'FLEET agent · net-new · deterministic pricing', fill:'#06231c', stroke:'#00ffbe', tcol:'#d6fff4', icc:'#4dffcf', step:7, mono:true }));
+  P.push(node({ x:430, y:560, w:250, h:104, ic:'doc',   title:'Customer quotation',     sub:'cited · VAT · terms · audit trail', fill:'#00e3ab', stroke:'#00a67e', tcol:'#00281e', icc:'#00483a', step:8 }));
+
+  /* ---- platform band ---- */
+  P.push(`<rect x="40" y="792" width="1200" height="72" rx="14" fill="#08192a" stroke="#26405a" stroke-width="1.4"/>`);
+  P.push(`<text x="60" y="814" fill="#8aa6c6" font-size="11" font-weight="800" letter-spacing="1.2" font-family="-apple-system, Segoe UI, sans-serif">PLATFORM · self-hosted control plane (runs in the customer's infrastructure)</text>`);
+  const band = [['lock','Auth · JWT/OIDC/SAML'],['layers','Multi-tenancy · realms'],['audit','Immutable audit log'],['chart','Observability · live-trace SSE'],['coin','Token + USD cost']];
+  band.forEach((b, i) => {
+    const bx = 62 + i * 236;
+    P.push(`<rect x="${bx}" y="828" width="26" height="26" rx="7" fill="${hexA('#5fd6be',0.14)}"/><g transform="translate(${bx+1},${829})">${I[b[0]]('#79dcc4')}</g>`);
+    P.push(`<text x="${bx+34}" y="845" fill="#c3d2e0" font-size="11.5" font-family="-apple-system, Segoe UI, sans-serif">${b[1]}</text>`);
+  });
+
+  /* ---- caption ---- */
+  P.push(`<text x="44" y="900" fill="#5f7591" font-size="11" font-family="-apple-system, Segoe UI, sans-serif">Self-hosted, model-agnostic, multi-tenant · ~90% already-shipped Prodigy components — net-new = one skill (rfq_parser) + one fleet agent (rfq_quote_orchestrator) + a quote-render plugin.</text>`);
+
+  P.push(`</svg>`);
+  return P.join('');
+}
+
+/* ============================ TOAST ============================ */
+let toastT;
+function toast(msg) {
+  const el = $('#toast'); el.innerHTML = esc(msg); el.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+/* expose for inline onclick handlers */
+Object.assign(window, { showView, restartDemo, scrollToStage, selectScenario, processRequest,
+  resolveFlag, substitute, undoSubstitute, swap, setQty, decide, generateQuote, toggleMargin,
+  printQuote, sendQuote, closeCompose, confirmSend });
+
+</script>
+</html>
