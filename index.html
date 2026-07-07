@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Nortex Group · RFQ → Quote Copilot · powered by Prodigy</title>
-<meta name="description" content="From a customer request to a sourced, priced quotation in seconds — an agentic RFQ automation demo built on Ciklum's Prodigy Agentic Framework." />
+<title>Nortex Group · Copiloto RFQ → Oferta · powered by Prodigy</title>
+<meta name="description" content="De una petición del cliente a una oferta con proveedor y precio en segundos — una demo de automatización de RFQ agéntica construida sobre el Prodigy Agentic Framework de Ciklum." />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230020bb'/%3E%3Cstop offset='.6' stop-color='%236450ff'/%3E%3Cstop offset='1' stop-color='%237a6bff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='23' font-family='-apple-system,Segoe UI,Arial,sans-serif' font-size='20' font-weight='800' fill='white' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E" />
 
 <!-- =========================================================================
@@ -345,11 +345,11 @@
       <div class="logo">P</div>
       <div>Prodigy <small>Agentic Framework · Ciklum</small></div>
     </div>
-    <span class="pill" title="Proof of concept">POC · Nortex Group</span>
+    <span class="pill" title="Prueba de concepto">POC · Nortex Group</span>
     <nav>
       <button data-view="demo" class="active">Demo</button>
-      <button data-view="architecture">Architecture</button>
-      <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onclick="restartDemo()">↻ Restart</button>
+      <button data-view="architecture">Arquitectura</button>
+      <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onclick="restartDemo()">↻ Reiniciar</button>
     </nav>
   </div>
 </header>
@@ -358,38 +358,38 @@
 <div id="view-demo">
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">● &nbsp;RFQ → Quote automation &nbsp;·&nbsp; live agent demo</span>
-      <h1>From a customer request to a <span class="accent">sourced, priced quotation</span> — in seconds, not 45 minutes.</h1>
-      <p class="sub">An agentic copilot that reads an incoming request across email, chat or a phone call, searches your suppliers' catalogs, and drafts the quote — with a human approving every line. Built on Ciklum's Prodigy Agentic Framework.</p>
+      <span class="eyebrow">● &nbsp;Automatización RFQ → Oferta &nbsp;·&nbsp; demo de agente en vivo</span>
+      <h1>De una petición del cliente a una <span class="accent">oferta con proveedor y precio</span> — en segundos, no en 45 minutos.</h1>
+      <p class="sub">Un copiloto agéntico que lee una petición entrante por email, chat o llamada telefónica, busca en los catálogos de tus proveedores y redacta la oferta — con un humano aprobando cada línea. Construido sobre el Prodigy Agentic Framework de Ciklum.</p>
       <div class="cta">
-        <button class="btn btn-primary" onclick="scrollToStage('stage-intake')">▶ Run the demo</button>
-        <button class="btn btn-ghost" onclick="showView('architecture')">How it works</button>
+        <button class="btn btn-primary" onclick="scrollToStage('stage-intake')">▶ Ejecutar la demo</button>
+        <button class="btn btn-ghost" onclick="showView('architecture')">Cómo funciona</button>
       </div>
       <div class="stats">
-        <div class="s"><b id="hero-time">~45 min → 90 s</b><span>per quotation, today vs. with the agent</span></div>
-        <div class="s"><b>2 suppliers</b><span>Advantech + Moxa catalogs indexed</span></div>
-        <div class="s"><b>Human-in-the-loop</b><span>every price approved before it ships</span></div>
-        <div class="s"><b>Fully sourced</b><span>each line cites the supplier page</span></div>
+        <div class="s"><b id="hero-time">~45 min → 90 s</b><span>por oferta, hoy vs. con el agente</span></div>
+        <div class="s"><b>2 proveedores</b><span>catálogos de Advantech + Moxa indexados</span></div>
+        <div class="s"><b>Control humano</b><span>cada precio aprobado antes de enviarse</span></div>
+        <div class="s"><b>Totalmente con origen</b><span>cada línea cita la página del proveedor</span></div>
       </div>
     </div>
   </section>
 
   <main class="wrap">
     <div class="stepper" id="stepper">
-      <div class="step active" data-step="1"><div class="n">1</div><div class="t"><b>Intake</b><span>Email · Chat · Voice</span></div></div>
-      <div class="step" data-step="2"><div class="n">2</div><div class="t"><b>Agent search</b><span>plan · retrieve · match</span></div></div>
-      <div class="step" data-step="3"><div class="n">3</div><div class="t"><b>Human review</b><span>approval gate</span></div></div>
-      <div class="step" data-step="4"><div class="n">4</div><div class="t"><b>Quotation</b><span>priced · sourced · sent</span></div></div>
+      <div class="step active" data-step="1"><div class="n">1</div><div class="t"><b>Recepción</b><span>Email · Chat · Voz</span></div></div>
+      <div class="step" data-step="2"><div class="n">2</div><div class="t"><b>Búsqueda del agente</b><span>planificar · recuperar · emparejar</span></div></div>
+      <div class="step" data-step="3"><div class="n">3</div><div class="t"><b>Revisión humana</b><span>barrera de aprobación</span></div></div>
+      <div class="step" data-step="4"><div class="n">4</div><div class="t"><b>Oferta</b><span>con precio · con origen · enviada</span></div></div>
     </div>
 
     <!-- STAGE 1 — INTAKE -->
     <section id="stage-intake" class="card">
       <div class="hd">
         <div style="flex:1">
-          <div class="section-title"><span class="k">Step 1</span></div>
-          <h3>Incoming customer request</h3>
+          <div class="section-title"><span class="k">Paso 1</span></div>
+          <h3>Petición entrante del cliente</h3>
         </div>
-        <div class="sub">Pick a channel &amp; scenario to preview the request</div>
+        <div class="sub">Elige un canal y un escenario para previsualizar la petición</div>
       </div>
       <div class="bd">
         <div class="grid2">
@@ -397,26 +397,26 @@
             <div class="tabs" id="channel-tabs">
               <button data-ch="email" class="active">✉️ Email</button>
               <button data-ch="chat">💬 Chat</button>
-              <button data-ch="voice">📞 Voice call</button>
+              <button data-ch="voice">📞 Llamada de voz</button>
             </div>
             <div class="scenario-row" id="scenario-row"></div>
             <div id="voicebar-slot"></div>
             <div id="mailhead-slot"></div>
-            <textarea class="rfq" id="rfq-text" spellcheck="false" readonly aria-label="Incoming customer request (read-only preview)"></textarea>
+            <textarea class="rfq" id="rfq-text" spellcheck="false" readonly aria-label="Petición entrante del cliente (vista previa de solo lectura)"></textarea>
             <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-              <button class="btn btn-primary" id="process-btn" onclick="processRequest()">🤖 Hand to the agent →</button>
-              <span class="muted" style="font-size:12.5px">The agent will parse this into line items and search the catalogs.</span>
+              <button class="btn btn-primary" id="process-btn" onclick="processRequest()">🤖 Pasar al agente →</button>
+              <span class="muted" style="font-size:12.5px">El agente lo analizará en líneas y buscará en los catálogos.</span>
             </div>
           </div>
           <div>
             <div class="callout" style="margin-bottom:16px">
-              <b>The problem today.</b> A sales rep receives a request like this, then opens each supplier's website and hunts — model by model — for matching parts, specs and prices. Around <b>30–45 minutes</b> per quotation, and it doesn't scale.
+              <b>El problema hoy.</b> Un comercial recibe una petición como esta, luego abre la web de cada proveedor y busca — modelo por modelo — las piezas, especificaciones y precios que coincidan. Alrededor de <b>30–45 minutos</b> por oferta, y no escala.
             </div>
             <div class="side-facts">
-              <div class="fact"><div class="ic">🔎</div><div><b>Reads any channel</b><span>Email body, live chat, or a transcribed phone call — same pipeline.</span></div></div>
-              <div class="fact"><div class="ic">🧭</div><div><b>Searches your suppliers</b><span>Advantech &amp; Moxa catalogs are crawled and indexed as the agent's knowledge base.</span></div></div>
-              <div class="fact"><div class="ic">🛡️</div><div><b>Never invents a part</b><span>If it isn't in a supplier catalog, the agent flags it — it won't fabricate a SKU or a price.</span></div></div>
-              <div class="fact"><div class="ic">🧑‍💼</div><div><b>You stay in control</b><span>A human approves, edits or rejects every line before the quote is generated.</span></div></div>
+              <div class="fact"><div class="ic">🔎</div><div><b>Lee cualquier canal</b><span>Cuerpo del email, chat en vivo o una llamada transcrita — el mismo pipeline.</span></div></div>
+              <div class="fact"><div class="ic">🧭</div><div><b>Busca en tus proveedores</b><span>Los catálogos de Advantech y Moxa se rastrean e indexan como base de conocimiento del agente.</span></div></div>
+              <div class="fact"><div class="ic">🛡️</div><div><b>Nunca inventa una pieza</b><span>Si no está en un catálogo de proveedor, el agente la marca — no fabricará un SKU ni un precio.</span></div></div>
+              <div class="fact"><div class="ic">🧑‍💼</div><div><b>Tú mantienes el control</b><span>Un humano aprueba, edita o rechaza cada línea antes de generar la oferta.</span></div></div>
             </div>
           </div>
         </div>
@@ -427,28 +427,28 @@
     <section id="stage-reasoning" class="card hidden" style="margin-top:22px">
       <div class="hd">
         <div style="flex:1">
-          <div class="section-title"><span class="k">Step 2</span></div>
-          <h3>Agent at work — live reasoning</h3>
+          <div class="section-title"><span class="k">Paso 2</span></div>
+          <h3>El agente trabajando — razonamiento en vivo</h3>
         </div>
-        <div class="sub" id="reasoning-sub">Prodigy Brain orchestrating the RFQ pipeline…</div>
+        <div class="sub" id="reasoning-sub">Prodigy Brain orquestando el pipeline de RFQ…</div>
       </div>
       <div class="bd">
         <div class="trace-shell">
-          <div class="trace" id="trace" role="log" aria-live="polite" aria-label="Agent live reasoning trace"></div>
+          <div class="trace" id="trace" role="log" aria-live="polite" aria-label="Traza de razonamiento en vivo del agente"></div>
           <div>
             <div class="meter">
-              <h4>Run telemetry</h4>
-              <div class="m"><span>Elapsed</span><b id="mt-time">0.0s</b></div>
-              <div class="m"><span>Line items</span><b id="mt-lines">0</b></div>
-              <div class="m"><span>Catalog pages indexed</span><b id="mt-pages">0</b></div>
-              <div class="m"><span>Matches found</span><b id="mt-match">0</b></div>
-              <div class="m"><span>Guardrail flags</span><b id="mt-guard">0</b></div>
+              <h4>Telemetría de la ejecución</h4>
+              <div class="m"><span>Transcurrido</span><b id="mt-time">0.0s</b></div>
+              <div class="m"><span>Líneas</span><b id="mt-lines">0</b></div>
+              <div class="m"><span>Páginas de catálogo indexadas</span><b id="mt-pages">0</b></div>
+              <div class="m"><span>Coincidencias</span><b id="mt-match">0</b></div>
+              <div class="m"><span>Marcas del guardrail</span><b id="mt-guard">0</b></div>
               <div class="m"><span>Tokens</span><b id="mt-tokens">0</b></div>
-              <div class="m"><span>Est. LLM cost</span><b id="mt-cost">$0.00</b></div>
+              <div class="m"><span>Coste LLM est.</span><b id="mt-cost">$0.00</b></div>
               <div class="caps" id="caps"></div>
             </div>
             <div class="callout" style="margin-top:14px;font-size:12px">
-              This mirrors Prodigy's real <b>live-trace</b> stream: the Brain plans, routes to capabilities, retrieves from the knowledge base with citations, and enforces guardrails — all observable, with token cost attributed per capability.
+              Esto refleja el stream <b>live-trace</b> real de Prodigy: el Brain planifica, enruta a las capacidades, recupera de la base de conocimiento con citas y aplica los guardrails — todo observable, con el coste de tokens atribuido por capacidad.
             </div>
           </div>
         </div>
@@ -459,28 +459,28 @@
     <section id="stage-review" class="card hidden" style="margin-top:22px">
       <div class="hd">
         <div style="flex:1">
-          <div class="section-title"><span class="k">Step 3 · Human-in-the-loop</span></div>
-          <h3>Review &amp; approve the draft</h3>
+          <div class="section-title"><span class="k">Paso 3 · Control humano (HITL)</span></div>
+          <h3>Revisa y aprueba el borrador</h3>
         </div>
-        <div class="sub">Edit quantities, swap products, approve or reject each line</div>
+        <div class="sub">Edita cantidades, cambia productos, aprueba o rechaza cada línea</div>
       </div>
       <div class="bd">
         <div class="hitl-banner">
           <div class="ic">🧑‍💼</div>
           <div style="flex:1">
-            <b>Approval gate.</b> <span id="hitl-msg">The agent has drafted the quote. Nothing is sent until you approve — resolve any flagged item to unlock quote generation.</span>
+            <b>Barrera de aprobación.</b> <span id="hitl-msg">El agente ha redactado la oferta. Nada se envía hasta que apruebes — resuelve cualquier elemento marcado para desbloquear la generación de la oferta.</span>
           </div>
         </div>
         <div style="overflow-x:auto">
           <table class="lines" id="lines-table">
             <thead>
               <tr>
-                <th style="width:22%">Requested</th>
-                <th>Agent match</th>
-                <th class="r">Unit</th>
-                <th style="width:70px">Qty</th>
-                <th class="r">Line total</th>
-                <th style="width:90px">Decision</th>
+                <th style="width:22%">Solicitado</th>
+                <th>Coincidencia del agente</th>
+                <th class="r">Unidad</th>
+                <th style="width:70px">Cant.</th>
+                <th class="r">Total línea</th>
+                <th style="width:90px">Decisión</th>
               </tr>
             </thead>
             <tbody id="lines-body"></tbody>
@@ -488,10 +488,10 @@
         </div>
         <div class="review-foot">
           <div>
-            <div class="tots">Approved subtotal &nbsp; <b id="review-subtotal">€0</b></div>
+            <div class="tots">Subtotal aprobado &nbsp; <b id="review-subtotal">€0</b></div>
             <div class="gate-note" id="gate-note"></div>
           </div>
-          <button class="btn btn-primary" id="gen-quote-btn" onclick="generateQuote()">✓ Approve &amp; generate quotation →</button>
+          <button class="btn btn-primary" id="gen-quote-btn" onclick="generateQuote()">✓ Aprobar y generar oferta →</button>
         </div>
       </div>
     </section>
@@ -499,14 +499,14 @@
     <!-- STAGE 4 — QUOTE -->
     <section id="stage-quote" class="card hidden" style="margin-top:22px;background:transparent;border:0;box-shadow:none">
       <div class="quote-toolbar">
-        <button class="btn btn-ghost" style="background:#eef1f8;color:var(--ink);border-color:var(--line)" onclick="toggleMargin()">📊 Margin view</button>
-        <button class="btn btn-ghost" style="background:#eef1f8;color:var(--ink);border-color:var(--line)" onclick="printQuote()">🖨️ Print / PDF</button>
-        <button class="btn btn-primary" onclick="sendQuote()">📤 Send to customer</button>
+        <button class="btn btn-ghost" style="background:#eef1f8;color:var(--ink);border-color:var(--line)" onclick="toggleMargin()">📊 Vista de margen</button>
+        <button class="btn btn-ghost" style="background:#eef1f8;color:var(--ink);border-color:var(--line)" onclick="printQuote()">🖨️ Imprimir / PDF</button>
+        <button class="btn btn-primary" onclick="sendQuote()">📤 Enviar al cliente</button>
       </div>
       <div class="quotedoc" id="quotedoc"></div>
       <div class="savings" id="savings"></div>
       <details class="audit" id="audit-block">
-        <summary>🔎 Audit trail — every price is traceable (click to expand)</summary>
+        <summary>🔎 Rastro de auditoría — cada precio es trazable (haz clic para expandir)</summary>
         <div class="trail" id="audit-trail"></div>
       </details>
     </section>
@@ -517,40 +517,40 @@
 <div id="view-architecture" class="hidden">
   <section class="hero" style="background:var(--ink)">
     <div class="wrap">
-      <span class="eyebrow">● &nbsp;Solution architecture</span>
-      <h1>How it's built on <span class="accent">Prodigy</span></h1>
-      <p class="sub">Every step of the demo maps to a real, shipping component of the Prodigy Agentic Framework — no bespoke chassis required. Here's the pipeline, the mapping, and the honest alternatives.</p>
+      <span class="eyebrow">● &nbsp;Arquitectura de la solución</span>
+      <h1>Cómo está construido sobre <span class="accent">Prodigy</span></h1>
+      <p class="sub">Cada paso de la demo se corresponde con un componente real y de serie del Prodigy Agentic Framework — sin necesidad de un chasis a medida. Aquí está el pipeline, el mapeo y las alternativas honestas.</p>
     </div>
   </section>
   <main class="wrap" style="padding-top:26px">
     <div class="card"><div class="bd">
       <div class="section-title"><span class="k">Pipeline</span></div>
-      <h3 style="margin-bottom:16px">The RFQ → Quote flow</h3>
+      <h3 style="margin-bottom:16px">El flujo RFQ → Oferta</h3>
       <div class="arch-diagram" id="arch-diagram"></div>
     </div></div>
 
     <div class="card" style="margin-top:20px"><div class="bd">
-      <div class="section-title"><span class="k">Mapping</span></div>
-      <h3 style="margin-bottom:8px">Each step → a Prodigy capability</h3>
-      <p class="muted" style="font-size:13px;margin-bottom:8px">These are existing framework primitives; the only net-new asset is one fleet agent that sequences them.</p>
+      <div class="section-title"><span class="k">Mapeo</span></div>
+      <h3 style="margin-bottom:8px">Cada paso → una capacidad de Prodigy</h3>
+      <p class="muted" style="font-size:13px;margin-bottom:8px">Estas son primitivas ya existentes del framework; el único activo nuevo (net-new) es un fleet agent que las secuencia.</p>
       <div style="overflow-x:auto">
         <table class="maptable" id="map-table">
-          <thead><tr><th style="width:20%">Pipeline step</th><th style="width:16%">Prodigy component</th><th style="width:12%">Type</th><th>What it does</th></tr></thead>
+          <thead><tr><th style="width:20%">Paso del pipeline</th><th style="width:16%">Componente de Prodigy</th><th style="width:12%">Tipo</th><th>Qué hace</th></tr></thead>
           <tbody id="map-body"></tbody>
         </table>
       </div>
     </div></div>
 
     <div class="card" style="margin-top:20px"><div class="bd">
-      <div class="section-title"><span class="k">Options</span></div>
-      <h3 style="margin-bottom:6px">Prodigy vs. the alternatives — honest view</h3>
-      <p class="muted" style="font-size:13px;margin-bottom:6px">All of these can build this. The differentiator is <b>ownership</b>: self-hosted, no per-execution tax, no lock-in to one LLM vendor.</p>
+      <div class="section-title"><span class="k">Opciones</span></div>
+      <h3 style="margin-bottom:6px">Prodigy vs. las alternativas — visión honesta</h3>
+      <p class="muted" style="font-size:13px;margin-bottom:6px">Todas ellas pueden construir esto. El diferenciador es la <b>propiedad</b>: self-hosted, sin impuesto por ejecución, sin lock-in a un único proveedor de LLM.</p>
       <div class="altgrid" id="alt-grid"></div>
     </div></div>
 
     <div class="card" style="margin-top:20px"><div class="bd">
-      <div class="section-title"><span class="k">For the conversation</span></div>
-      <h3 style="margin-bottom:12px">Talking points</h3>
+      <div class="section-title"><span class="k">Para la conversación</span></div>
+      <h3 style="margin-bottom:12px">Puntos de conversación</h3>
       <div id="talking-points" style="display:flex;flex-direction:column;gap:10px"></div>
     </div></div>
   </main>
@@ -558,7 +558,7 @@
 
 <footer class="foot">
   <div class="wrap row">
-    <div>© <span id="yr"></span> · Prepared for Nortex Group · <b>Confidential proof of concept</b></div>
+    <div>© <span id="yr"></span> · Preparado para Nortex Group · <b>Prueba de concepto confidencial</b></div>
     <div class="prodigy-badge"><span class="d"></span> Powered by the Prodigy Agentic Framework — Ciklum</div>
   </div>
 </footer>
@@ -567,19 +567,19 @@
 
 <!-- Compose-preview modal — the emotional close: the customer receives their answer -->
 <div class="modal-overlay" id="compose-modal" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Send quotation to customer">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Enviar oferta al cliente">
     <div class="mhead">
-      <div><b>📧 New message</b><small>Reply to the customer's request</small></div>
-      <button class="mclose" onclick="closeCompose()" aria-label="Close">✕</button>
+      <div><b>📧 Mensaje nuevo</b><small>Responder a la petición del cliente</small></div>
+      <button class="mclose" onclick="closeCompose()" aria-label="Cerrar">✕</button>
     </div>
     <div class="mbody">
-      <div class="mrow"><span class="lab">To</span><span class="val" id="compose-to"></span></div>
-      <div class="mrow"><span class="lab">Subject</span><span class="val" id="compose-subject"></span></div>
+      <div class="mrow"><span class="lab">Para</span><span class="val" id="compose-to"></span></div>
+      <div class="mrow"><span class="lab">Asunto</span><span class="val" id="compose-subject"></span></div>
       <div class="mtext" id="compose-body"></div>
     </div>
     <div class="mfoot">
-      <span class="mnote">📎 quotation attached (PDF) · nothing actually leaves the demo</span>
-      <button class="btn btn-primary" onclick="confirmSend()">📤 Send (simulated)</button>
+      <span class="mnote">📎 oferta adjunta (PDF) · nada sale realmente de la demo</span>
+      <button class="btn btn-primary" onclick="confirmSend()">📤 Enviar (simulado)</button>
     </div>
   </div>
 </div>
@@ -595,34 +595,34 @@ const SCENARIOS = [
   "id": "rail",
   "channel": "email",
   "tag": "clean",
-  "label": "Rail depot upgrade",
+  "label": "Renovación de cocheras (tren)",
   "customer": {
    "company": "Metrovia Systems Integration",
    "contact": "Laura Freixas",
    "email": "l.freixas@metrovia-si.example",
-   "project": "Depot network & HMI refresh — Line 4"
+   "project": "Renovación de red y HMI de cocheras — Línea 4"
   },
-  "subject": "RFQ — network + HMI hardware for depot refresh (Line 4)",
+  "subject": "RFQ — hardware de red + HMI para renovación de cocheras (Línea 4)",
   "targetDays": 28,
-  "raw": "Hi Nortex team,\n\nWe're refreshing the depot network and HMIs for Metro Line 4 and need a quotation for the\nfollowing. Rolling-stock / wayside rated where relevant (EN 50155 preferred).\n\n- 6x rugged 8-port Ethernet switch, M12 connectors, EN 50155 rail-certified (rolling stock)\n- 4x serial device server, 2 ports (RS-232 + RS-422/485), for legacy signalling equipment\n- 1x Modbus to EtherNet/IP protocol gateway\n- 2x 15\" fanless widescreen touch panel PC for the depot control HMI\n\nPlease include unit prices, lead times and relevant certifications. Target delivery 4 weeks.\n\nThanks,\nLaura Freixas — Metrovia SI",
+  "raw": "Hola equipo de Nortex:\n\nEstamos renovando la red y los HMI de las cocheras de la Línea 4 de metro y necesitamos una oferta\npara lo siguiente. Homologado para material rodante / vía donde aplique (preferible EN 50155).\n\n- 6x switch Ethernet robusto de 8 puertos, conectores M12, certificado ferroviario EN 50155 (material rodante)\n- 4x servidor de dispositivos serie, 2 puertos (RS-232 + RS-422/485), para señalización heredada\n- 1x pasarela de protocolo Modbus a EtherNet/IP\n- 2x panel PC táctil panorámico de 15\" sin ventilador para el HMI de control de cocheras\n\nIncluid precios unitarios, plazos de entrega y certificaciones relevantes. Entrega objetivo: 4 semanas.\n\nGracias,\nLaura Freixas — Metrovia SI",
   "lines": [
    {
-    "query": "rugged 8-port M12 Ethernet switch, EN 50155 rail-certified",
+    "query": "switch Ethernet robusto de 8 puertos M12, certificado ferroviario EN 50155",
     "qty": 6,
     "matchSku": "TN-5308"
    },
    {
-    "query": "serial device server, 2 ports (RS-232 + RS-422/485), legacy signalling",
+    "query": "servidor de dispositivos serie, 2 puertos (RS-232 + RS-422/485), señalización heredada",
     "qty": 4,
     "matchSku": "NPort 5230"
    },
    {
-    "query": "Modbus to EtherNet/IP protocol gateway",
+    "query": "pasarela de protocolo Modbus a EtherNet/IP",
     "qty": 1,
     "matchSku": "MGate 5105-MB-EIP"
    },
    {
-    "query": "15\" fanless widescreen touch panel PC, depot control HMI",
+    "query": "panel PC táctil panorámico de 15\" sin ventilador, HMI de control de cocheras",
     "qty": 2,
     "matchSku": "TPC-1551WP"
    }
@@ -632,41 +632,41 @@ const SCENARIOS = [
   "id": "water",
   "channel": "chat",
   "tag": "guard",
-  "label": "Water / SCADA telemetry",
+  "label": "Agua / telemetría SCADA",
   "customer": {
    "company": "Aigües del Segre",
    "contact": "Marc Oliveras",
    "email": "moliveras@aiguesdelsegre.example",
-   "project": "Pump-station telemetry rollout"
+   "project": "Despliegue de telemetría de estaciones de bombeo"
   },
-  "subject": "Live chat — pump station telemetry parts",
-  "raw": "[10:02] Marc (Aigües del Segre): Hi — need to price up telemetry hardware for 4 pump stations.\n[10:02] Marc: roughly this per-station bundle, across the whole rollout:\n[10:03] Marc:  - 10x remote Ethernet I/O, 16 digital inputs, Modbus TCP\n[10:03] Marc:  - 5x 8-channel analog input module, RS-485 (4-20 mA sensors)\n[10:04] Marc:  - 3x DIN-rail edge computer, 4x LAN, for the SCADA gateway\n[10:04] Marc:  - 2x industrial 4G/LTE router, dual SIM, VPN\n[10:05] Marc:  - 1x Siemens SIMATIC S7-1500 PLC (CPU 1515-2 PN) — can you supply this too?\n[10:05] Marc: need prices + lead times today if possible, thanks!",
+  "subject": "Chat en vivo — piezas de telemetría de estación de bombeo",
+  "raw": "[10:02] Marc (Aigües del Segre): Hola — necesito presupuestar hardware de telemetría para 4 estaciones de bombeo.\n[10:02] Marc: más o menos este paquete por estación, para todo el despliegue:\n[10:03] Marc:  - 10x E/S Ethernet remota, 16 entradas digitales, Modbus TCP\n[10:03] Marc:  - 5x módulo de entrada analógica de 8 canales, RS-485 (sensores 4-20 mA)\n[10:04] Marc:  - 3x ordenador edge para carril DIN, 4x LAN, para la pasarela SCADA\n[10:04] Marc:  - 2x router industrial 4G/LTE, doble SIM, VPN\n[10:05] Marc:  - 1x PLC Siemens SIMATIC S7-1500 (CPU 1515-2 PN) — ¿podéis suministrarlo también?\n[10:05] Marc: necesito precios + plazos hoy si puede ser, ¡gracias!",
   "lines": [
    {
-    "query": "remote Ethernet I/O, 16 digital inputs, Modbus TCP",
+    "query": "E/S Ethernet remota, 16 entradas digitales, Modbus TCP",
     "qty": 10,
     "matchSku": "ioLogik E1210"
    },
    {
-    "query": "8-channel analog input module, RS-485, 4-20 mA",
+    "query": "módulo de entrada analógica de 8 canales, RS-485, 4-20 mA",
     "qty": 5,
     "matchSku": "ADAM-4117-C"
    },
    {
-    "query": "DIN-rail edge computer, 4x LAN, SCADA gateway",
+    "query": "ordenador edge para carril DIN, 4x LAN, pasarela SCADA",
     "qty": 3,
     "matchSku": "UNO-2484G-V2"
    },
    {
-    "query": "industrial 4G/LTE router, dual SIM, VPN",
+    "query": "router industrial 4G/LTE, doble SIM, VPN",
     "qty": 2,
     "matchSku": "ICR-3231"
    },
    {
-    "query": "Siemens SIMATIC S7-1500 PLC (CPU 1515-2 PN)",
+    "query": "PLC Siemens SIMATIC S7-1500 (CPU 1515-2 PN)",
     "qty": 1,
     "matchSku": null,
-    "note": "Siemens is not one of the indexed suppliers (Advantech / Moxa) — outside catalog scope."
+    "note": "Siemens no es uno de los proveedores indexados (Advantech / Moxa) — fuera del alcance del catálogo."
    }
   ]
  },
@@ -674,33 +674,33 @@ const SCENARIOS = [
   "id": "power",
   "channel": "voice",
   "tag": "guard",
-  "label": "Substation comms",
+  "label": "Comunicaciones de subestación",
   "customer": {
    "company": "Enerlink Contractors",
    "contact": "Diego Serrano",
    "email": "dserrano@enerlink.example",
-   "project": "66 kV substation automation retrofit"
+   "project": "Retrofit de automatización de subestación de 66 kV"
   },
-  "subject": "Transcribed voicemail — substation comms hardware",
-  "raw": "[ Voicemail transcribed by the agent · 00:48 ]\n\n\"Hi, this is Diego from Enerlink. We're retrofitting the comms on a 66 kV substation and I\nneed a quote. We need four IEC 61850-3 / IEEE 1613 rackmount managed switches for the\nsubstation LAN, and six compact substation-rated managed switches for the bay level. Oh —\nand one fibre-optic revenue power meter, class 0.2S, if you carry that. Certifications\nmatter here, it has to be substation-rated. Send prices and lead times when you can, thanks.\" ",
+  "subject": "Buzón de voz transcrito — hardware de comunicaciones de subestación",
+  "raw": "[ Buzón de voz transcrito por el agente · 00:48 ]\n\n\"Hola, soy Diego de Enerlink. Estamos haciendo el retrofit de las comunicaciones de una subestación\nde 66 kV y necesito una oferta. Necesitamos cuatro switches gestionados de montaje en rack\nIEC 61850-3 / IEEE 1613 para la LAN de la subestación, y seis switches gestionados compactos\nhomologados para subestación para el nivel de bahía. Ah — y un contador de energía de fibra óptica,\nclase 0.2S, si lo tenéis. Aquí las certificaciones importan, tiene que estar homologado para\nsubestación. Enviadme precios y plazos cuando podáis, gracias.\" ",
   "lines": [
    {
-    "query": "IEC 61850-3 / IEEE 1613 rackmount managed switch, substation LAN",
+    "query": "switch gestionado de montaje en rack IEC 61850-3 / IEEE 1613, LAN de subestación",
     "qty": 4,
     "matchSku": "PT-7728"
    },
    {
-    "query": "compact substation-rated managed switch, bay level",
+    "query": "switch gestionado compacto homologado para subestación, nivel de bahía",
     "qty": 6,
     "matchSku": "PT-508-SS-SC-48",
     "confPin": 0.86,
-    "altText": "PT-510 · 82% (10-port variant)"
+    "altText": "PT-510 · 82% (variante de 10 puertos)"
    },
    {
-    "query": "fibre-optic revenue power meter, class 0.2S",
+    "query": "contador de energía de fibra óptica, clase 0.2S",
     "qty": 1,
     "matchSku": null,
-    "note": "Revenue metering instruments are outside the Advantech / Moxa catalogs indexed for this agent."
+    "note": "Los instrumentos de medida de facturación quedan fuera de los catálogos de Advantech / Moxa indexados para este agente."
    }
   ]
  }
@@ -708,58 +708,58 @@ const SCENARIOS = [
 
 const PRODIGY_MAP = [
  {
-  "step": "Multi-channel intake",
+  "step": "Entrada multicanal",
   "comp": "/chat · Slack · Teams · WhatsApp",
   "type": "core",
-  "desc": "Email (IMAP→/chat), live chat and speech-to-text voice all enter through the same Brain — one pipeline, many front doors, behind JWT/OIDC/SAML auth and per-tenant realms."
+  "desc": "El email (IMAP→/chat), el chat en vivo y la voz por speech-to-text entran todos por el mismo Brain — un pipeline, muchas puertas de entrada, tras auth JWT/OIDC/SAML y realms por cliente."
  },
  {
-  "step": "Parse RFQ → line items",
+  "step": "Parsear RFQ → líneas",
   "comp": "rfq_parser skill",
   "type": "skill",
-  "desc": "A single-LLM cognitive skill (fork of the shipped structured-extraction skill) turns messy prose into validated {description, qty, hint} line items — behind the guarded gateway like every LLM call."
+  "desc": "Un skill cognitivo de una sola llamada LLM (fork del skill de extracción estructurada ya incluido) convierte el texto desordenado en líneas validadas {description, qty, hint} — tras el guarded gateway, como cada llamada LLM."
  },
  {
-  "step": "Index supplier catalogs",
+  "step": "Indexar catálogos de proveedores",
   "comp": "web_crawler + crawl engine",
   "type": "integration",
-  "desc": "Robots-aware, same-site BFS crawl of advantech.com & moxa.com, rate-limited and depth-bounded, chunked into the shared knowledge pool. Adding a supplier = adding a seed URL."
+  "desc": "Rastreo BFS respetuoso con robots, mismo sitio, de advantech.com y moxa.com, con límite de tasa y profundidad, troceado en el pool de conocimiento compartido. Añadir un proveedor = añadir una URL semilla."
  },
  {
-  "step": "Retrieval store",
-  "comp": "Postgres FTS + Qdrant vectors",
+  "step": "Almacén de recuperación",
+  "comp": "Postgres FTS (+ Qdrant bridge)",
   "type": "integration",
-  "desc": "Part numbers hit the full-text index; fuzzy descriptions hit vectors; Reciprocal-Rank-Fusion merges both — exactly what SKU matching needs."
+  "desc": "El crawler indexa hoy en la búsqueda de texto completo de Postgres. Un pequeño puente nuevo (net-new) incrusta los chunks en el almacén híbrido Qdrant ya incluido en Prodigy (vector + FTS + RRF) para que casen tanto los números de pieza exactos como las descripciones aproximadas."
  },
  {
-  "step": "Search & match, with citations",
+  "step": "Buscar y emparejar, con citas",
   "comp": "crawl_recall + Knowledge RAG",
   "type": "integration",
-  "desc": "Per line item, realm/ACL-scoped retrieval returns candidate SKUs, each carrying the source vendor URL so the reviewer can click straight through to the exact Advantech/Moxa page."
+  "desc": "Por cada línea, la recuperación devuelve SKUs candidatos, cada uno con la URL del proveedor de origen para que el revisor abra directamente la página exacta de Advantech/Moxa. Nuevo (net-new): emparejado consciente del número de pieza (códigos como EKI-5525I necesitan normalización + realce de token exacto)."
  },
  {
-  "step": "'Part not found' guardrail",
-  "comp": "Guardrails decorator + confidence gate",
+  "step": "Guardrail de 'pieza no encontrada'",
+  "comp": "GuardedGateway + grounding check",
   "type": "core",
-  "desc": "Every gateway runs check_input/check_output; a domain rule flags any low-confidence or un-cited line as PART_NOT_FOUND and routes it to a human — it never fabricates a SKU or price."
+  "desc": "Cada llamada LLM pasa por el guarded gateway (el punto de control). La regla de grounding nueva copia cada SKU y comprueba que aparece literal en el chunk citado — las líneas de baja confianza o sin fundamentar se marcan como PART_NOT_FOUND y van a una persona. Nunca inventa un SKU ni un precio."
  },
  {
-  "step": "Human approval gate",
+  "step": "Barrera de aprobación humana",
   "comp": "live_trace approval (HITL)",
   "type": "hitl",
-  "desc": "The run emits an APPROVAL_STEP over the live-trace SSE stream and parks on queue-and-wait until a human edits / approves / rejects each line. First-class, already used by other fleet agents."
+  "desc": "Una barrera real que bloquea: la ejecución emite un APPROVAL_STEP y detiene el hilo de trabajo hasta que una persona resuelve. Ya incluida como aprobar/rechazar el plan entero (la usan otros fleet agents); editar / aprobar / rechazar línea a línea es nuevo (net-new) encima."
  },
  {
-  "step": "Assemble & render quote",
+  "step": "Ensamblar y generar la oferta",
   "comp": "rfq_quote_orchestrator fleet",
   "type": "fleet",
-  "desc": "One net-new fleet agent (fork of sales_consultant) drives parse→retrieve→match→guardrail→HITL→render. Pricing/margins are deterministic Python — auditable, never LLM-computed."
+  "desc": "Un fleet agent nuevo (modelado sobre sdlc_orchestrator) dirige parsear→recuperar→emparejar→guardrail→HITL→generar. Precios/márgenes en Python determinista — auditables, nunca calculados por el LLM."
  },
  {
-  "step": "Cost & audit",
+  "step": "Coste y auditoría",
   "comp": "token accounting + audit log",
   "type": "core",
-  "desc": "Per-capability token + USD attribution and an immutable audit row per run — every quote has a traceable, costed lineage."
+  "desc": "Atribución de tokens + USD por capacidad y una fila de auditoría inmutable por ejecución — cada oferta tiene una trazabilidad con coste."
  }
 ];
 
@@ -767,41 +767,41 @@ const ALTERNATIVES = [
  {
   "name": "Prodigy (Ciklum) — self-hosted",
   "win": true,
-  "when": "When the distributor wants to OWN the stack: self-hosted, their data never leaves their boundary, no per-execution tax, model-agnostic, multi-tenant from day one.",
-  "tradeoffs": "They operate the infra (Postgres/Qdrant/service). ~90% is already-shipped components — you assemble + add 2 thin capabilities, not build a platform.",
-  "eff": "~2–4 weeks"
+  "when": "Cuando el distribuidor quiere SER DUEÑO del stack: self-hosted, sus datos no salen de su perímetro, sin peaje por ejecución, agnóstico de modelo, multi-cliente desde el día 1.",
+  "tradeoffs": "Ellos operan la infra (Postgres/Qdrant/servicio). ~90% de la infra son componentes ya incluidos — ensamblas + añades el pegamento del RFQ (2 capacidades, el puente crawl→vector, el emparejado de SKU, el HITL línea a línea), no construyes una plataforma.",
+  "eff": "~2–4 sem POC → ~6–8 prod"
  },
  {
   "name": "AWS Bedrock Agents",
   "win": false,
-  "when": "Already all-in on AWS and want a fully managed runtime.",
-  "tradeoffs": "Per-invocation billing; crawler NOT included; HITL is DIY (Step Functions); orchestration lock-in; data + workflow live in AWS.",
-  "eff": "~3–5 weeks"
+  "when": "Ya están 100% en AWS y quieren un runtime totalmente gestionado.",
+  "tradeoffs": "Facturación por invocación; el crawler NO viene; el HITL te lo montas tú (Step Functions); lock-in de orquestación; datos + flujo viven en AWS.",
+  "eff": "~3–5 sem"
  },
  {
   "name": "Google Vertex / Gemini",
   "win": false,
-  "when": "GCP-native shop wanting Google-grade grounding via Vertex AI Search.",
-  "tradeoffs": "Same managed posture: consumption billing, workflow lock-in, crawler-not-included, custom HITL, deterministic pricing still bolted on.",
-  "eff": "~3–5 weeks"
+  "when": "Casa GCP-native que quiere grounding con calidad Google vía Vertex AI Search.",
+  "tradeoffs": "Misma postura gestionada: facturación por consumo, lock-in de flujo, crawler-no-incluido, HITL a medida, precios deterministas igualmente añadidos aparte.",
+  "eff": "~3–5 sem"
  },
  {
-  "name": "Raw LLM + scripting / n8n",
+  "name": "LLM a pelo + scripting / n8n",
   "win": false,
-  "when": "A quick single-tenant prototype, low volume, mostly a clean SKU table.",
-  "tradeoffs": "You rebuild crawler, FTS+vector fusion, citations, guardrails, SSE HITL, auth, cost accounting — months of undifferentiated plumbing you then own forever.",
-  "eff": "1–2 wks naive → 8–12+ wks to harden"
+  "when": "Un prototipo rápido de un solo cliente, poco volumen, sobre todo una tabla de SKU limpia.",
+  "tradeoffs": "Reconstruyes crawler, fusión FTS+vector, citas, guardrails, HITL por SSE, auth, contabilidad de coste — meses de fontanería indiferenciada que luego mantienes para siempre.",
+  "eff": "1–2 sem básico → 8–12+ sem para endurecer"
  }
 ];
 
 const TALKING_POINTS = [
- "Your team stops copy-pasting from Advantech and Moxa websites into quote templates. The system reads the RFQ - whether it arrives by email, chat, or a voice note - and drafts the matched quote in seconds.",
- "Every matched part comes with a clickable link back to the exact vendor page it came from. Your engineer verifies at a glance instead of re-searching from scratch.",
- "If the system is not confident it found the right part, it says so and stops - it flags 'part not found' rather than inventing a part number. That guardrail is the difference between a tool you can trust on a customer-facing quote and one you cannot.",
- "A human always approves before a quote goes out. The AI does the 45 minutes of grunt work; your expert spends 5 minutes reviewing the exceptions and clicks approve.",
- "You own it. It runs on your own servers, your catalog data never leaves your walls, and there is no per-transaction toll on top - unlike the big cloud AI agents that meter every run.",
- "It is not locked to one AI vendor. If a cheaper or better model comes out, you switch the engine underneath without rebuilding the workflow.",
- "Roughly 80% of the drafting time on a typical multi-line RFQ disappears - that is real technical-sales capacity handed back to quoting more deals, not chasing PDFs."
+ "Tu equipo deja de copiar y pegar desde las webs de Advantech y Moxa. El sistema lee la petición —email, chat o nota de voz— y deja la oferta emparejada en segundos.",
+ "Cada pieza viene con un enlace a la página exacta del fabricante de donde salió. Tu ingeniero verifica de un vistazo, no vuelve a buscar.",
+ "Si no está seguro de haber encontrado la pieza, lo dice y se para — marca «no encontrada» en vez de inventarse una referencia. Ese guardrail es la diferencia entre fiarte o no.",
+ "Siempre aprueba una persona antes de que salga. La IA hace los 45 minutos de trabajo mecánico; tu experto revisa las excepciones y da al botón.",
+ "Es vuestro. Corre en vuestros servidores, vuestros datos no salen, y no hay peaje por operación como en los agentes de las grandes nubes.",
+ "No está atado a un único proveedor de IA. Si sale un modelo mejor o más barato, cambiáis el motor sin rehacer el flujo.",
+ "Hoy son Advantech y Moxa. Añadir un proveedor nuevo es apuntar el crawler a otra web — no es rehacer nada."
 ];
 
 const TIME_SAVINGS = {
@@ -809,18 +809,18 @@ const TIME_SAVINGS = {
  "cycleMin": 8,
  "draftSec": 90,
  "pct": 82,
- "annual": "~617 h per rep / year",
- "basis": "Manual baseline: a technical inside-sales / applications engineer reading an RFQ, opening Advantech and Moxa sites, searching part numbers, confirming specs and cross-refs, keying line items into a quote template, and adding pricing/markup typically runs 30-60 min for a multi-line RFQ (we use a conservative 45 min midpoint for ~5-10 line items). Automated path: the crawl KB is pre-built, so per-quote the machine spends seconds on parse + retrieval + draft; the residual ~8 min is human-in-the-loop review of the flagged/low-confidence lines and one approval click, which is deliberately kept (it is the trust control, not overhead to remove). Net ~37 min saved per quote, ~82%. Savings are a function of RFQ complexity and how many lines trip the not-found guardrail; simple RFQs approach fully-automated, and the reviewer only touches exceptions."
+ "annual": "~617 h por comercial/año",
+ "basis": "Cifra de orden de magnitud: ~45 min manuales por RFQ multi-línea vs. segundos de máquina + ~8 min de revisión humana. Depende del mix de peticiones y de la tasa de la cola de revisión; no es un SLA."
 };
 
 const NORTEX = {
  "company": "Nortex Group",
  "founded": 1981,
- "hq": "Barcelona, Spain",
- "summary": "A Barcelona-founded (1981) technology distributor & integrator — 40+ years, 20+ countries. Premium Partner of Advantech (20+ yrs) and Moxa (18+ yrs). Its engineers spec-match multi-brand industrial hardware into customer systems; each quotation today means ~30–45 min of manual catalog browsing.",
+ "hq": "Barcelona, España",
+ "summary": "Distribuidor e integrador tecnológico fundado en Barcelona (1978) — 45+ años, 20+ países. Premium Partner de Advantech (25+ años) y Moxa (23+ años). Sus ingenieros emparejan por especificación hardware industrial multimarca en los sistemas del cliente; hoy cada oferta supone ~30–45 min de navegación manual por catálogos.",
  "partners": [
-  "Advantech (20+ yr Premium Partner)",
-  "Moxa (18+ yr Premium Partner)",
+  "Advantech (25+ años Premium Partner)",
+  "Moxa (23+ años Premium Partner)",
   "Getac",
   "AAEON",
   "iEi",
@@ -830,14 +830,14 @@ const NORTEX = {
   "Teltonika"
  ],
  "sectors": [
-  "Industrial automation and factory/manufacturing production",
-  "Mining and natural resources",
-  "Oil & gas / utilities and energy",
-  "Transportation and mobility (rugged vehicle/in-vehicle computing)",
-  "Telecommunications",
-  "Military, defense, law enforcement, public safety and emergency services",
-  "Renewable energy and energy storage (BESS/UPS/SAIS)",
-  "Healthcare (portable batteries for hospitals, clinics and diagnostic centers)"
+  "Ferrocarril y transporte",
+  "Energía y utilities",
+  "Agua y saneamiento",
+  "Industria y fabricación",
+  "Infraestructura",
+  "Defensa y seguridad",
+  "Marítimo",
+  "Oil & gas"
  ]
 };
 
@@ -898,7 +898,7 @@ function renderScenarioChips() {
   $('#scenario-row').innerHTML = SCENARIOS.map(s => `
     <button class="scenario-chip" data-id="${s.id}" onclick="selectScenario('${s.id}')">
       <b>${esc(s.label)}</b>
-      <span class="tag ${s.tag}">${s.tag === 'guard' ? '⚠ includes not-found case' : '✓ all in catalog'}</span>
+      <span class="tag ${s.tag}">${s.tag === 'guard' ? '⚠ incluye caso no encontrada' : '✓ todo en catálogo'}</span>
       <div style="margin-top:4px">${channelIcon(s.channel)} ${esc(s.customer.company)}</div>
     </button>`).join('');
 }
@@ -924,10 +924,10 @@ function selectScenario(id) {
   const c = sc.customer;
   $('#mailhead-slot').innerHTML =
     sc.channel === 'chat'
-      ? `<div class="mailhead">💬 <b>Live chat</b> · ${esc(c.company)} · <b>${esc(c.contact)}</b> · re: ${esc(c.project)}</div>`
-      : `<div class="mailhead">${channelIcon(sc.channel)} <b>From:</b> ${esc(c.contact)} &lt;${esc(c.email)}&gt; &nbsp;·&nbsp; <b>${esc(c.company)}</b><br><b>Subject:</b> ${esc(sc.subject)}</div>`;
+      ? `<div class="mailhead">💬 <b>Chat en vivo</b> · ${esc(c.company)} · <b>${esc(c.contact)}</b> · re: ${esc(c.project)}</div>`
+      : `<div class="mailhead">${channelIcon(sc.channel)} <b>De:</b> ${esc(c.contact)} &lt;${esc(c.email)}&gt; &nbsp;·&nbsp; <b>${esc(c.company)}</b><br><b>Asunto:</b> ${esc(sc.subject)}</div>`;
   $('#voicebar-slot').innerHTML = sc.channel === 'voice'
-    ? `<div class="voicebar"><span>📞</span><div class="wave">${Array.from({length:34},(_,i)=>`<i style="animation-delay:${(i%10)*0.09}s"></i>`).join('')}</div><span class="mono" style="font-size:12px;color:var(--violet)">voicemail · 00:48 · transcribed</span></div>`
+    ? `<div class="voicebar"><span>📞</span><div class="wave">${Array.from({length:34},(_,i)=>`<i style="animation-delay:${(i%10)*0.09}s"></i>`).join('')}</div><span class="mono" style="font-size:12px;color:var(--violet)">buzón de voz · 00:48 · transcrito</span></div>`
     : '';
   $('#rfq-text').value = sc.raw;
 
@@ -988,19 +988,19 @@ async function runReasoning() {
   const bump = (tok) => { t.tokens += tok; t.cost = t.tokens / 1e6 * 0.60; setM(); };
 
   // 1 — plan
-  $('#reasoning-sub').textContent = 'Prodigy Brain · orchestrating the RFQ pipeline';
-  add(`<span class="cap">Brain · orchestrator</span> Building ranked execution plan for an <b>RFQ → Quote</b> request…`, '', 'plan');
+  $('#reasoning-sub').textContent = 'Prodigy Brain · orquestando el pipeline de RFQ';
+  add(`<span class="cap">Brain · orchestrator</span> Construyendo plan de ejecución priorizado para una petición <b>RFQ → Oferta</b>…`, '', 'plan');
   lightCap('orchestrator'); bump(320);
   await sleep(650); if (S.runToken !== token) return;
 
   // 2 — parse
   const n = sc.lines.length;
-  add(`<span class="cap">skill · rfq_parser</span> Parsed <b>${n} line items</b> from the ${sc.channel === 'voice' ? 'transcribed call' : sc.channel} — {description, qty, hint}.`, '', 'plan');
+  add(`<span class="cap">skill · rfq_parser</span> Analizadas <b>${n} líneas</b> de ${sc.channel === 'voice' ? 'la llamada transcrita' : sc.channel} — {description, qty, hint}.`, '', 'plan');
   lightCap('rfq_parser'); t.lines = n; bump(280 + n * 40); setM();
   await sleep(700); if (S.runToken !== token) return;
 
   // 3 — knowledge base ready
-  add(`<span class="cap">integration · web_crawler</span> Knowledge base ready — <b>${CATALOG.length} SKUs</b> across <b>${ADV_PAGES.toLocaleString('es-ES')}</b> Advantech + <b>${MOXA_PAGES.toLocaleString('es-ES')}</b> Moxa pages (robots-aware, same-site).`);
+  add(`<span class="cap">integration · web_crawler</span> Base de conocimiento lista — <b>${CATALOG.length} SKUs</b> en <b>${ADV_PAGES.toLocaleString('es-ES')}</b> páginas de Advantech + <b>${MOXA_PAGES.toLocaleString('es-ES')}</b> de Moxa (robots-aware, mismo sitio).`);
   lightCap('web_crawler');
   // animate pages counter
   const totalPages = ADV_PAGES + MOXA_PAGES;
@@ -1018,17 +1018,17 @@ async function runReasoning() {
       const pct = Math.round(conf * 100);
       const low = conf < 0.90;
       add(
-        `<span class="cap">crawl_recall · knowledge-rag</span> Matched “${esc(q)}” →
+        `<span class="cap">crawl_recall · knowledge-rag</span> Coincidencia “${esc(q)}” →
          <b>${esc(p.sku)}</b> · ${esc(p.name)}
          <div class="conf"><i style="width:${pct}%${low ? ';background:var(--amber)' : ''}"></i></div>
-         <span class="cite">${pct}%${low ? ' · review recommended' : ''} · cite: ${esc(hostOf(p.product_url))}${line.altText ? ' · 2nd candidate: ' + esc(line.altText) : ''}</span>`,
+         <span class="cite">${pct}%${low ? ' · revisión recomendada' : ''} · cita: ${esc(hostOf(p.product_url))}${line.altText ? ' · 2º candidato: ' + esc(line.altText) : ''}</span>`,
         '', 'match');
       t.match++; bump(360 + (hash(p.sku) % 120)); setM();
       await sleep(560); if (S.runToken !== token) return;
     } else {
       add(
-        `<span class="cap">guardrails · check_output</span> ⚠ No catalog match for “${esc(q)}”.
-         <b>PART_NOT_FOUND</b> — flagged for human review, <b>not</b> fabricating a SKU or price.`,
+        `<span class="cap">guardrails · check_output</span> ⚠ Sin coincidencia en catálogo para “${esc(q)}”.
+         <b>PART_NOT_FOUND</b> — marcada para revisión humana, <b>no</b> se inventa un SKU ni un precio.`,
         'guard', 'guard');
       lightCap('guardrails'); t.guard++; bump(180); setM();
       const gchip = caps.querySelector('[data-cap="guardrails"]');
@@ -1038,13 +1038,13 @@ async function runReasoning() {
   }
 
   // 5 — approval gate
-  add(`<span class="cap">live_trace · APPROVAL_STEP</span> Draft assembled — emitting <b>human-in-the-loop</b> approval gate. Run parks until a person approves.`, '', 'done');
+  add(`<span class="cap">live_trace · APPROVAL_STEP</span> Borrador ensamblado — emitiendo barrera de aprobación <b>con control humano</b>. La ejecución se detiene hasta que una persona apruebe.`, '', 'done');
   lightCap('live_trace'); lightCap('rfq_quote_orchestrator'); bump(300); setM();
   await sleep(700); if (S.runToken !== token) return;
 
   clearInterval(timer);
-  add(`<span class="cap">rfq_quote_orchestrator</span> ✓ Ready for review · <b>${t.match} matched</b>, <b>${t.guard} flagged</b> · ${t.tokens.toLocaleString('es-ES')} tokens · $${t.cost.toFixed(3)} · ${t.time.toFixed(1)}s`, '', 'done');
-  $('#reasoning-sub').textContent = '✓ Draft ready — parked at the human approval gate';
+  add(`<span class="cap">rfq_quote_orchestrator</span> ✓ Listo para revisión · <b>${t.match} coincidencias</b>, <b>${t.guard} marcadas</b> · ${t.tokens.toLocaleString('es-ES')} tokens · $${t.cost.toFixed(3)} · ${t.time.toFixed(1)}s`, '', 'done');
+  $('#reasoning-sub').textContent = '✓ Borrador listo — detenido en la barrera de aprobación humana';
   await sleep(500); if (S.runToken !== token) return;
   revealReview();
 }
@@ -1089,18 +1089,18 @@ function renderReviewTable() {
     if (m.flagged && !m.product) {
       // unresolved / needs decision
       return `<tr class="flagged" data-i="${i}">
-        <td class="req"><b>${esc(m.query)}</b><div style="margin-top:4px;color:var(--amber);font-size:11.5px">⚠ ${esc(m.note || 'Not found in indexed catalogs')}</div></td>
+        <td class="req"><b>${esc(m.query)}</b><div style="margin-top:4px;color:var(--amber);font-size:11.5px">⚠ ${esc(m.note || 'No encontrada en los catálogos indexados')}</div></td>
         <td colspan="3">
-          <b style="color:var(--amber)">Prodigy guardrail · PART_NOT_FOUND</b>
+          <b style="color:var(--amber)">Guardrail de Prodigy · PART_NOT_FOUND</b>
           <div class="flag-actions">
             <select class="miniselect" onchange="resolveFlag(${i}, this.value)">
-              <option value="" ${m.resolution===''?'selected':''}>— choose an action —</option>
-              <option value="manual" ${m.resolution==='manual'?'selected':''}>Request manual sourcing</option>
-              <option value="nobid" ${m.resolution==='nobid'?'selected':''}>Mark as no-bid (exclude)</option>
-              <option value="substitute" ${m.resolution==='substitute'?'selected':''}>Substitute a catalog part…</option>
+              <option value="" ${m.resolution===''?'selected':''}>— elige una acción —</option>
+              <option value="manual" ${m.resolution==='manual'?'selected':''}>Solicitar abastecimiento manual</option>
+              <option value="nobid" ${m.resolution==='nobid'?'selected':''}>Marcar como no ofertar (excluir)</option>
+              <option value="substitute" ${m.resolution==='substitute'?'selected':''}>Sustituir por una pieza del catálogo…</option>
             </select>
             ${m.resolution==='substitute' ? `<select class="miniselect" onchange="substitute(${i}, this.value)">
-                <option value="">pick a catalog part…</option>
+                <option value="">elige una pieza del catálogo…</option>
                 ${catalogOptgroups()}
               </select>` : ''}
           </div>
@@ -1115,23 +1115,23 @@ function renderReviewTable() {
     const rejected = m.decision === 'rejected';
     const conf = typeof m.conf === 'number' && m.conf > 0 ? m.conf : lineConfidence({ matchSku: p.sku, query: m.query });
     const low = conf < 0.90;
-    const confPill = `<span class="confpill${low ? ' med' : ''}" title="Retrieval confidence">${Math.round(conf * 100)}%${low ? ' · review' : ''}</span>`;
+    const confPill = `<span class="confpill${low ? ' med' : ''}" title="Confianza de recuperación">${Math.round(conf * 100)}%${low ? ' · revisar' : ''}</span>`;
     return `<tr class="${rejected ? 'rejected' : ''}" data-i="${i}">
-      <td class="req">${esc(m.query)}${m.wasFlagged ? '<div style="color:var(--ok);font-size:11px;margin-top:3px">↳ substituted by reviewer · <a href="#" onclick="undoSubstitute(' + i + ');return false" style="color:var(--blue)">↩ undo</a></div>' : ''}</td>
+      <td class="req">${esc(m.query)}${m.wasFlagged ? '<div style="color:var(--ok);font-size:11px;margin-top:3px">↳ sustituida por el revisor · <a href="#" onclick="undoSubstitute(' + i + ');return false" style="color:var(--blue)">↩ deshacer</a></div>' : ''}</td>
       <td class="matched">
         <b>${esc(p.name)}</b>
         <div style="margin:4px 0"><span class="sku">${esc(p.sku)}</span> <span class="suptag ${supCls}">${esc(p.supplier)}</span> ${confPill}
-          <a href="${esc(p.product_url)}" target="_blank" rel="noopener" title="Source page" style="font-size:11px">↗ source</a></div>
-        ${m.alt ? `<div style="font-size:11px;color:var(--muted);margin:2px 0 4px">Agent's 2nd candidate: ${esc(m.alt)}</div>` : ''}
+          <a href="${esc(p.product_url)}" target="_blank" rel="noopener" title="Página de origen" style="font-size:11px">↗ origen</a></div>
+        ${m.alt ? `<div style="font-size:11px;color:var(--muted);margin:2px 0 4px">2º candidato del agente: ${esc(m.alt)}</div>` : ''}
         <div class="certs">${certs}</div>
-        <select class="swap" onchange="swap(${i}, this.value)" title="Swap product">${altOptions(p)}</select>
+        <select class="swap" onchange="swap(${i}, this.value)" title="Cambiar producto">${altOptions(p)}</select>
       </td>
       <td class="r mono">${eur(p.unit_price_eur)}</td>
       <td><input class="qty" type="number" min="0" value="${m.qty}" onchange="setQty(${i}, this.value)"></td>
       <td class="r mono"><b>${eur(p.unit_price_eur * m.qty)}</b></td>
       <td><div class="rowbtns">
-        <button class="ib ${m.decision==='approved'?'on-ok':''}" onclick="decide(${i},'approved')" title="Approve">✓</button>
-        <button class="ib ${rejected?'on-no':''}" onclick="decide(${i},'rejected')" title="Reject">✗</button>
+        <button class="ib ${m.decision==='approved'?'on-ok':''}" onclick="decide(${i},'approved')" title="Aprobar">✓</button>
+        <button class="ib ${rejected?'on-no':''}" onclick="decide(${i},'rejected')" title="Rechazar">✗</button>
       </div></td>
     </tr>`;
   }).join('');
@@ -1167,10 +1167,10 @@ function updateGate() {
   const btn = $('#gen-quote-btn');
   btn.disabled = blocked > 0 || approvedLines().length === 0;
   $('#gate-note').innerHTML = blocked > 0
-    ? `⚠ ${blocked} flagged item${blocked > 1 ? 's' : ''} need${blocked > 1 ? '' : 's'} a decision before the quote can be generated.`
+    ? `⚠ ${blocked} elemento${blocked > 1 ? 's' : ''} marcado${blocked > 1 ? 's' : ''} necesita${blocked > 1 ? 'n' : ''} una decisión antes de poder generar la oferta.`
     : (approvedLines().length === 0
-        ? '⚠ Approve at least one line to generate a quote.'
-        : '<span style="color:var(--ok)">✓ All flagged items resolved — ready to generate the quotation.</span>');
+        ? '⚠ Aprueba al menos una línea para generar una oferta.'
+        : '<span style="color:var(--ok)">✓ Todos los elementos marcados resueltos — listo para generar la oferta.</span>');
 
   // keep an already-issued quote consistent with live edits (never show two contradictory totals)
   const quoteStage = $('#stage-quote');
@@ -1196,14 +1196,14 @@ function buildQuote() {
   const sub = lines.reduce((s, l) => s + l.total, 0);
   const excluded = S.matched.filter(m => (m.flagged && !m.product) || m.decision === 'rejected').map(m => {
     // internal reason (audit trail) vs. customer-appropriate wording (printed quotation)
-    const internal = m.product ? 'rejected by reviewer'
-      : m.resolution === 'nobid' ? 'no-bid — outside supplier catalogs'
-      : m.resolution === 'manual' ? 'flagged for manual sourcing'
-      : 'not found in indexed catalogs';
-    const customer = m.product ? 'not included in this quotation'
-      : m.resolution === 'nobid' ? 'outside our current supplier programme — not quoted'
-      : m.resolution === 'manual' ? 'being sourced manually — will follow in a separate quotation'
-      : 'not available from our catalog suppliers';
+    const internal = m.product ? 'rechazada por el revisor'
+      : m.resolution === 'nobid' ? 'no ofertar — fuera de los catálogos de proveedores'
+      : m.resolution === 'manual' ? 'marcada para abastecimiento manual'
+      : 'no encontrada en los catálogos indexados';
+    const customer = m.product ? 'no incluida en esta oferta'
+      : m.resolution === 'nobid' ? 'fuera de nuestro programa actual de proveedores — no ofertada'
+      : m.resolution === 'manual' ? 'en abastecimiento manual — se enviará en una oferta aparte'
+      : 'no disponible en nuestros proveedores de catálogo';
     return { query: m.query, reason: internal, custReason: customer };
   });
   const maxLine = lines.length ? lines.reduce((a, b) => (b.lead > a.lead ? b : a)) : null;
@@ -1243,7 +1243,7 @@ function renderQuoteDoc() {
 
   const excl = q.excluded.length ? `
     <div class="callout" style="margin-top:18px;border-color:#f0d9a6;background:#fffdf6">
-      <b>⚠ Items requiring manual follow-up (not included in the total):</b>
+      <b>⚠ Elementos que requieren seguimiento manual (no incluidos en el total):</b>
       <ul style="margin:8px 0 0;padding-left:18px">
         ${q.excluded.map(e => `<li style="margin:3px 0">${esc(e.query)} — <span class="muted">${esc(e.custReason)}</span></li>`).join('')}
       </ul>
@@ -1253,44 +1253,44 @@ function renderQuoteDoc() {
 
   $('#quotedoc').innerHTML = `
     <div class="qhead">
-      <div class="co">NORTEX GROUP<small>Engineering · Industrial Computing &amp; Communications · Barcelona</small></div>
+      <div class="co">NORTEX GROUP<small>Ingeniería · Computación y Comunicaciones Industriales · Barcelona</small></div>
       <div class="qmeta">
-        <div style="font-size:15px;color:#fff;font-weight:700;margin-bottom:6px">QUOTATION / OFERTA</div>
+        <div style="font-size:15px;color:#fff;font-weight:700;margin-bottom:6px">OFERTA</div>
         <div>Ref: <b>${esc(q.number)}</b></div>
-        <div>Date: <b>${d(q.date)}</b></div>
-        <div>Valid until: <b>${d(q.valid)}</b></div>
+        <div>Fecha: <b>${d(q.date)}</b></div>
+        <div>Válida hasta: <b>${d(q.valid)}</b></div>
       </div>
     </div>
     <div class="qbody">
       <div class="qparties">
-        <div class="blk"><h5>Supplier</h5><b>Nortex Group (Nortex, S.L.)</b><br>Engineering Division<br>Barcelona, Spain<br><span class="muted">Premium Partner · Advantech &amp; Moxa</span></div>
-        <div class="blk" style="text-align:right"><h5>Prepared for</h5><b>${esc(c.company)}</b><br>${esc(c.contact)}<br>${esc(c.email)}<br><span class="muted">Project: ${esc(q.project)}</span></div>
+        <div class="blk"><h5>Proveedor</h5><b>Nortex Group (Nortex, S.L.)</b><br>División de Ingeniería<br>Barcelona, España<br><span class="muted">Premium Partner · Advantech &amp; Moxa</span></div>
+        <div class="blk" style="text-align:right"><h5>Preparada para</h5><b>${esc(c.company)}</b><br>${esc(c.contact)}<br>${esc(c.email)}<br><span class="muted">Proyecto: ${esc(q.project)}</span></div>
       </div>
       <table class="qtable">
         <thead><tr>
-          <th>SKU</th><th>Description</th><th class="r">Qty</th><th class="r">Unit</th>
-          ${marginCols ? '<th class="r">Est. cost</th><th class="r">Margin</th>' : ''}
-          <th class="r">Line total</th>
+          <th>SKU</th><th>Descripción</th><th class="r">Cant.</th><th class="r">Unidad</th>
+          ${marginCols ? '<th class="r">Coste est.</th><th class="r">Margen</th>' : ''}
+          <th class="r">Total línea</th>
         </tr></thead>
         <tbody>${rows}</tbody>
         <tfoot>
-          <tr><td colspan="${marginCols?6:4}" class="r">Subtotal (excl. VAT)</td><td class="r">${eur(q.sub)}</td></tr>
-          <tr><td colspan="${marginCols?6:4}" class="r">VAT (IVA 21%)</td><td class="r">${eur(q.iva)}</td></tr>
+          <tr><td colspan="${marginCols?6:4}" class="r">Subtotal (sin IVA)</td><td class="r">${eur(q.sub)}</td></tr>
+          <tr><td colspan="${marginCols?6:4}" class="r">IVA (21%)</td><td class="r">${eur(q.iva)}</td></tr>
           <tr class="grand"><td colspan="${marginCols?6:4}" class="r">TOTAL</td><td class="r">${eur(q.total)}</td></tr>
-          ${marginCols ? `<tr><td colspan="6" class="r" style="color:var(--ok)">Estimated gross margin</td><td class="r" style="color:var(--ok)"><b>${eur(totalMargin)}</b></td></tr>` : ''}
+          ${marginCols ? `<tr><td colspan="6" class="r" style="color:var(--ok)">Margen bruto estimado</td><td class="r" style="color:var(--ok)"><b>${eur(totalMargin)}</b></td></tr>` : ''}
         </tfoot>
       </table>
       ${excl}
       <div class="qterms">
-        <div><h5>Terms</h5>Prices in EUR, ex-works, excluding VAT unless stated. Offer valid 30 days. Subject to stock availability at order confirmation.</div>
-        <div><h5>Delivery</h5>Estimated lead time up to <b>${q.maxLead} days</b> from order (longest line). Certifications as per manufacturer datasheets.${
+        <div><h5>Condiciones</h5>Precios en EUR, ex-works, sin IVA salvo indicación. Oferta válida 30 días. Sujeto a disponibilidad de stock en la confirmación del pedido.</div>
+        <div><h5>Entrega</h5>Plazo de entrega estimado hasta <b>${q.maxLead} días</b> desde el pedido (línea más larga). Certificaciones según las hojas de datos del fabricante.${
           q.targetDays && q.maxLead > q.targetDays
-            ? `<div style="margin-top:6px;color:#b25a11">Note: the longest lead (${esc(q.maxLeadSku)}, ${q.maxLead} days) exceeds the requested ${Math.round(q.targetDays / 7)} weeks — flagged for the account manager.</div>`
+            ? `<div style="margin-top:6px;color:#b25a11">Nota: el plazo más largo (${esc(q.maxLeadSku)}, ${q.maxLead} días) supera las ${Math.round(q.targetDays / 7)} semanas solicitadas — marcado para el gestor de cuenta.</div>`
             : ''}</div>
       </div>
       <div class="qfoot">
-        <span class="prodigy-badge"><span class="d"></span> Drafted by the Prodigy RFQ Copilot · ${q.lines.length} sourced line${q.lines.length!==1?'s':''}, each cited to the supplier catalog</span>
-        <span>Reviewed &amp; approved by a Nortex engineer before issue</span>
+        <span class="prodigy-badge"><span class="d"></span> Redactada por el Prodigy RFQ Copilot · ${q.lines.length} línea${q.lines.length!==1?'s':''} con origen, cada una citada al catálogo del proveedor</span>
+        <span>Revisada y aprobada por un ingeniero de Nortex antes de la emisión</span>
       </div>
     </div>`;
 }
@@ -1298,26 +1298,26 @@ function renderQuoteDoc() {
 function renderSavings() {
   const q = S.quote;
   $('#savings').innerHTML = `
-    <div class="s"><b>~45 min → ~90 s</b><span>Agent drafting time vs. manual browsing of supplier sites</span></div>
-    <div class="s"><b>${TIME_SAVINGS.pct}% less</b><span>Full cycle incl. human approval: ~8 min vs ~45 min</span></div>
-    <div class="s"><b>$${S.telemetry ? S.telemetry.cost.toFixed(3) : '0.005'}</b><span>LLM cost for this quote — fractions of a cent</span></div>
-    <div class="s"><b>${TIME_SAVINGS.annual}</b><span>Technical-sales capacity returned (order-of-magnitude)</span></div>`;
+    <div class="s"><b>~45 min → ~90 s</b><span>Tiempo de redacción del agente frente a navegación manual por los sitios de proveedores</span></div>
+    <div class="s"><b>${TIME_SAVINGS.pct}% menos</b><span>Ciclo completo incl. aprobación humana: ~8 min vs ~45 min</span></div>
+    <div class="s"><b>$${S.telemetry ? S.telemetry.cost.toFixed(3) : '0.005'}</b><span>Coste LLM de esta oferta — fracciones de céntimo</span></div>
+    <div class="s"><b>${TIME_SAVINGS.annual}</b><span>Capacidad de venta técnica recuperada (orden de magnitud)</span></div>`;
 }
 
 function renderAudit() {
   const q = S.quote, t = S.telemetry || { tokens: 0, cost: 0, time: 0, pages: 0 };
-  const lines = q.lines.map(l => `<div>✓ <b>${esc(l.sku)}</b> ×${l.qty} @ ${eur(l.unit)} &nbsp;←&nbsp; source: ${esc(l.url)}</div>`).join('');
+  const lines = q.lines.map(l => `<div>✓ <b>${esc(l.sku)}</b> ×${l.qty} @ ${eur(l.unit)} &nbsp;←&nbsp; origen: ${esc(l.url)}</div>`).join('');
   const excl = q.excluded.map(e => `<div>⚠ ${esc(e.query)} — ${esc(e.reason)}</div>`).join('');
   $('#audit-trail').innerHTML = `
-    <div style="color:var(--ink);margin-bottom:6px"><b>Run ${esc(q.number)}</b> · ${q.date.toLocaleString('es-ES')}</div>
+    <div style="color:var(--ink);margin-bottom:6px"><b>Ejecución ${esc(q.number)}</b> · ${q.date.toLocaleString('es-ES')}</div>
     ${lines}${excl}
     <div style="margin-top:8px;border-top:1px dashed var(--line);padding-top:6px">
       pipeline: rfq_parser → web_crawler/crawl_recall → knowledge-rag → guardrails → live_trace(HITL) → rfq_quote_orchestrator<br>
-      tokens: ${t.tokens.toLocaleString('es-ES')} · est. LLM cost: $${(t.cost||0).toFixed(3)} · catalog pages indexed: ${(ADV_PAGES+MOXA_PAGES).toLocaleString('es-ES')} · every price traceable to a supplier URL
+      tokens: ${t.tokens.toLocaleString('es-ES')} · coste LLM est.: $${(t.cost||0).toFixed(3)} · páginas de catálogo indexadas: ${(ADV_PAGES+MOXA_PAGES).toLocaleString('es-ES')} · cada precio trazable a una URL de proveedor
     </div>`;
 }
 
-function toggleMargin() { S.marginView = !S.marginView; if (S.quote) renderQuoteDoc(); toast(S.marginView ? 'Margin view on (illustrative cost/margin)' : 'Margin view off'); }
+function toggleMargin() { S.marginView = !S.marginView; if (S.quote) renderQuoteDoc(); toast(S.marginView ? 'Vista de margen activada (coste/margen ilustrativo)' : 'Vista de margen desactivada'); }
 
 function printQuote() {
   if (S.marginView) toggleMargin();   // never print the internal cost/margin columns on the customer document
@@ -1327,24 +1327,24 @@ function printQuote() {
 function sendQuote() {
   const q = S.quote; if (!q) return;
   const c = q.customer;
-  const subject = `Quotation ${q.number} — ${q.project || q.subject}`;
+  const subject = `Oferta ${q.number} — ${q.project || q.subject}`;
   const body =
-`Dear ${c.contact},
+`Estimado/a ${c.contact}:
 
-Thank you for your enquiry. Please find attached our quotation ${q.number}:
- · ${q.lines.length} line item${q.lines.length !== 1 ? 's' : ''}, sourced and cited to the manufacturer catalogs
- · Total ${eur(q.total)} incl. VAT (IVA 21%)
- · Valid 30 days${q.excluded.length ? `\n · ${q.excluded.length} item${q.excluded.length !== 1 ? 's' : ''} to follow separately (see quotation)` : ''}
+Gracias por su consulta. Adjuntamos nuestra oferta ${q.number}:
+ · ${q.lines.length} línea${q.lines.length !== 1 ? 's' : ''}, con origen y citadas a los catálogos del fabricante
+ · Total ${eur(q.total)} IVA incluido (21%)
+ · Válida 30 días${q.excluded.length ? `\n · ${q.excluded.length} elemento${q.excluded.length !== 1 ? 's' : ''} a enviar por separado (ver oferta)` : ''}
 
-Kind regards,
-Nortex Group — Engineering Division`;
+Un cordial saludo,
+Nortex Group — División de Ingeniería`;
   $('#compose-to').textContent = c.email;
   $('#compose-subject').textContent = subject;
   $('#compose-body').textContent = body;
   $('#compose-modal').hidden = false;
 }
 function closeCompose() { $('#compose-modal').hidden = true; }
-function confirmSend() { closeCompose(); toast('📤 Quotation ' + (S.quote ? S.quote.number : '') + ' sent to ' + (S.scenario ? S.scenario.customer.email : '') + ' (simulated)'); }
+function confirmSend() { closeCompose(); toast('📤 Oferta ' + (S.quote ? S.quote.number : '') + ' enviada a ' + (S.scenario ? S.scenario.customer.email : '') + ' (simulado)'); }
 
 /* ============================ STEPPER ============================ */
 function setStep(n, allDone) {
@@ -1368,9 +1368,9 @@ function renderArchitecture() {
   $('#alt-grid').innerHTML = ALTERNATIVES.map(a => `
     <div class="alt ${a.win ? 'win' : ''}">
       <h4>${a.win ? '★ ' : ''}${esc(a.name)}</h4>
-      <div class="when"><b>Wins when:</b> ${esc(a.when)}</div>
-      <div class="when" style="margin-top:6px"><b>Trade-offs:</b> ${esc(a.tradeoffs)}</div>
-      <div class="eff">effort: ${esc(a.eff)}</div>
+      <div class="when"><b>Gana cuando:</b> ${esc(a.when)}</div>
+      <div class="when" style="margin-top:6px"><b>Compromisos:</b> ${esc(a.tradeoffs)}</div>
+      <div class="eff">esfuerzo: ${esc(a.eff)}</div>
     </div>`).join('');
   $('#talking-points').innerHTML = TALKING_POINTS.map((t, i) => `
     <div class="callout">💬 ${esc(t)}</div>`).join('');
@@ -1437,8 +1437,8 @@ function archSVG() {
   P.push(`<ellipse cx="250" cy="120" rx="420" ry="240" fill="url(#g1)"/><ellipse cx="1080" cy="640" rx="440" ry="260" fill="url(#g2)"/>`);
 
   /* ---- zones ---- */
-  P.push(zone(40, 104, 210, 276, '① INGRESS · MULTI-CHANNEL', '#8aa6c6'));
-  P.push(zone(690, 104, 300, 300, '④ KNOWLEDGE BASE · service/knowledge', '#5b8bff'));
+  P.push(zone(40, 104, 210, 276, '① INGRESO · MULTICANAL', '#8aa6c6'));
+  P.push(zone(690, 104, 300, 300, '④ BASE DE CONOCIMIENTO · service/knowledge', '#5b8bff'));
 
   /* ---- forward arrows (draw before nodes so nodes sit on top of joins) ---- */
   P.push(A('M250 242 H281 V198 H292', mintF));
@@ -1455,44 +1455,44 @@ function archSVG() {
   P.push(A('M762 560 V406', '#6450ff', true));
 
   /* ---- edge labels ---- */
-  P.push(lbl(1146, 274, 'flag → human', '#ffcf7a'));
-  P.push(lbl(902, 704, 'approved lines', '#c9bcff'));
-  P.push(lbl(690, 600, 'render'));
-  P.push(lbl(792, 520, 'drives retrieval', '#c9bcff'));
-  P.push(lbl(1148, 132, 'every LLM call', '#9fb3c9'));
-  P.push(lbl(720, 420, 'crawl + index', '#9fb3c9'));
+  P.push(lbl(1146, 274, 'marca → humano', '#ffcf7a'));
+  P.push(lbl(902, 704, 'líneas aprobadas', '#c9bcff'));
+  P.push(lbl(690, 600, 'renderizar'));
+  P.push(lbl(792, 520, 'impulsa recuperación', '#c9bcff'));
+  P.push(lbl(1148, 132, 'cada llamada LLM', '#9fb3c9'));
+  P.push(lbl(720, 420, 'rastrear + indexar', '#9fb3c9'));
 
   /* ---- channel nodes ---- */
-  P.push(node({ x:56, y:150, w:178, h:58, ic:'mail',  title:'Email',      sub:'IMAP → /chat',     fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
-  P.push(node({ x:56, y:214, w:178, h:58, ic:'chat',  title:'Live chat',  sub:'WhatsApp · Teams', fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
-  P.push(node({ x:56, y:278, w:178, h:58, ic:'phone', title:'Voice call', sub:'speech-to-text',   fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
+  P.push(node({ x:56, y:150, w:178, h:58, ic:'mail',  title:'Correo',      sub:'IMAP → /chat',     fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
+  P.push(node({ x:56, y:214, w:178, h:58, ic:'chat',  title:'Chat en vivo',  sub:'WhatsApp · Teams', fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
+  P.push(node({ x:56, y:278, w:178, h:58, ic:'phone', title:'Llamada de voz', sub:'speech-to-text',   fill:'#0b2338', stroke:'#2a4763', tcol:'#d3e2f2', icc:'#8ea6c4' }));
 
   /* ---- core pipeline ---- */
-  P.push(node({ x:292, y:150, w:178, h:96, ic:'cpu',   title:'Prodigy Brain', sub:'orchestrator · plan · route', fill:'#0e1f8a', stroke:'#3350ff', tcol:'#ffffff', icc:'#9fb2ff', step:2 }));
-  P.push(node({ x:490, y:150, w:178, h:96, ic:'parse', title:'rfq_parser',    sub:'skill · line items',          fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', step:3, mono:true }));
+  P.push(node({ x:292, y:150, w:178, h:96, ic:'cpu',   title:'Prodigy Brain', sub:'orquestador · plan · ruta', fill:'#0e1f8a', stroke:'#3350ff', tcol:'#ffffff', icc:'#9fb2ff', step:2 }));
+  P.push(node({ x:490, y:150, w:178, h:96, ic:'parse', title:'rfq_parser',    sub:'skill · líneas',          fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', step:3, mono:true }));
 
   /* ---- knowledge inner ---- */
-  P.push(node({ x:706, y:150, w:268, h:64, ic:'globe',  title:'web_crawler',           sub:'robots-aware · same-site BFS', fill:'#0b2338', stroke:'#2f6bd6', tcol:'#dbe8fb', icc:'#6ea0ff', mono:true }));
-  P.push(node({ x:706, y:222, w:268, h:64, ic:'db',     title:'Postgres FTS + Qdrant', sub:'lexical + vector · RRF fusion', fill:'#0b2338', stroke:'#2f6bd6', tcol:'#dbe8fb', icc:'#6ea0ff', mono:true }));
-  P.push(node({ x:706, y:294, w:268, h:64, ic:'search', title:'crawl_recall · RAG',    sub:'returns SKUs + citations',      fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', mono:true }));
+  P.push(node({ x:706, y:150, w:268, h:64, ic:'globe',  title:'web_crawler',           sub:'robots-aware · BFS mismo sitio', fill:'#0b2338', stroke:'#2f6bd6', tcol:'#dbe8fb', icc:'#6ea0ff', mono:true }));
+  P.push(node({ x:706, y:222, w:268, h:64, ic:'db',     title:'Postgres FTS', sub:'+ híbrido Qdrant · puente = nuevo (net-new)', fill:'#0b2338', stroke:'#2f6bd6', tcol:'#dbe8fb', icc:'#6ea0ff', mono:true }));
+  P.push(node({ x:706, y:294, w:268, h:64, ic:'search', title:'crawl_recall · RAG',    sub:'devuelve SKUs + citas',      fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', mono:true }));
 
   /* ---- suppliers ---- */
-  P.push(node({ x:706, y:436, w:132, h:48, ic:'globe', title:'Advantech', sub:'catalog', fill:'#14273c', stroke:'#c0392b', tcol:'#f0b8b2', icc:'#ff7a6b' }));
-  P.push(node({ x:850, y:436, w:124, h:48, ic:'globe', title:'Moxa',      sub:'catalog', fill:'#14273c', stroke:'#2f6bd6', tcol:'#bcd4f2', icc:'#6ea0ff' }));
+  P.push(node({ x:706, y:436, w:132, h:48, ic:'globe', title:'Advantech', sub:'catálogo', fill:'#14273c', stroke:'#c0392b', tcol:'#f0b8b2', icc:'#ff7a6b' }));
+  P.push(node({ x:850, y:436, w:124, h:48, ic:'globe', title:'Moxa',      sub:'catálogo', fill:'#14273c', stroke:'#2f6bd6', tcol:'#bcd4f2', icc:'#6ea0ff' }));
 
   /* ---- guardrails / HITL / LLM ---- */
-  P.push(node({ x:1030, y:150, w:210, h:100, ic:'shield', title:'Guardrails',        sub:'check_in/out · PART_NOT_FOUND', fill:'#2a1e06', stroke:'#f5a524', tcol:'#ffe6bd', icc:'#ffcf7a', step:5 }));
-  P.push(node({ x:1030, y:286, w:210, h:100, ic:'person', title:'Human-in-the-loop', sub:'live_trace approval gate',      fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', step:6 }));
-  P.push(node({ x:1030, y:46,  w:210, h:56,  ic:'cloud',  title:'LLM layer',         sub:'OpenAI · Anthropic · Gemini · local', fill:'#12202e', stroke:'#3a4a63', tcol:'#cdd9e6', icc:'#9fb3c9' }));
+  P.push(node({ x:1030, y:150, w:210, h:100, ic:'shield', title:'Guardrails',        sub:'guarded gateway + verificación de grounding', fill:'#2a1e06', stroke:'#f5a524', tcol:'#ffe6bd', icc:'#ffcf7a', step:5 }));
+  P.push(node({ x:1030, y:286, w:210, h:100, ic:'person', title:'Control humano', sub:'barrera live_trace · por línea',      fill:'#181350', stroke:'#6450ff', tcol:'#eae6ff', icc:'#b3a6ff', step:6 }));
+  P.push(node({ x:1030, y:46,  w:210, h:56,  ic:'cloud',  title:'Capa LLM',         sub:'OpenAI · Anthropic · Gemini · local', fill:'#12202e', stroke:'#3a4a63', tcol:'#cdd9e6', icc:'#9fb3c9' }));
 
   /* ---- orchestrator (net-new star) + quote output ---- */
-  P.push(node({ x:735, y:560, w:258, h:104, ic:'gears', title:'rfq_quote_orchestrator', sub:'FLEET agent · net-new · deterministic pricing', fill:'#06231c', stroke:'#00ffbe', tcol:'#d6fff4', icc:'#4dffcf', step:7, mono:true }));
-  P.push(node({ x:430, y:560, w:250, h:104, ic:'doc',   title:'Customer quotation',     sub:'cited · VAT · terms · audit trail', fill:'#00e3ab', stroke:'#00a67e', tcol:'#00281e', icc:'#00483a', step:8 }));
+  P.push(node({ x:735, y:560, w:258, h:104, ic:'gears', title:'rfq_quote_orchestrator', sub:'agente FLEET · nuevo (net-new) · precios deterministas', fill:'#06231c', stroke:'#00ffbe', tcol:'#d6fff4', icc:'#4dffcf', step:7, mono:true }));
+  P.push(node({ x:430, y:560, w:250, h:104, ic:'doc',   title:'Oferta al cliente',     sub:'citada · IVA · condiciones · rastro de auditoría', fill:'#00e3ab', stroke:'#00a67e', tcol:'#00281e', icc:'#00483a', step:8 }));
 
   /* ---- platform band ---- */
   P.push(`<rect x="40" y="792" width="1200" height="72" rx="14" fill="#08192a" stroke="#26405a" stroke-width="1.4"/>`);
-  P.push(`<text x="60" y="814" fill="#8aa6c6" font-size="11" font-weight="800" letter-spacing="1.2" font-family="-apple-system, Segoe UI, sans-serif">PLATFORM · self-hosted control plane (runs in the customer's infrastructure)</text>`);
-  const band = [['lock','Auth · JWT/OIDC/SAML'],['layers','Multi-tenancy · realms'],['audit','Immutable audit log'],['chart','Observability · live-trace SSE'],['coin','Token + USD cost']];
+  P.push(`<text x="60" y="814" fill="#8aa6c6" font-size="11" font-weight="800" letter-spacing="1.2" font-family="-apple-system, Segoe UI, sans-serif">PLATAFORMA · plano de control self-hosted (se ejecuta en la infraestructura del cliente)</text>`);
+  const band = [['lock','Autenticación · JWT/OIDC/SAML'],['layers','Multi-cliente · realms'],['audit','Registro de auditoría inmutable'],['chart','Observabilidad · live-trace SSE'],['coin','Coste en tokens + USD']];
   band.forEach((b, i) => {
     const bx = 62 + i * 236;
     P.push(`<rect x="${bx}" y="828" width="26" height="26" rx="7" fill="${hexA('#5fd6be',0.14)}"/><g transform="translate(${bx+1},${829})">${I[b[0]]('#79dcc4')}</g>`);
@@ -1500,7 +1500,7 @@ function archSVG() {
   });
 
   /* ---- caption ---- */
-  P.push(`<text x="44" y="900" fill="#5f7591" font-size="11" font-family="-apple-system, Segoe UI, sans-serif">Self-hosted, model-agnostic, multi-tenant · ~90% already-shipped Prodigy components — net-new = one skill (rfq_parser) + one fleet agent (rfq_quote_orchestrator) + a quote-render plugin.</text>`);
+  P.push(`<text x="44" y="900" fill="#5f7591" font-size="11" font-family="-apple-system, Segoe UI, sans-serif">Self-hosted, agnóstico de modelo, multi-cliente · ~90% de infraestructura ya incluida — nuevo (net-new) = skill rfq_parser + rfq_quote_orchestrator + puente crawl→vector + coincidencia de SKU + validador de grounding + HITL por línea + plugin de render de oferta · ~2–4 sem POC, ~6–8 producción.</text>`);
 
   P.push(`</svg>`);
   return P.join('');

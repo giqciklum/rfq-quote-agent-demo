@@ -1,12 +1,12 @@
-# RFQ → Quote Copilot — demo
+# Copiloto RFQ → Oferta — demo
 
-A deterministic, zero-dependency single-page demo of an **agentic RFQ → Quote copilot**, built on **Ciklum's Prodigy Agentic Framework**.
+Una demo determinista, de una sola página y sin dependencias de un **copiloto agéntico RFQ → Oferta**, construida sobre el **Prodigy Agentic Framework de Ciklum**.
 
-It reads an incoming customer request (email, chat, or a transcribed phone call), searches supplier catalogs (Advantech + Moxa), matches each line to a SKU **with a citation back to the source page**, lets a **human approve every line**, and generates a branded quotation. Two scenarios include a **"part not found" guardrail** — the agent flags the item and refuses to invent a SKU.
+Lee una petición entrante del cliente (correo, chat o una llamada telefónica transcrita), busca en los catálogos de proveedores (Advantech + Moxa), empareja cada línea con un SKU **con una cita que remite a la página de origen**, deja que un **humano apruebe cada línea**, y genera una oferta con marca. Dos escenarios incluyen un **guardrail de "pieza no encontrada"** — el agente marca el elemento y se niega a inventar un SKU.
 
-**Live demo:** https://giqciklum.github.io/rfq-quote-agent-demo/
+**Demo en vivo:** https://giqciklum.github.io/rfq-quote-agent-demo/
 
-- Single static file, no backend, no API keys, no build step — it runs anywhere and can't fail live.
-- Demo data is illustrative and prices are representative (a real deployment would price from an ERP/authoritative feed, never a scraped page).
+- Un único archivo estático, sin backend, sin claves de API, sin paso de build — corre en cualquier sitio y no puede fallar en vivo.
+- Los datos de la demo son ilustrativos y los precios son representativos (un despliegue real pondría precio desde un ERP/feed autoritativo, nunca desde una página rastreada).
 
 *Powered by the Prodigy Agentic Framework — Ciklum.*
